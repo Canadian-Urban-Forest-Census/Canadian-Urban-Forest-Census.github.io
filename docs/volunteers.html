@@ -31,6 +31,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
 
 <link rel="stylesheet" href="/styles.css" />
+<script src="/charts.js" defer></script>
 </head>
 
 <body>
@@ -127,56 +128,11 @@
 	<p>
 		More municipalities work with individual residents than with any single type of
 		organization. Where people volunteer through a group, local environmental
-		organizations and school or youth groups are the most common routes.
+		organizations and school or youth groups are the most common routes. Municipalities
+		typically work with several types at once.
 	</p>
 
-	<div class="chart">
-		<div class="bar-row">
-			<span class="bar-label">Individual residents</span>
-			<div class="bar-track"><div class="bar-fill" style="width: 57.1%;"></div></div>
-			<span class="bar-value">57.1%</span>
-		</div>
-		<div class="bar-row">
-			<span class="bar-label">Local environmental groups</span>
-			<div class="bar-track"><div class="bar-fill" style="width: 52.9%;"></div></div>
-			<span class="bar-value">52.9%</span>
-		</div>
-		<div class="bar-row">
-			<span class="bar-label">School and youth groups</span>
-			<div class="bar-track"><div class="bar-fill" style="width: 48.6%;"></div></div>
-			<span class="bar-value">48.6%</span>
-		</div>
-		<div class="bar-row">
-			<span class="bar-label">Non-profit / NGO groups</span>
-			<div class="bar-track"><div class="bar-fill" style="width: 37.1%;"></div></div>
-			<span class="bar-value">37.1%</span>
-		</div>
-		<div class="bar-row">
-			<span class="bar-label">Private corporations</span>
-			<div class="bar-track"><div class="bar-fill" style="width: 34.3%;"></div></div>
-			<span class="bar-value">34.3%</span>
-		</div>
-		<div class="bar-row">
-			<span class="bar-label">Service organizations</span>
-			<div class="bar-track"><div class="bar-fill" style="width: 30.0%;"></div></div>
-			<span class="bar-value">30.0%</span>
-		</div>
-		<div class="bar-row">
-			<span class="bar-label">Council committees</span>
-			<div class="bar-track"><div class="bar-fill" style="width: 30.0%;"></div></div>
-			<span class="bar-value">30.0%</span>
-		</div>
-		<div class="bar-row">
-			<span class="bar-label">Neighbourhood associations</span>
-			<div class="bar-track"><div class="bar-fill" style="width: 22.9%;"></div></div>
-			<span class="bar-value">22.9%</span>
-		</div>
-	</div>
-
-	<p class="chart-note">
-		Percentage of municipalities that engage volunteers and answered this question
-		(n&nbsp;=&nbsp;70). Municipalities typically work with several types at once.
-	</p>
+	<div class="census-chart" data-chart='{"n": 70, "series": [{"label": "Individual residents", "count": 40, "group": "Individuals"}, {"label": "Local environmental groups", "count": 37, "group": "Community organizations"}, {"label": "School and youth groups", "count": 34, "group": "Community organizations"}, {"label": "Non-profit / NGO groups", "count": 26, "group": "Community organizations"}, {"label": "Private corporations", "count": 24, "group": "Business"}, {"label": "Service organizations", "count": 21, "group": "Community organizations"}, {"label": "City council / village board committees", "count": 21, "group": "Government"}, {"label": "Neighbourhood associations", "count": 16, "group": "Community organizations"}, {"label": "Beautification committees", "count": 13, "group": "Government"}, {"label": "Crown corporations", "count": 12, "group": "Business"}, {"label": "Faith- or spiritual-based organizations", "count": 10, "group": "Community organizations"}, {"label": "Park / tree boards", "count": 10, "group": "Government"}, {"label": "Business associations", "count": 8, "group": "Business"}, {"label": "Equity advocates", "count": 3, "group": "Community organizations"}]}'></div>
 
 	<h2>What volunteers do</h2>
 
@@ -185,36 +141,10 @@
 		settings. Naturalization plantings &mdash; in ravines, riparian corridors and wooded
 		areas &mdash; and park tree planting dominate. Street tree planting, which carries
 		traffic and utility hazards, is far less common, and routine maintenance is rarer
-		still.
+		still. The median municipality reported two activity types.
 	</p>
 
-	<div class="chart">
-		<div class="bar-row">
-			<span class="bar-label">Naturalization plantings</span>
-			<div class="bar-track"><div class="bar-fill" style="width: 82.9%;"></div></div>
-			<span class="bar-value">82.9%</span>
-		</div>
-		<div class="bar-row">
-			<span class="bar-label">Park tree planting</span>
-			<div class="bar-track"><div class="bar-fill" style="width: 70.0%;"></div></div>
-			<span class="bar-value">70.0%</span>
-		</div>
-		<div class="bar-row">
-			<span class="bar-label">Street tree planting</span>
-			<div class="bar-track"><div class="bar-fill" style="width: 21.4%;"></div></div>
-			<span class="bar-value">21.4%</span>
-		</div>
-		<div class="bar-row">
-			<span class="bar-label">Community education</span>
-			<div class="bar-track"><div class="bar-fill" style="width: 20.0%;"></div></div>
-			<span class="bar-value">20.0%</span>
-		</div>
-	</div>
-
-	<p class="chart-note">
-		Percentage of municipalities that engage volunteers and answered this question
-		(n&nbsp;=&nbsp;70). The median municipality reported two activity types.
-	</p>
+	<div class="census-chart" data-chart='{"n": 70, "series": [{"label": "Naturalization plantings", "count": 58, "group": "Planting"}, {"label": "Park tree planting", "count": 49, "group": "Planting"}, {"label": "Street tree planting", "count": 15, "group": "Planting"}, {"label": "Community education and engagement", "count": 14, "group": "Outreach"}]}'></div>
 
 	<p>
 		Notably, tree inventory work &mdash; a common volunteer activity in the United States
@@ -232,43 +162,7 @@
 		volunteer involvement is kept to lower-hazard tasks.
 	</p>
 
-	<div class="chart">
-		<div class="bar-row">
-			<span class="bar-label">Tree planting</span>
-			<div class="bar-track"><div class="bar-fill" style="width: 83.3%;"></div></div>
-			<span class="bar-value">83.3%</span>
-		</div>
-		<div class="bar-row">
-			<span class="bar-label">Safety training</span>
-			<div class="bar-track"><div class="bar-fill" style="width: 47.2%;"></div></div>
-			<span class="bar-value">47.2%</span>
-		</div>
-		<div class="bar-row">
-			<span class="bar-label">Tree identification</span>
-			<div class="bar-track"><div class="bar-fill" style="width: 25.0%;"></div></div>
-			<span class="bar-value">25.0%</span>
-		</div>
-		<div class="bar-row">
-			<span class="bar-label">Community engagement</span>
-			<div class="bar-track"><div class="bar-fill" style="width: 18.1%;"></div></div>
-			<span class="bar-value">18.1%</span>
-		</div>
-		<div class="bar-row">
-			<span class="bar-label">Nesting birds / wildlife</span>
-			<div class="bar-track"><div class="bar-fill" style="width: 11.1%;"></div></div>
-			<span class="bar-value">11.1%</span>
-		</div>
-		<div class="bar-row">
-			<span class="bar-label">No training offered</span>
-			<div class="bar-track"><div class="bar-fill" style="width: 11.1%;"></div></div>
-			<span class="bar-value">11.1%</span>
-		</div>
-	</div>
-
-	<p class="chart-note">
-		Percentage of municipalities that engage volunteers and answered this question
-		(n&nbsp;=&nbsp;72).
-	</p>
+	<div class="census-chart" data-chart='{"n": 72, "series": [{"label": "Tree planting training", "count": 60}, {"label": "Safety training", "count": 34}, {"label": "Tree identification", "count": 18}, {"label": "Community engagement (PR) training", "count": 13}, {"label": "Identifying nesting birds and wildlife", "count": 8}, {"label": "No training offered", "count": 8}, {"label": "Identifying species at risk", "count": 5}]}'></div>
 
 	<h2>A complement, not a substitute</h2>
 
@@ -335,6 +229,12 @@
 		approved by the University of Toronto Research Ethics Board (Protocol #48443).
 	</p>
 </footer>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		CensusChart.initAll(".census-chart");
+	});
+</script>
 
 <script>
 	(function () {
