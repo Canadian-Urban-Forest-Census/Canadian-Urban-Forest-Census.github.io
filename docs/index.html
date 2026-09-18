@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <title>Canadian Urban Forest Census</title>
-<meta name="description" content="A national picture of the trees in Canada's cities: inventories, volunteers, staffing, economics, and management." />
+<meta name="description" content="A national survey of urban forestry programs in 343 Canadian municipalities, covering staffing, budgets, tree inventories, volunteers, and management." />
 <link rel="canonical" href="https://canadian-urban-forest-census.github.io/" />
 
-<!-- Open Graph: used by LinkedIn, Facebook, Slack, WhatsApp, Discord -->
+<!-- Open Graph: used by LinkedIn, Facebook, Slack, WhatsApp -->
 <meta property="og:site_name" content="Canadian Urban Forest Census" />
 <meta property="og:title" content="Canadian Urban Forest Census" />
-<meta property="og:description" content="A national picture of the trees in Canada's cities: inventories, volunteers, staffing, economics, and management." />
+<meta property="og:description" content="A national survey of urban forestry programs in 343 Canadian municipalities, covering staffing, budgets, tree inventories, volunteers, and management." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://canadian-urban-forest-census.github.io/" />
 <meta property="og:image" content="https://canadian-urban-forest-census.github.io/TitleImage.jpg" />
@@ -23,14 +23,15 @@
 <!-- X / Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Canadian Urban Forest Census" />
-<meta name="twitter:description" content="A national picture of the trees in Canada's cities: inventories, volunteers, staffing, economics, and management." />
+<meta name="twitter:description" content="A national survey of urban forestry programs in 343 Canadian municipalities, covering staffing, budgets, tree inventories, volunteers, and management." />
 <meta name="twitter:image" content="https://canadian-urban-forest-census.github.io/TitleImage.jpg" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=Source+Serif+4:opsz,wght@8..60,400&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
 
 <style>
+
 	:root {
 		--green-dark: #0D534D;
 		--green-med: #00A189;
@@ -40,6 +41,7 @@
 		--gray80: #333333;
 		--gray90: #191919;
 		--white: #ffffff;
+		--sand: #f6f6f2;
 	}
 
 	* { box-sizing: border-box; }
@@ -50,6 +52,158 @@
 		color: var(--gray90);
 		-webkit-font-smoothing: antialiased;
 	}
+
+	/* ---------- nav ---------- */
+
+	nav {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 8px 24px;
+		padding: 14px 24px;
+		background-color: var(--green-dark);
+	}
+
+	nav .brand {
+		margin-right: auto;
+		font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+		font-weight: 700;
+		font-size: 16px;
+		letter-spacing: 0.01em;
+		color: var(--white);
+		text-decoration: none;
+	}
+
+	nav ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 18px;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	nav ul a {
+		font-family: "Open Sans", sans-serif;
+		font-size: 14px;
+		color: var(--white);
+		text-decoration: none;
+		opacity: 0.8;
+		padding-bottom: 2px;
+		border-bottom: 2px solid transparent;
+	}
+
+	nav ul a:hover { opacity: 1; }
+
+	nav ul a.active {
+		opacity: 1;
+		border-bottom-color: var(--green-light);
+	}
+
+	/* ---------- body ---------- */
+
+	main {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 50px 20px 80px 20px;
+	}
+
+	main p, main li {
+		font-family: "Source Serif 4", Georgia, serif;
+		font-size: 19px;
+		line-height: 30px;
+		color: var(--gray80);
+	}
+
+	main h2 {
+		font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+		font-weight: 700;
+		font-size: 30px;
+		line-height: 1.15;
+		margin: 56px 0 12px 0;
+		color: var(--gray90);
+	}
+
+	main h3 {
+		font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+		font-weight: 600;
+		font-size: 21px;
+		margin: 36px 0 8px 0;
+		color: var(--green-dark);
+	}
+
+	main a { color: var(--green-dark); }
+
+	.lede {
+		font-size: 21px;
+		line-height: 33px;
+		color: var(--gray80);
+	}
+
+	/* ---------- share ---------- */
+
+	.share {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 10px;
+		margin-top: 56px;
+		padding-top: 24px;
+		border-top: 1px solid var(--gray);
+	}
+
+	.share-label {
+		font-family: "Open Sans", sans-serif;
+		font-size: 13px;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--gray70);
+		margin-right: 4px;
+	}
+
+	.share a,
+	.share button {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 8px 14px;
+		border: 1px solid var(--gray);
+		border-radius: 2px;
+		background: var(--white);
+		font-family: "Open Sans", sans-serif;
+		font-size: 14px;
+		color: var(--gray80);
+		text-decoration: none;
+		cursor: pointer;
+		transition: border-color 0.15s ease, color 0.15s ease;
+	}
+
+	.share a:hover,
+	.share button:hover {
+		border-color: var(--green-med);
+		color: var(--green-dark);
+	}
+
+	.share svg { width: 16px; height: 16px; fill: currentColor; }
+
+	#copy-status {
+		font-family: "Open Sans", sans-serif;
+		font-size: 13px;
+		color: var(--green-dark);
+	}
+
+	footer {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 24px 20px 60px 20px;
+		font-family: "Open Sans", sans-serif;
+		font-size: 13px;
+		line-height: 21px;
+		color: var(--gray70);
+	}
+
+	footer a { color: var(--gray70); }
 
 	/* ---------- hero ---------- */
 
@@ -71,7 +225,6 @@
 		opacity: 0.9;
 	}
 
-	/* darkens the lower half so the title stays legible on any photo */
 	.hero::after {
 		content: "";
 		position: absolute;
@@ -119,97 +272,115 @@
 		text-shadow: 0 0 8px rgba(0,0,0,0.9);
 	}
 
-	.credit a {
-		color: rgba(255,255,255,0.75);
-		text-decoration: underline;
-	}
-
+	.credit a { color: rgba(255,255,255,0.75); text-decoration: underline; }
 	.credit a:hover { color: #fff; }
 
-	/* ---------- body ---------- */
+	/* ---------- key numbers ---------- */
 
-	main {
-		max-width: 720px;
-		margin: 0 auto;
-		padding: 60px 20px 80px 20px;
+	.figures {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+		gap: 1px;
+		background-color: var(--gray);
+		border: 1px solid var(--gray);
+		margin: 40px 0 8px 0;
 	}
 
-	main p {
-		font-family: "Source Serif 4", Georgia, serif;
-		font-size: 19px;
-		line-height: 30px;
-		color: var(--gray80);
+	.figure {
+		background-color: var(--white);
+		padding: 18px 16px;
 	}
 
-	/* ---------- share buttons ---------- */
-
-	.share {
-		display: flex;
-		align-items: center;
-		flex-wrap: wrap;
-		gap: 10px;
-		margin-top: 48px;
-		padding-top: 24px;
-		border-top: 1px solid var(--gray);
+	.figure .n {
+		display: block;
+		font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+		font-weight: 700;
+		font-size: 32px;
+		line-height: 1.1;
+		color: var(--green-dark);
 	}
 
-	.share-label {
+	.figure .l {
+		display: block;
+		margin-top: 4px;
 		font-family: "Open Sans", sans-serif;
 		font-size: 13px;
-		font-weight: 600;
-		letter-spacing: 0.04em;
-		text-transform: uppercase;
+		line-height: 18px;
 		color: var(--gray70);
-		margin-right: 4px;
 	}
 
-	.share a,
-	.share button {
-		display: inline-flex;
-		align-items: center;
-		gap: 8px;
-		padding: 8px 14px;
+	/* ---------- section cards ---------- */
+
+	.cards {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 16px;
+		max-width: 1120px;
+		margin: 24px auto 0 auto;
+		padding: 0 20px;
+	}
+
+	.card {
+		display: block;
+		position: relative;
+		padding: 22px 22px 46px 22px;
 		border: 1px solid var(--gray);
-		border-radius: 2px;
-		background: var(--white);
+		border-top: 4px solid var(--green-med);
+		background-color: var(--white);
+		text-decoration: none;
+		transition: border-color 0.15s ease, transform 0.15s ease;
+	}
+
+	.card:hover { border-top-color: var(--green-dark); transform: translateY(-2px); }
+
+	.card h4 {
+		margin: 0 0 8px 0;
+		font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+		font-weight: 600;
+		font-size: 18px;
+		color: var(--green-dark);
+	}
+
+	.card p {
+		margin: 0;
 		font-family: "Open Sans", sans-serif;
 		font-size: 14px;
-		color: var(--gray80);
-		text-decoration: none;
-		cursor: pointer;
-		transition: border-color 0.15s ease, color 0.15s ease;
+		line-height: 21px;
+		color: var(--gray70);
 	}
 
-	.share a:hover,
-	.share button:hover {
-		border-color: var(--green-med);
-		color: var(--green-dark);
-	}
-
-	.share svg {
-		width: 16px;
-		height: 16px;
-		fill: currentColor;
-	}
-
-	#copy-status {
+	.card .arrow {
+		position: absolute;
+		left: 22px;
+		bottom: 18px;
 		font-family: "Open Sans", sans-serif;
-		font-size: 13px;
-		color: var(--green-dark);
+		font-size: 18px;
+		color: var(--green-med);
+	}
+
+	.section-heading {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 0 20px;
+	}
+
+	.section-heading h2 {
+		font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+		font-weight: 700;
+		font-size: 30px;
+		margin: 70px 0 0 0;
 	}
 
 	@media (max-width: 650px) {
-		.hero-text {
-			left: 20px;
-			right: 20px;
-			bottom: 60px;
-		}
+		.hero-text { left: 20px; right: 20px; bottom: 60px; }
 		.hero-text h1 { font-size: 38px; }
 		.hero-text p { font-size: 20px; }
 		.credit { right: 12px; bottom: 10px; font-size: 11px; }
-		main { padding: 40px 20px 60px 20px; }
-		main p { font-size: 17px; line-height: 27px; }
+		main { padding: 36px 20px 60px 20px; }
+		main p, main li { font-size: 17px; line-height: 27px; }
+		.lede { font-size: 19px; line-height: 30px; }
 	}
+
 </style>
 </head>
 
@@ -220,19 +391,133 @@
 
 	<div class="hero-text">
 		<h1>Canadian Urban Forest Census</h1>
-		<p>A national picture of the trees in our cities</p>
+		<p>A national picture of how Canadian municipalities care for their trees</p>
 	</div>
 
 	<div class="credit">
-		Photo: <a href="https://unsplash.com/@sophinito" target="_blank" rel="noopener noreferrer">Sophie Nitoslawski</a>
+		Photo: <a href="https://unsplash.com/@sophienito" target="_blank" rel="noopener noreferrer">Sophie Nitoslawski</a>
 		on <a href="https://unsplash.com/" target="_blank" rel="noopener noreferrer">Unsplash</a>
 	</div>
 </header>
 
+<nav>
+	<a class="brand" href="/">Canadian Urban Forest Census</a>
+	<ul>
+		<li><a href="/methods.html">Methods</a></li>
+		<li><a href="/tree-inventories.html">Tree inventories</a></li>
+		<li><a href="/volunteers.html">Volunteers</a></li>
+		<li><a href="/staffing.html">Staffing</a></li>
+		<li><a href="/economics.html">Economics</a></li>
+		<li><a href="/management.html">Management</a></li>
+	</ul>
+</nav>
+
 <main>
 
-	<p>Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction. Under construction.</p>
+	<p class="lede">
+		Across Canada, towns and cities plant, prune, inspect and remove the trees that
+		line their streets and fill their parks. How that work is organised &mdash; who does
+		it, what it costs, and what gets recorded &mdash; varies enormously from one
+		municipality to the next, and until recently there was no national picture of it.
+	</p>
 
+	<p>
+		The Canadian Urban Forest Census (in French, <em>Recensement des for&ecirc;ts urbaines
+		canadiennes</em>) is a bilingual survey of municipal urban forestry programs across
+		the country. In 2025 we invited every urban municipality in Canada to describe its
+		tree care program: the staff who run it, the budget behind it, the inventories and
+		assessments that inform it, the contractors and volunteers who support it, and the
+		plans and policies that guide it. One hundred and thirty-seven municipalities
+		responded &mdash; a 40% response rate.
+	</p>
+
+	<div class="figures">
+		<div class="figure"><span class="n">343</span><span class="l">eligible municipalities</span></div>
+		<div class="figure"><span class="n">137</span><span class="l">responses</span></div>
+		<div class="figure"><span class="n">40%</span><span class="l">response rate</span></div>
+		<div class="figure"><span class="n">106</span><span class="l">survey questions</span></div>
+	</div>
+
+	<h2>Why a census</h2>
+
+	<p>
+		National surveys of this kind give municipalities something they rarely have:
+		a way to compare their own program against others of a similar size. They also
+		show researchers and funders where the gaps are. Similar surveys have been run in
+		the United States since the 1970s, and more recently in Ireland, New Zealand,
+		Sweden and the United Kingdom. Canada&rsquo;s previous efforts were more limited in
+		scope, often restricted to larger municipalities or to those already on an
+		existing contact list.
+	</p>
+
+	<p>
+		This census took a different approach to eligibility. Rather than setting a
+		population floor, we began from Statistics Canada&rsquo;s definition of an urban area
+		&mdash; a continuously built-up area of at least 1,000 people with a density of at
+		least 400 people per square kilometre &mdash; and applied it to all 5,161 census
+		subdivisions in the country. That produced 343 eligible municipalities in every
+		province, from four each in Prince Edward Island and Newfoundland and Labrador
+		to 88 in Qu&eacute;bec. Small towns are represented alongside the largest cities.
+	</p>
+
+	<h2>What the survey asked</h2>
+
+	<p>
+		The questionnaire ran to 106 questions across eight sections, covering community
+		and staff, operations, budget, tree management, inventory and assessment,
+		contractors, and volunteers and partnerships. It was reviewed by municipal
+		urban forestry managers in British Columbia, Ontario and Qu&eacute;bec before it went
+		out, and their feedback shaped it &mdash; most notably by adding a set of questions
+		specific to street trees, since responsibility for trees in natural areas often
+		sits with an entirely different department and makes municipality-to-municipality
+		comparison misleading.
+	</p>
+
+	<p>
+		Full detail on the survey instrument, eligibility, and how the survey was
+		distributed is on the <a href="/methods.html">Methods</a> page.
+	</p>
+
+</main>
+
+<div class="section-heading">
+	<h2>Explore the results</h2>
+</div>
+
+<div class="cards">
+		<a class="card" href="/methods.html">
+			<h4>Methods</h4>
+			<p>How the census was designed, who was eligible, how it was distributed, and how response bias was assessed.</p>
+			<span class="arrow">&rarr;</span>
+		</a>
+		<a class="card" href="/tree-inventories.html">
+			<h4>Tree inventories</h4>
+			<p>Which municipalities hold tree inventories, what they record, and how they are kept current.</p>
+			<span class="arrow">&rarr;</span>
+		</a>
+		<a class="card" href="/volunteers.html">
+			<h4>Volunteers</h4>
+			<p>Volunteer programs, partnerships, and community involvement in municipal tree care.</p>
+			<span class="arrow">&rarr;</span>
+		</a>
+		<a class="card" href="/staffing.html">
+			<h4>Staffing</h4>
+			<p>Urban forestry workforces: staff numbers, roles, certifications, and use of contractors.</p>
+			<span class="arrow">&rarr;</span>
+		</a>
+		<a class="card" href="/economics.html">
+			<h4>Economics</h4>
+			<p>Municipal tree care budgets, spending per capita, and how funds are allocated.</p>
+			<span class="arrow">&rarr;</span>
+		</a>
+		<a class="card" href="/management.html">
+			<h4>Management</h4>
+			<p>Management plans, policies, operational cycles, and tree protection practices.</p>
+			<span class="arrow">&rarr;</span>
+		</a>
+</div>
+
+<main>
 	<div class="share">
 		<span class="share-label">Share</span>
 
@@ -255,6 +540,14 @@
 	</div>
 
 </main>
+
+<footer>
+	<p>
+		The Canadian Urban Forest Census was supported through the Jack Kimmel Grant,
+		awarded by the Canadian TREE Fund to Dr. Tenley Conway. Survey methods were
+		approved by the University of Toronto Research Ethics Board (Protocol #48443).
+	</p>
+</footer>
 
 <script>
 	(function () {
