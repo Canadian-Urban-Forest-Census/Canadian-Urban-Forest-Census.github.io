@@ -31,6 +31,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
 
 <link rel="stylesheet" href="/styles.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script src="/canada-map.js" defer></script>
+
 </head>
 
 <body>
@@ -148,6 +152,19 @@
 		of <strong>343 eligible municipalities</strong>, spread across every province.
 		None of the three territories had a municipality that met the urban definition.
 	</p>
+
+	<p>
+		The map below shows all 343. Choose a province to zoom in and hover any point
+		for the municipality name.
+	</p>
+
+</main>
+
+<div class="map-wide">
+	<div id="eligibility-map"></div>
+</div>
+
+<main>
 
 	<h2>Finding contacts</h2>
 
@@ -323,6 +340,12 @@
 		approved by the University of Toronto Research Ethics Board (Protocol #48443).
 	</p>
 </footer>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		CanadaMap.init("#eligibility-map", { lang: "en" });
+	});
+</script>
 
 <script>
 	(function () {
