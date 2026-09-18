@@ -222,7 +222,7 @@ window.CanadaMap = (function () {
 				.attr("r", r)
 				.attr("fill", function (d) {
 					if (mode === "eco") return ZONE_COLOURS[d.zoneEn] || "#1a4a1a";
-					return selected ? "#111" : "#1a4a1a";
+					return "#1a4a1a";
 				})
 				.attr("stroke", "#fff")
 				.attr("stroke-width", selected ? 1.2 : 0.6)
