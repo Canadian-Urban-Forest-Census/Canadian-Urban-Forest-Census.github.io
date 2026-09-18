@@ -9,6 +9,7 @@ window.CanadaMap = (function () {
 
 	var DATA = {
 		provinces: "/data/provinces.topo.json",
+		ecozones: "/data/ecozones.topo.json",
 		cities: "/data/cities.json"
 	};
 
@@ -34,7 +35,7 @@ window.CanadaMap = (function () {
 			clickProvince: "Click a province to zoom in.",
 			clickEcozone: "Choose an ecozone to zoom in.",
 			hoverDot: "Hover a point for the municipality name.",
-			simulated: "Ecozone boundaries are simulated \u2014 points are grouped by ecozone, polygons to follow."
+			simulated: ""
 		},
 		fr: {
 			allCanada: "Tout le Canada",
@@ -45,7 +46,7 @@ window.CanadaMap = (function () {
 			clickProvince: "Cliquez sur une province pour agrandir.",
 			clickEcozone: "Choisissez une \u00e9cozone pour agrandir.",
 			hoverDot: "Survolez un point pour le nom de la municipalit\u00e9.",
-			simulated: "Les limites des \u00e9cozones sont simul\u00e9es \u2014 les points sont regroup\u00e9s par \u00e9cozone."
+			simulated: ""
 		}
 	};
 
@@ -80,6 +81,7 @@ window.CanadaMap = (function () {
 
 		var svg = root.select("svg");
 		var gFill = svg.append("g");
+		var gZone = svg.append("g");
 		var gBord = svg.append("g");
 		var gDots = svg.append("g");
 
@@ -89,21 +91,26 @@ window.CanadaMap = (function () {
 		var projection = d3.geoConicConformal().parallels([49, 77]).rotate([96, 0]);
 		var path = d3.geoPath(projection);
 
-		var provinces = null, cities = null;
+		var provinces = null, ecozones = null, cities = null;
 		var mode = "prov", selected = null;
 
 		Promise.all([
 			d3.json(DATA.provinces),
+			d3.json(DATA.ecozones),
 			d3.json(DATA.cities)
 		]).then(function (res) {
-			var topo = res[0];
-			var key = Object.keys(topo.objects)[0];
-			provinces = topojson.feature(topo, topo.objects[key]);
-			cities = res[1];
+			provinces = firstObject(res[0]);
+			ecozones = firstObject(res[1]);
+			cities = res[2];
 			render();
 		}).catch(function (err) {
 			root.select(".cmap-box").html('<p style="padding:20px;font-family:sans-serif;font-size:14px;color:#a33;">Map data failed to load: ' + err.message + "</p>");
 		});
+
+		function firstObject(topo) {
+			var key = Object.keys(topo.objects)[0];
+			return topojson.feature(topo, topo.objects[key]);
+		}
 
 		function provName(f) { return f.properties["name_" + lang]; }
 		function cityProv(c) { return c["province_" + lang]; }
@@ -112,12 +119,9 @@ window.CanadaMap = (function () {
 		function zoneKeyEn(c) { return c.ecozone_en; }
 
 		function zonesPresent() {
-			var seen = {}, list = [];
-			cities.forEach(function (c) {
-				if (!seen[c.ecozone_en]) { seen[c.ecozone_en] = true; list.push({ en: c.ecozone_en, label: cityZone(c) }); }
-			});
-			list.sort(function (a, b) { return a.label.localeCompare(b.label); });
-			return list;
+			return ecozones.features.map(function (f) {
+				return { en: f.properties.name_en, label: f.properties["name_" + lang] };
+			}).sort(function (a, b) { return a.label.localeCompare(b.label); });
 		}
 
 		function selectedCities() {
@@ -134,14 +138,8 @@ window.CanadaMap = (function () {
 				var f = provinces.features.filter(function (f) { return f.properties.name_en === selected; });
 				return { type: "FeatureCollection", features: f };
 			}
-			// ecozone placeholder: fit to the bounding box of that zone's cities
-			var pts = cities.filter(function (c) { return c.ecozone_en === selected; });
-			return {
-				type: "FeatureCollection",
-				features: pts.map(function (c) {
-					return { type: "Feature", geometry: { type: "Point", coordinates: [c.lng, c.lat] }, properties: {} };
-				})
-			};
+			var z = ecozones.features.filter(function (f) { return f.properties.name_en === selected; });
+			return { type: "FeatureCollection", features: z };
 		}
 
 		function resolve(pts, minDist) {
@@ -174,11 +172,7 @@ window.CanadaMap = (function () {
 			if (!provinces || !cities) return;
 
 			var target = fitTarget();
-			if (mode === "eco" && selected) {
-				projection.fitExtent([[60, 60], [W - 60, H - 60]], target);
-			} else {
-				projection.fitExtent([[PAD, PAD], [W - PAD, H - PAD]], target);
-			}
+			projection.fitExtent([[PAD, PAD], [W - PAD, H - PAD]], target);
 
 			var clickable = (mode === "prov" && !selected && options.interactive !== false);
 
@@ -194,6 +188,24 @@ window.CanadaMap = (function () {
 				.style("cursor", clickable ? "pointer" : "default")
 				.on("click", function (e, f) { if (clickable) { selected = f.properties.name_en; render(); } })
 				.on("mousemove", function (e, f) { if (clickable) showTip(e, provName(f)); })
+				.on("mouseleave", hideTip);
+
+			var zoneClickable = (mode === "eco" && !selected && options.interactive !== false);
+
+			gZone.selectAll("path").data(mode === "eco" ? ecozones.features : []).join("path")
+				.attr("class", "cmap-region")
+				.attr("d", path)
+				.attr("fill", function (f) { return ZONE_COLOURS[f.properties.name_en] || "#ccc"; })
+				.attr("stroke", "#ffffff")
+				.attr("stroke-width", 0.4)
+				.attr("opacity", function (f) {
+					if (!selected) return 0.85;
+					return f.properties.name_en === selected ? 0.9 : 0.15;
+				})
+				.style("pointer-events", zoneClickable ? "auto" : "none")
+				.style("cursor", zoneClickable ? "pointer" : "default")
+				.on("click", function (e, f) { if (zoneClickable) { selected = f.properties.name_en; render(); } })
+				.on("mousemove", function (e, f) { if (zoneClickable) showTip(e, f.properties["name_" + lang]); })
 				.on("mouseleave", hideTip);
 
 			gBord.selectAll("path").data(provinces.features).join("path")
@@ -220,10 +232,7 @@ window.CanadaMap = (function () {
 				.attr("cx", function (d) { return d.x; })
 				.attr("cy", function (d) { return d.y; })
 				.attr("r", r)
-				.attr("fill", function (d) {
-					if (mode === "eco") return ZONE_COLOURS[d.zoneEn] || "#1a4a1a";
-					return "#1a4a1a";
-				})
+				.attr("fill", "#1a4a1a")
 				.attr("stroke", "#fff")
 				.attr("stroke-width", selected ? 1.2 : 0.6)
 				.attr("opacity", 0.92)
@@ -239,7 +248,7 @@ window.CanadaMap = (function () {
 				selected
 					? (mode === "prov"
 						? provName(provinces.features.filter(function (f) { return f.properties.name_en === selected; })[0])
-						: (sets.main[0] ? sets.main[0]["ecozone_" + lang] : selected))
+						: (ecozones.features.filter(function (f) { return f.properties.name_en === selected; })[0].properties["name_" + lang]))
 					: t.allCanada
 			);
 			root.select(".cmap-back").property("disabled", !selected);
@@ -261,9 +270,7 @@ window.CanadaMap = (function () {
 					return '<i style="background:' + (ZONE_COLOURS[d.en] || "#ccc") + '"></i>' + d.label;
 				})
 				.on("click", function (e, d) { selected = (selected === d.en) ? null : d.en; render(); });
-			if (legend.select(".cmap-sim").empty()) {
-				legend.append("p").attr("class", "cmap-sim").text(t.simulated);
-			}
+
 		}
 
 		root.selectAll(".cmap-seg button").on("click", function () {
