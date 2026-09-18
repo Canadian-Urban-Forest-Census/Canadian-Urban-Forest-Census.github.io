@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Volunteers | Canadian Urban Forest Census</title>
+<meta name="description" content="Just over half of Canadian municipalities engage volunteers in urban forestry. An estimated 105,441 volunteers contribute 379,116 hours a year." />
+<link rel="canonical" href="https://canadian-urban-forest-census.github.io/volunteers.html" />
+
+<!-- Open Graph: used by LinkedIn, Facebook, Slack, WhatsApp -->
+<meta property="og:site_name" content="Canadian Urban Forest Census" />
+<meta property="og:title" content="Volunteers | Canadian Urban Forest Census" />
+<meta property="og:description" content="Just over half of Canadian municipalities engage volunteers in urban forestry. An estimated 105,441 volunteers contribute 379,116 hours a year." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://canadian-urban-forest-census.github.io/volunteers.html" />
+<meta property="og:image" content="https://canadian-urban-forest-census.github.io/TitleImage.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Street trees in a Canadian city" />
+<meta property="og:locale" content="en_CA" />
+
+<!-- X / Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Volunteers | Canadian Urban Forest Census" />
+<meta name="twitter:description" content="Just over half of Canadian municipalities engage volunteers in urban forestry. An estimated 105,441 volunteers contribute 379,116 hours a year." />
+<meta name="twitter:image" content="https://canadian-urban-forest-census.github.io/TitleImage.jpg" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+
+<style>
+
+	:root {
+		--green-dark: #0D534D;
+		--green-med: #00A189;
+		--green-light: #8DBF2E;
+		--gray: #D0D1C9;
+		--gray70: #4d4d4d;
+		--gray80: #333333;
+		--gray90: #191919;
+		--white: #ffffff;
+		--sand: #f6f6f2;
+	}
+
+	* { box-sizing: border-box; }
+
+	body {
+		margin: 0;
+		background-color: var(--white);
+		color: var(--gray90);
+		-webkit-font-smoothing: antialiased;
+	}
+
+	/* ---------- nav ---------- */
+
+	nav {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 8px 24px;
+		padding: 14px 24px;
+		background-color: var(--green-dark);
+	}
+
+	nav .brand {
+		margin-right: auto;
+		font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+		font-weight: 700;
+		font-size: 16px;
+		letter-spacing: 0.01em;
+		color: var(--white);
+		text-decoration: none;
+	}
+
+	nav ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 18px;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	nav ul a {
+		font-family: "Open Sans", sans-serif;
+		font-size: 14px;
+		color: var(--white);
+		text-decoration: none;
+		opacity: 0.8;
+		padding-bottom: 2px;
+		border-bottom: 2px solid transparent;
+	}
+
+	nav ul a:hover { opacity: 1; }
+
+	nav ul a.active {
+		opacity: 1;
+		border-bottom-color: var(--green-light);
+	}
+
+	/* ---------- body ---------- */
+
+	main {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 50px 20px 80px 20px;
+	}
+
+	main p, main li {
+		font-family: "Source Serif 4", Georgia, serif;
+		font-size: 19px;
+		line-height: 30px;
+		color: var(--gray80);
+	}
+
+	main h2 {
+		font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+		font-weight: 700;
+		font-size: 30px;
+		line-height: 1.15;
+		margin: 56px 0 12px 0;
+		color: var(--gray90);
+	}
+
+	main h3 {
+		font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+		font-weight: 600;
+		font-size: 21px;
+		margin: 36px 0 8px 0;
+		color: var(--green-dark);
+	}
+
+	main a { color: var(--green-dark); }
+
+	.lede {
+		font-size: 21px;
+		line-height: 33px;
+		color: var(--gray80);
+	}
+
+	/* ---------- share ---------- */
+
+	.share {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 10px;
+		margin-top: 56px;
+		padding-top: 24px;
+		border-top: 1px solid var(--gray);
+	}
+
+	.share-label {
+		font-family: "Open Sans", sans-serif;
+		font-size: 13px;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--gray70);
+		margin-right: 4px;
+	}
+
+	.share a,
+	.share button {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 8px 14px;
+		border: 1px solid var(--gray);
+		border-radius: 2px;
+		background: var(--white);
+		font-family: "Open Sans", sans-serif;
+		font-size: 14px;
+		color: var(--gray80);
+		text-decoration: none;
+		cursor: pointer;
+		transition: border-color 0.15s ease, color 0.15s ease;
+	}
+
+	.share a:hover,
+	.share button:hover {
+		border-color: var(--green-med);
+		color: var(--green-dark);
+	}
+
+	.share svg { width: 16px; height: 16px; fill: currentColor; }
+
+	#copy-status {
+		font-family: "Open Sans", sans-serif;
+		font-size: 13px;
+		color: var(--green-dark);
+	}
+
+	footer {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 24px 20px 60px 20px;
+		font-family: "Open Sans", sans-serif;
+		font-size: 13px;
+		line-height: 21px;
+		color: var(--gray70);
+	}
+
+	footer a { color: var(--gray70); }
+
+	/* ---------- hero banner ---------- */
+
+	.hero {
+		position: relative;
+		height: 52dvh;
+		min-height: 320px;
+		width: 100%;
+		background-color: #000;
+		overflow: hidden;
+	}
+
+	.hero img {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+		opacity: 0.9;
+	}
+
+	.hero::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.65) 100%);
+		z-index: 1;
+	}
+
+	.hero-text {
+		position: absolute;
+		left: 75px;
+		bottom: 60px;
+		z-index: 2;
+		max-width: 820px;
+	}
+
+	.hero-text h1 {
+		margin: 0;
+		font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+		font-weight: 700;
+		font-size: 52px;
+		line-height: 1.05;
+		letter-spacing: -0.01em;
+		color: var(--white);
+		text-shadow: 0 0 25px rgba(0,0,0,0.9);
+	}
+
+	.credit {
+		position: absolute;
+		right: 20px;
+		bottom: 16px;
+		z-index: 2;
+		font-family: "Open Sans", sans-serif;
+		font-size: 12px;
+		color: rgba(255,255,255,0.75);
+		text-shadow: 0 0 8px rgba(0,0,0,0.9);
+	}
+
+	.credit a { color: rgba(255,255,255,0.75); text-decoration: underline; }
+	.credit a:hover { color: #fff; }
+
+	.page-head {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 40px 20px 0 20px;
+	}
+
+	.page-head .standfirst {
+		font-family: "Source Serif 4", Georgia, serif;
+		font-size: 21px;
+		line-height: 32px;
+		color: var(--gray70);
+		margin: 0;
+	}
+
+	/* ---------- paper citation box ---------- */
+
+	.paper {
+		max-width: 720px;
+		margin: 28px auto 0 auto;
+		padding: 18px 20px;
+		background-color: var(--sand);
+		border: 1px solid var(--gray);
+		border-left: 4px solid var(--green-med);
+	}
+
+	.paper .kicker {
+		display: block;
+		font-family: "Open Sans", sans-serif;
+		font-size: 11px;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--green-dark);
+		margin-bottom: 8px;
+	}
+
+	.paper p {
+		font-family: "Open Sans", sans-serif;
+		font-size: 14px;
+		line-height: 22px;
+		color: var(--gray80);
+		margin: 0;
+	}
+
+	.paper .journal { font-style: italic; }
+
+	.paper .links { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 14px; }
+
+	.paper .links a {
+		font-family: "Open Sans", sans-serif;
+		font-size: 14px;
+		color: var(--green-dark);
+		text-decoration: none;
+		border-bottom: 1px solid var(--green-med);
+	}
+
+	.paper .links a:hover { color: var(--gray90); }
+
+	.paper .licence {
+		margin-top: 10px;
+		font-family: "Open Sans", sans-serif;
+		font-size: 12px;
+		line-height: 18px;
+		color: var(--gray70);
+	}
+
+	/* ---------- key numbers ---------- */
+
+	.figures {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+		gap: 1px;
+		background-color: var(--gray);
+		border: 1px solid var(--gray);
+		margin: 36px 0 8px 0;
+	}
+
+	.figure { background-color: var(--white); padding: 18px 16px; }
+
+	.figure .n {
+		display: block;
+		font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+		font-weight: 700;
+		font-size: 30px;
+		line-height: 1.1;
+		color: var(--green-dark);
+	}
+
+	.figure .l {
+		display: block;
+		margin-top: 4px;
+		font-family: "Open Sans", sans-serif;
+		font-size: 13px;
+		line-height: 18px;
+		color: var(--gray70);
+	}
+
+	/* ---------- bar chart ---------- */
+
+	.chart { margin: 24px 0 8px 0; }
+
+	.bar-row {
+		display: grid;
+		grid-template-columns: 210px 1fr 48px;
+		align-items: center;
+		gap: 12px;
+		margin-bottom: 7px;
+	}
+
+	.bar-label {
+		font-family: "Open Sans", sans-serif;
+		font-size: 13px;
+		line-height: 18px;
+		color: var(--gray80);
+		text-align: right;
+	}
+
+	.bar-track { background-color: #eceee8; height: 20px; }
+
+	.bar-fill { background-color: var(--green-med); height: 20px; }
+
+	.bar-value {
+		font-family: "Open Sans", sans-serif;
+		font-size: 13px;
+		color: var(--gray70);
+	}
+
+	.chart-note {
+		font-family: "Open Sans", sans-serif;
+		font-size: 12px;
+		line-height: 18px;
+		color: var(--gray70);
+		margin-top: 12px;
+	}
+
+	.pull {
+		margin: 36px 0;
+		padding: 4px 0 4px 20px;
+		border-left: 4px solid var(--green-light);
+	}
+
+	.pull p {
+		font-family: "Source Serif 4", Georgia, serif;
+		font-size: 21px;
+		line-height: 32px;
+		color: var(--gray90);
+		margin: 0;
+	}
+
+	@media (max-width: 650px) {
+		.hero { height: 40dvh; min-height: 240px; }
+		.hero-text { left: 20px; right: 20px; bottom: 30px; }
+		.hero-text h1 { font-size: 32px; }
+		.credit { right: 12px; bottom: 10px; font-size: 11px; }
+		.page-head { padding-top: 28px; }
+		.page-head .standfirst { font-size: 18px; line-height: 28px; }
+		main { padding: 30px 20px 60px 20px; }
+		main p, main li { font-size: 17px; line-height: 27px; }
+		.bar-row { grid-template-columns: 130px 1fr 42px; gap: 8px; }
+		.bar-label { font-size: 12px; line-height: 16px; }
+		.pull p { font-size: 19px; line-height: 29px; }
+	}
+
+</style>
+</head>
+
+<body>
+
+<header class="hero">
+	<img src="/TitleImage.jpg" alt="Street trees in a Canadian city" />
+
+	<div class="hero-text">
+		<h1>Volunteers</h1>
+	</div>
+
+	<div class="credit">
+		Photo: <a href="https://unsplash.com/@sophienito" target="_blank" rel="noopener noreferrer">Sophie Nitoslawski</a>
+		on <a href="https://unsplash.com/" target="_blank" rel="noopener noreferrer">Unsplash</a>
+	</div>
+</header>
+
+<nav>
+	<a class="brand" href="/">Canadian Urban Forest Census</a>
+	<ul>
+		<li><a href="/methods.html">Methods</a></li>
+		<li><a href="/tree-inventories.html">Tree inventories</a></li>
+		<li><a href="/volunteers.html" class="active">Volunteers</a></li>
+		<li><a href="/staffing.html">Staffing</a></li>
+		<li><a href="/economics.html">Economics</a></li>
+		<li><a href="/management.html">Management</a></li>
+	</ul>
+</nav>
+
+<div class="page-head">
+	<p class="standfirst">
+		Volunteers plant a great many of Canada&rsquo;s urban trees. The question this
+		section answers is whether they are filling a gap left by underfunded municipal
+		programs &mdash; or whether they turn up precisely where those programs are
+		strongest.
+	</p>
+</div>
+
+<div class="paper">
+	<span class="kicker">Published findings</span>
+	<p>
+		Martin, A.J.F., Conway, T.M., &amp; Fleming, A. (2026). Volunteer engagement in
+		Canadian urban forestry &ndash; A neoliberal fix or a complement to urban forestry
+		staff? <span class="journal">Urban Forestry &amp; Urban Greening</span>, 124, 129618.
+	</p>
+	<div class="links">
+		<a href="https://doi.org/10.1016/j.ufug.2026.129618" target="_blank" rel="noopener noreferrer">Read the paper (DOI)</a>
+	</div>
+	<p class="licence">
+		Open access under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.
+		The figures on this page are drawn from that paper.
+	</p>
+</div>
+
+<main>
+
+	<p class="lede">
+		Just over half of the municipalities that answered the census &mdash; 52.6% &mdash;
+		work with volunteers on tree planting, tree care, or other urban forestry
+		activities on public land. Scaled to all 343 urban municipalities in Canada, we
+		estimate that about 165 of them engage volunteers, or roughly 48% nationally.
+		That is somewhat below the 65% reported in the United States.
+	</p>
+
+	<div class="figures">
+		<div class="figure"><span class="n">52.6%</span><span class="l">of responding municipalities engage volunteers</span></div>
+		<div class="figure"><span class="n">105,441</span><span class="l">volunteers nationally (estimated)</span></div>
+		<div class="figure"><span class="n">379,116</span><span class="l">volunteer hours a year (estimated)</span></div>
+		<div class="figure"><span class="n">88.9%</span><span class="l">of those municipalities provide training</span></div>
+	</div>
+
+	<h2>The scale of it</h2>
+
+	<p>
+		Among municipalities that work with volunteers, the median engages 40 volunteers a
+		year contributing about 150 hours &mdash; though the spread is wide, with the middle
+		half of municipalities reporting between 20 and 250 volunteers. Sixty-seven
+		municipalities reported a combined 72,791 volunteers, and sixty-three reported
+		183,320 hours.
+	</p>
+
+	<p>
+		Extending those figures to non-responding municipalities through a two-stage model
+		gives a national picture: roughly 105,000 volunteers contributing about 379,000
+		hours annually. Individual Canadian volunteers give fewer hours than their
+		American counterparts &mdash; a municipality-level average of 6.1 hours per volunteer
+		each year, against 9.8 in the US &mdash; but Canadian municipalities engage volunteers
+		at a comparable or slightly higher rate per head of population.
+	</p>
+
+	<h2>Who volunteers</h2>
+
+	<p>
+		More municipalities work with individual residents than with any single type of
+		organization. Where people volunteer through a group, local environmental
+		organizations and school or youth groups are the most common routes.
+	</p>
+
+	<div class="chart">
+		<div class="bar-row">
+			<span class="bar-label">Individual residents</span>
+			<div class="bar-track"><div class="bar-fill" style="width: 57.1%;"></div></div>
+			<span class="bar-value">57.1%</span>
+		</div>
+		<div class="bar-row">
+			<span class="bar-label">Local environmental groups</span>
+			<div class="bar-track"><div class="bar-fill" style="width: 52.9%;"></div></div>
+			<span class="bar-value">52.9%</span>
+		</div>
+		<div class="bar-row">
+			<span class="bar-label">School and youth groups</span>
+			<div class="bar-track"><div class="bar-fill" style="width: 48.6%;"></div></div>
+			<span class="bar-value">48.6%</span>
+		</div>
+		<div class="bar-row">
+			<span class="bar-label">Non-profit / NGO groups</span>
+			<div class="bar-track"><div class="bar-fill" style="width: 37.1%;"></div></div>
+			<span class="bar-value">37.1%</span>
+		</div>
+		<div class="bar-row">
+			<span class="bar-label">Private corporations</span>
+			<div class="bar-track"><div class="bar-fill" style="width: 34.3%;"></div></div>
+			<span class="bar-value">34.3%</span>
+		</div>
+		<div class="bar-row">
+			<span class="bar-label">Service organizations</span>
+			<div class="bar-track"><div class="bar-fill" style="width: 30.0%;"></div></div>
+			<span class="bar-value">30.0%</span>
+		</div>
+		<div class="bar-row">
+			<span class="bar-label">Council committees</span>
+			<div class="bar-track"><div class="bar-fill" style="width: 30.0%;"></div></div>
+			<span class="bar-value">30.0%</span>
+		</div>
+		<div class="bar-row">
+			<span class="bar-label">Neighbourhood associations</span>
+			<div class="bar-track"><div class="bar-fill" style="width: 22.9%;"></div></div>
+			<span class="bar-value">22.9%</span>
+		</div>
+	</div>
+
+	<p class="chart-note">
+		Percentage of municipalities that engage volunteers and answered this question
+		(n&nbsp;=&nbsp;70). Municipalities typically work with several types at once.
+	</p>
+
+	<h2>What volunteers do</h2>
+
+	<p>
+		Volunteer effort is concentrated in planting, and specifically in the lower-risk
+		settings. Naturalization plantings &mdash; in ravines, riparian corridors and wooded
+		areas &mdash; and park tree planting dominate. Street tree planting, which carries
+		traffic and utility hazards, is far less common, and routine maintenance is rarer
+		still.
+	</p>
+
+	<div class="chart">
+		<div class="bar-row">
+			<span class="bar-label">Naturalization plantings</span>
+			<div class="bar-track"><div class="bar-fill" style="width: 82.9%;"></div></div>
+			<span class="bar-value">82.9%</span>
+		</div>
+		<div class="bar-row">
+			<span class="bar-label">Park tree planting</span>
+			<div class="bar-track"><div class="bar-fill" style="width: 70.0%;"></div></div>
+			<span class="bar-value">70.0%</span>
+		</div>
+		<div class="bar-row">
+			<span class="bar-label">Street tree planting</span>
+			<div class="bar-track"><div class="bar-fill" style="width: 21.4%;"></div></div>
+			<span class="bar-value">21.4%</span>
+		</div>
+		<div class="bar-row">
+			<span class="bar-label">Community education</span>
+			<div class="bar-track"><div class="bar-fill" style="width: 20.0%;"></div></div>
+			<span class="bar-value">20.0%</span>
+		</div>
+	</div>
+
+	<p class="chart-note">
+		Percentage of municipalities that engage volunteers and answered this question
+		(n&nbsp;=&nbsp;70). The median municipality reported two activity types.
+	</p>
+
+	<p>
+		Notably, tree inventory work &mdash; a common volunteer activity in the United States
+		&mdash; is uncommon in Canada, even though most Canadian municipalities maintain or
+		are developing an inventory.
+	</p>
+
+	<h2>Training</h2>
+
+	<p>
+		Nearly nine in ten municipalities that work with volunteers provide training, a
+		higher rate than the 79% reported in the US. Tree planting training is almost
+		universal among them, matching what volunteers are actually asked to do. Safety
+		training is offered at roughly half that rate, which may reflect how carefully
+		volunteer involvement is kept to lower-hazard tasks.
+	</p>
+
+	<div class="chart">
+		<div class="bar-row">
+			<span class="bar-label">Tree planting</span>
+			<div class="bar-track"><div class="bar-fill" style="width: 83.3%;"></div></div>
+			<span class="bar-value">83.3%</span>
+		</div>
+		<div class="bar-row">
+			<span class="bar-label">Safety training</span>
+			<div class="bar-track"><div class="bar-fill" style="width: 47.2%;"></div></div>
+			<span class="bar-value">47.2%</span>
+		</div>
+		<div class="bar-row">
+			<span class="bar-label">Tree identification</span>
+			<div class="bar-track"><div class="bar-fill" style="width: 25.0%;"></div></div>
+			<span class="bar-value">25.0%</span>
+		</div>
+		<div class="bar-row">
+			<span class="bar-label">Community engagement</span>
+			<div class="bar-track"><div class="bar-fill" style="width: 18.1%;"></div></div>
+			<span class="bar-value">18.1%</span>
+		</div>
+		<div class="bar-row">
+			<span class="bar-label">Nesting birds / wildlife</span>
+			<div class="bar-track"><div class="bar-fill" style="width: 11.1%;"></div></div>
+			<span class="bar-value">11.1%</span>
+		</div>
+		<div class="bar-row">
+			<span class="bar-label">No training offered</span>
+			<div class="bar-track"><div class="bar-fill" style="width: 11.1%;"></div></div>
+			<span class="bar-value">11.1%</span>
+		</div>
+	</div>
+
+	<p class="chart-note">
+		Percentage of municipalities that engage volunteers and answered this question
+		(n&nbsp;=&nbsp;72).
+	</p>
+
+	<h2>A complement, not a substitute</h2>
+
+	<p>
+		The central question here is whether volunteers stand in for professional staff and
+		public funding. The census says they do not. Municipalities with larger populations,
+		bigger urban forestry budgets and more staff were <em>more</em> likely to engage
+		volunteers, engaged more of them, offered a wider range of training, and partnered
+		with a broader set of organizations. Municipalities that described their own budget
+		as inadequate were no more likely to lean on volunteers.
+	</p>
+
+	<div class="pull">
+		<p>
+			Volunteer engagement is enabled by strong municipal programs rather than driven
+			by institutional shortfalls.
+		</p>
+	</div>
+
+	<p>
+		Climate and landscape shape the picture too. Municipalities with longer frost-free
+		seasons were considerably more likely to work with volunteers, while wetter places
+		reported fewer partner organizations and fewer activity types &mdash; growing seasons
+		and weather windows constrain when outdoor volunteer events are feasible.
+		Municipalities with more canopy overall supported a wider range of volunteer
+		activities, likely because parks and naturalized areas lend themselves to
+		stewardship work.
+	</p>
+
+	<p>
+		Taken together, this is the first national evidence that volunteering in Canadian
+		urban forestry works as a complement to municipal capacity and a route to community
+		engagement &mdash; not as a cheap replacement for trained staff or adequate funding.
+	</p>
+
+	<div class="share">
+		<span class="share-label">Share</span>
+
+		<a id="share-linkedin" href="#" target="_blank" rel="noopener noreferrer">
+			<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+			LinkedIn
+		</a>
+
+		<a id="share-x" href="#" target="_blank" rel="noopener noreferrer">
+			<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.41l-5.8-7.584-6.64 7.584H.47l8.6-9.83L0 1.15h7.6l5.24 6.93zm-1.29 19.5h2.04L6.49 3.24H4.3z"/></svg>
+			X
+		</a>
+
+		<button id="share-copy" type="button">
+			<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+			Copy link
+		</button>
+
+		<span id="copy-status" role="status"></span>
+	</div>
+
+
+</main>
+
+<footer>
+	<p>
+		The Canadian Urban Forest Census was supported through the Jack Kimmel Grant,
+		awarded by the Canadian TREE Fund to Dr. Tenley Conway. Survey methods were
+		approved by the University of Toronto Research Ethics Board (Protocol #48443).
+	</p>
+</footer>
+
+<script>
+	(function () {
+		var url = window.location.href.split("#")[0];
+		var title = document.title;
+
+		document.getElementById("share-linkedin").href =
+			"https://www.linkedin.com/sharing/share-offsite/?url=" + encodeURIComponent(url);
+
+		document.getElementById("share-x").href =
+			"https://twitter.com/intent/tweet?url=" + encodeURIComponent(url) +
+			"&text=" + encodeURIComponent(title);
+
+		document.getElementById("share-copy").addEventListener("click", function () {
+			var status = document.getElementById("copy-status");
+			navigator.clipboard.writeText(url).then(function () {
+				status.textContent = "Link copied";
+				setTimeout(function () { status.textContent = ""; }, 2000);
+			}).catch(function () {
+				status.textContent = "Press Ctrl+C to copy: " + url;
+			});
+		});
+	})();
+</script>
+
+</body>
+</html>
