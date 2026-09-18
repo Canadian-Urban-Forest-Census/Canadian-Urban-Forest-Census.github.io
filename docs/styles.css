@@ -621,8 +621,8 @@ footer a { color: var(--gray70); }
 }
 
 .cmap-box {
-	border: 1px solid var(--gray);
-	background: #fafafa;
+	border: 0;
+	background: transparent;
 }
 
 .cmap-box svg { width: 100%; height: auto; display: block; }
