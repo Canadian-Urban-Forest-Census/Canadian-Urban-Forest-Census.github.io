@@ -568,3 +568,166 @@ footer a { color: var(--gray70); }
 	.bar-label { font-size: 12px; line-height: 16px; }
 	.chart-legend { margin-left: 0; }
 }
+
+/* ==========================================================================
+   Eligibility map
+   ========================================================================== */
+
+.cmap-controls {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	align-items: center;
+	margin-bottom: 12px;
+}
+
+.cmap-seg {
+	display: inline-flex;
+	border: 1px solid var(--gray);
+	border-radius: 2px;
+	overflow: hidden;
+}
+
+.cmap-seg button {
+	border: 0;
+	background: var(--white);
+	padding: 7px 14px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 13px;
+	color: var(--gray80);
+	cursor: pointer;
+}
+
+.cmap-seg button.on { background: var(--green-dark); color: var(--white); }
+
+.cmap-back {
+	border: 1px solid var(--gray);
+	background: var(--white);
+	border-radius: 2px;
+	padding: 7px 14px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 13px;
+	color: var(--gray80);
+	cursor: pointer;
+}
+
+.cmap-back[disabled] { opacity: 0.4; cursor: default; }
+
+.cmap-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 13px;
+	color: var(--gray70);
+	margin-left: auto;
+}
+
+.cmap-layout {
+	display: grid;
+	grid-template-columns: 1fr 210px;
+	gap: 18px;
+	align-items: start;
+}
+
+.cmap-box {
+	border: 1px solid var(--gray);
+	background: #fafafa;
+}
+
+.cmap-box svg { width: 100%; height: auto; display: block; }
+
+.cmap-region { cursor: pointer; }
+
+.cmap-side h3 {
+	font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+	font-weight: 600;
+	font-size: 15px;
+	margin: 0 0 8px 0;
+	color: var(--gray90);
+}
+
+.cmap-count {
+	display: block;
+	font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+	font-weight: 700;
+	font-size: 30px;
+	line-height: 1;
+	color: var(--green-dark);
+}
+
+.cmap-countlab {
+	display: block;
+	font-family: "Open Sans", sans-serif;
+	font-size: 12px;
+	line-height: 17px;
+	color: var(--gray70);
+	margin-bottom: 14px;
+}
+
+.cmap-legend {
+	font-family: "Open Sans", sans-serif;
+	font-size: 11.5px;
+	line-height: 17px;
+	color: var(--gray70);
+}
+
+.cmap-legend div {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin-bottom: 3px;
+	cursor: pointer;
+}
+
+.cmap-legend div.dim { opacity: 0.35; }
+
+.cmap-legend i {
+	width: 11px;
+	height: 11px;
+	border-radius: 2px;
+	flex: 0 0 auto;
+}
+
+.cmap-legend .cmap-sim {
+	font-size: 11px;
+	line-height: 16px;
+	color: #8a8a80;
+	margin: 10px 0 0 0;
+	cursor: default;
+	font-style: italic;
+}
+
+.cmap-note {
+	font-family: "Open Sans", sans-serif;
+	font-size: 12px;
+	line-height: 18px;
+	color: var(--gray70);
+	margin-top: 16px;
+}
+
+.cmap-tip {
+	position: fixed;
+	pointer-events: none;
+	background: var(--white);
+	border: 1px solid #ccc;
+	color: #444;
+	font-family: "Open Sans", sans-serif;
+	font-size: 12px;
+	padding: 3px 7px;
+	border-radius: 3px;
+	white-space: nowrap;
+	transform: translate(12px, -50%);
+	z-index: 100;
+}
+
+.map-wide {
+	max-width: 1000px;
+	margin: 30px auto 0 auto;
+	padding: 0 20px;
+}
+
+@media (max-width: 720px) {
+	.cmap-layout { grid-template-columns: 1fr; }
+	.cmap-toggle { margin-left: 0; }
+}
