@@ -200,7 +200,7 @@ window.CanadaMap = (function () {
 				.attr("d", path)
 				.attr("fill", "none")
 				.attr("stroke", function (f) {
-					return (mode === "prov" && selected === f.properties.name_en) ? "#0D534D" : "#ffffff";
+					return (mode === "prov" && selected === f.properties.name_en) ? "#111111" : "#ffffff";
 				})
 				.attr("stroke-width", function (f) {
 					return (mode === "prov" && selected === f.properties.name_en) ? 1.6 : 0.9;
