@@ -34,7 +34,22 @@ window.CensusChart = (function () {
 		return (s.indexOf(".0") === v.toFixed(1).length - 2) ? s.replace(".0", "") : s;
 	}
 
+	var tip = null;
+
+	function ensureTip() {
+		if (tip) return tip;
+		tip = document.querySelector(".cc-tip");
+		if (!tip) {
+			tip = document.createElement("div");
+			tip.className = "cc-tip";
+			tip.style.display = "none";
+			document.body.appendChild(tip);
+		}
+		return tip;
+	}
+
 	function build(el) {
+		ensureTip();
 		var cfg;
 		try {
 			cfg = JSON.parse(el.getAttribute("data-chart"));
@@ -51,7 +66,6 @@ window.CensusChart = (function () {
 		});
 
 		var state = {
-			mode: "pct",                 // "pct" | "count"
 			sort: "value",               // "value" | "group"
 			active: groups.slice()       // visible groups
 		};
@@ -69,18 +83,14 @@ window.CensusChart = (function () {
 			html += '</div>';
 		}
 
-		html += '<div class="cc-toggles">';
 		if (groups.length > 1) {
-			html += '<div class="cc-seg cc-sort">' +
+			html += '<div class="cc-toggles">' +
+				'<div class="cc-seg cc-sort">' +
 				'<button data-sort="value" class="on">Rank</button>' +
 				'<button data-sort="group">Group</button>' +
-				'</div>';
+				'</div></div>';
 		}
-		html += '<div class="cc-seg cc-mode">' +
-			'<button data-mode="pct" class="on">%</button>' +
-			'<button data-mode="count">Count</button>' +
-			'</div>';
-		html += '</div></div>';
+		html += '</div>';
 
 		html += '<div class="cc-rows"></div>';
 		if (cfg.note) html += '<p class="chart-note">' + cfg.note + '</p>';
@@ -107,7 +117,7 @@ window.CensusChart = (function () {
 
 			var max = 0;
 			shown.forEach(function (d) { if (d.count > max) max = d.count; });
-			var scaleMax = (state.mode === "pct") ? Math.max(pct(max, n), 1) : Math.max(max, 1);
+			var scaleMax = Math.max(pct(max, n), 1);
 
 			if (!shown.length) {
 				rowsEl.innerHTML = '<p class="chart-note">No categories selected.</p>';
@@ -115,19 +125,34 @@ window.CensusChart = (function () {
 			}
 
 			rowsEl.innerHTML = shown.map(function (d) {
-				var value = (state.mode === "pct") ? pct(d.count, n) : d.count;
+				var value = pct(d.count, n);
 				var width = (value / scaleMax) * 100;
-				var label = (state.mode === "pct")
-					? fmtPct(pct(d.count, n)) + "%"
-					: "n&nbsp;=&nbsp;" + d.count;
 				var colour = GROUP_COLOURS[d.group] || "#00A189";
-				return '<div class="bar-row">' +
+				return '<div class="bar-row cc-hoverable"' +
+						' data-count="' + d.count + '"' +
+						' data-label="' + d.label.replace(/"/g, "&quot;") + '">' +
 					'<span class="bar-label">' + d.label + '</span>' +
 					'<div class="bar-track"><div class="bar-fill" style="width:' + width.toFixed(1) +
 						'%;background:' + colour + ';"></div></div>' +
-					'<span class="bar-value">' + label + '</span>' +
+					'<span class="bar-value">' + fmtPct(value) + '%</span>' +
 					'</div>';
 			}).join("");
+
+			attachHover();
+		}
+
+		// ---------- hover ----------
+		function attachHover() {
+			Array.prototype.forEach.call(rowsEl.querySelectorAll(".cc-hoverable"), function (row) {
+				row.addEventListener("mousemove", function (e) {
+					var count = row.getAttribute("data-count");
+					tip.innerHTML = "<strong>" + count + "</strong> of " + n + " municipalities";
+					tip.style.display = "block";
+					tip.style.left = e.clientX + "px";
+					tip.style.top = e.clientY + "px";
+				});
+				row.addEventListener("mouseleave", function () { tip.style.display = "none"; });
+			});
 		}
 
 		// ---------- events ----------
@@ -137,17 +162,6 @@ window.CensusChart = (function () {
 				var i = state.active.indexOf(g);
 				if (i === -1) { state.active.push(g); btn.classList.add("on"); }
 				else if (state.active.length > 1) { state.active.splice(i, 1); btn.classList.remove("on"); }
-				render();
-			});
-		});
-
-		Array.prototype.forEach.call(el.querySelectorAll(".cc-mode button"), function (btn) {
-			btn.addEventListener("click", function () {
-				state.mode = btn.getAttribute("data-mode");
-				Array.prototype.forEach.call(el.querySelectorAll(".cc-mode button"), function (b) {
-					b.classList.remove("on");
-				});
-				btn.classList.add("on");
 				render();
 			});
 		});
