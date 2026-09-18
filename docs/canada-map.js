@@ -31,11 +31,9 @@ window.CanadaMap = (function () {
 			byEcozone: "By ecozone",
 			back: "\u2190 All of Canada",
 			municipalities: "eligible municipalities",
-			municipalitiesHere: "eligible municipalities here",
 			clickProvince: "Click a province to zoom in.",
 			clickEcozone: "Choose an ecozone to zoom in.",
 			hoverDot: "Hover a point for the municipality name.",
-			context: "Show neighbouring municipalities",
 			simulated: "Ecozone boundaries are simulated \u2014 points are grouped by ecozone, polygons to follow."
 		},
 		fr: {
@@ -44,11 +42,9 @@ window.CanadaMap = (function () {
 			byEcozone: "Par \u00e9cozone",
 			back: "\u2190 Tout le Canada",
 			municipalities: "municipalit\u00e9s admissibles",
-			municipalitiesHere: "municipalit\u00e9s admissibles ici",
 			clickProvince: "Cliquez sur une province pour agrandir.",
 			clickEcozone: "Choisissez une \u00e9cozone pour agrandir.",
 			hoverDot: "Survolez un point pour le nom de la municipalit\u00e9.",
-			context: "Afficher les municipalit\u00e9s voisines",
 			simulated: "Les limites des \u00e9cozones sont simul\u00e9es \u2014 les points sont regroup\u00e9s par \u00e9cozone."
 		}
 	};
@@ -69,7 +65,6 @@ window.CanadaMap = (function () {
 					'<button data-mode="eco">' + t.byEcozone + '</button>' +
 				'</div>' +
 				'<button class="cmap-back" disabled>' + t.back + '</button>' +
-				'<label class="cmap-toggle"><input type="checkbox" class="cmap-context" /> ' + t.context + '</label>' +
 			'</div>' +
 			'<div class="cmap-layout">' +
 				'<div class="cmap-box"><svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid meet"></svg></div>' +
@@ -95,7 +90,7 @@ window.CanadaMap = (function () {
 		var path = d3.geoPath(projection);
 
 		var provinces = null, cities = null;
-		var mode = "prov", selected = null, showContext = false;
+		var mode = "prov", selected = null;
 
 		Promise.all([
 			d3.json(DATA.provinces),
@@ -126,14 +121,11 @@ window.CanadaMap = (function () {
 		}
 
 		function selectedCities() {
-			if (!selected) return { main: cities, other: [] };
+			if (!selected) return { main: cities };
 			var match = mode === "prov"
 				? function (c) { return c.province_en === selected; }
 				: function (c) { return c.ecozone_en === selected; };
-			return {
-				main: cities.filter(match),
-				other: showContext ? cities.filter(function (c) { return !match(c); }) : []
-			};
+			return { main: cities.filter(match) };
 		}
 
 		function fitTarget() {
@@ -188,16 +180,23 @@ window.CanadaMap = (function () {
 				projection.fitExtent([[PAD, PAD], [W - PAD, H - PAD]], target);
 			}
 
+			var clickable = (mode === "prov" && !selected && options.interactive !== false);
+
 			gFill.selectAll("path").data(provinces.features).join("path")
+				.attr("class", "cmap-region")
 				.attr("d", path)
 				.attr("fill", function (f) {
 					if (mode === "prov" && selected) return f.properties.name_en === selected ? "#e0e2dd" : "#eeeeec";
 					return "#e4e4e4";
 				})
-				.attr("stroke", "none");
+				.attr("stroke", "none")
+				.style("pointer-events", clickable ? "auto" : "none")
+				.style("cursor", clickable ? "pointer" : "default")
+				.on("click", function (e, f) { if (clickable) { selected = f.properties.name_en; render(); } })
+				.on("mousemove", function (e, f) { if (clickable) showTip(e, provName(f)); })
+				.on("mouseleave", hideTip);
 
 			gBord.selectAll("path").data(provinces.features).join("path")
-				.attr("class", "cmap-region")
 				.attr("d", path)
 				.attr("fill", "none")
 				.attr("stroke", function (f) {
@@ -206,11 +205,7 @@ window.CanadaMap = (function () {
 				.attr("stroke-width", function (f) {
 					return (mode === "prov" && selected === f.properties.name_en) ? 1.6 : 0.9;
 				})
-				.style("pointer-events", (mode === "prov" && !selected && options.interactive !== false) ? "auto" : "none")
-				.style("cursor", "pointer")
-				.on("click", function (e, f) { selected = f.properties.name_en; render(); })
-				.on("mousemove", function (e, f) { showTip(e, provName(f)); })
-				.on("mouseleave", hideTip);
+				.style("pointer-events", "none");
 
 			var sets = selectedCities();
 			var r = selected ? 4 : 2.3;
@@ -219,18 +214,6 @@ window.CanadaMap = (function () {
 				var xy = projection([c.lng, c.lat]);
 				return { name: c.name, prov: cityProv(c), zone: cityZone(c), zoneEn: c.ecozone_en, x: xy[0], y: xy[1] };
 			}), r * 2);
-
-			var otherPts = sets.other.map(function (c) {
-				var xy = projection([c.lng, c.lat]);
-				return { x: xy[0], y: xy[1] };
-			}).filter(function (p) { return p.x > -40 && p.x < W + 40 && p.y > -40 && p.y < H + 40; });
-
-			gDots.selectAll("circle.other").data(otherPts).join("circle")
-				.attr("class", "other")
-				.attr("cx", function (d) { return d.x; })
-				.attr("cy", function (d) { return d.y; })
-				.attr("r", r * 0.75)
-				.attr("fill", "#9aa39a").attr("stroke", "#fff").attr("stroke-width", 0.8).attr("opacity", 0.5);
 
 			gDots.selectAll("circle.main").data(mainPts).join("circle")
 				.attr("class", "main")
@@ -246,12 +229,12 @@ window.CanadaMap = (function () {
 				.attr("opacity", 0.92)
 				.style("pointer-events", selected ? "auto" : "none")
 				.style("cursor", "pointer")
-				.on("mousemove", function (e, d) { showTip(e, d.name + " \u00b7 " + d.prov); })
+				.on("mousemove", function (e, d) { showTip(e, d.name); })
 				.on("mouseleave", hideTip);
 
 			// side panel
 			root.select(".cmap-count").text(sets.main.length);
-			root.select(".cmap-countlab").text(selected ? t.municipalitiesHere : t.municipalities);
+			root.select(".cmap-countlab").text(t.municipalities);
 			root.select(".cmap-title").text(
 				selected
 					? (mode === "prov"
@@ -291,7 +274,6 @@ window.CanadaMap = (function () {
 			render();
 		});
 		root.select(".cmap-back").on("click", function () { selected = null; render(); });
-		root.select(".cmap-context").on("change", function () { showContext = this.checked; render(); });
 	}
 
 	return { init: init };
