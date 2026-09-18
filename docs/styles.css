@@ -720,3 +720,109 @@ footer a { color: var(--gray70); }
 @media (max-width: 720px) {
 	.cmap-layout { grid-template-columns: 1fr; }
 }
+
+
+/* ==========================================================================
+   Publications
+   ========================================================================== */
+
+.pub {
+	position: relative;
+	padding: 22px 0 24px 0;
+	border-bottom: 1px solid var(--gray);
+}
+
+.pub:first-of-type { border-top: 1px solid var(--gray); }
+
+.pub-year {
+	display: inline-block;
+	font-family: "Open Sans", sans-serif;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--green-med);
+	margin-bottom: 6px;
+}
+
+.pub h3 {
+	font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+	font-weight: 600;
+	font-size: 20px;
+	line-height: 1.25;
+	margin: 0 0 8px 0;
+}
+
+.pub h3 a {
+	color: var(--gray90);
+	text-decoration: none;
+}
+
+.pub h3 a:hover { color: var(--green-dark); }
+
+.pub-authors {
+	font-family: "Open Sans", sans-serif !important;
+	font-size: 14px !important;
+	line-height: 21px !important;
+	color: var(--gray80) !important;
+	margin: 0 0 2px 0;
+}
+
+.pub-source {
+	font-family: "Open Sans", sans-serif !important;
+	font-size: 14px !important;
+	line-height: 21px !important;
+	color: var(--gray70) !important;
+	margin: 0 0 10px 0;
+}
+
+.pub-source .journal { font-style: italic; }
+
+.pub-summary {
+	font-size: 17px !important;
+	line-height: 27px !important;
+	color: var(--gray80) !important;
+	margin: 0 0 12px 0;
+}
+
+.pub-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.pub-links a {
+	display: inline-block;
+	padding: 6px 12px;
+	border: 1px solid var(--gray);
+	border-radius: 2px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 13px;
+	color: var(--gray80);
+	text-decoration: none;
+	transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.pub-links a:hover {
+	border-color: var(--green-med);
+	color: var(--green-dark);
+}
+
+.cite-box {
+	background-color: var(--sand);
+	border: 1px solid var(--gray);
+	border-left: 4px solid var(--green-med);
+	padding: 16px 18px;
+	margin: 18px 0 0 0;
+}
+
+.cite-box p {
+	font-family: "Open Sans", sans-serif !important;
+	font-size: 13px !important;
+	line-height: 21px !important;
+	color: var(--gray80) !important;
+	margin: 0;
+	word-break: break-word;
+}
+
+.cite-box .journal { font-style: italic; }
