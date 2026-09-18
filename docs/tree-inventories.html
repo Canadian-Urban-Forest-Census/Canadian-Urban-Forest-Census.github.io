@@ -31,6 +31,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
 
 <link rel="stylesheet" href="/styles.css" />
+<script src="/charts.js" defer></script>
 </head>
 
 <body>
@@ -115,12 +116,7 @@
 		the middle of building or rebuilding one.
 	</p>
 
-	<div class="chart">
-		<div class="bar-row">
-			<span class="bar-label">Up to date</span>
-			<div class="bar-track"><div class="bar-fill " style="width: 26.7%;"></div></div>
-			<span class="bar-value">26.7%</span>
-		</div>
+	<div class="census-chart" data-chart='{"n": 135, "note": "Percentage of municipalities that answered this question (n&nbsp;=&nbsp;135), ordered from least to most informative.", "series": [{"label": "No inventory", "count": 31}, {"label": "Incomplete, no plans to continue", "count": 3}, {"label": "Outdated", "count": 20}, {"label": "In development", "count": 45}, {"label": "Up to date", "count": 36}]}'></div>
 		<div class="bar-row">
 			<span class="bar-label">In development</span>
 			<div class="bar-track"><div class="bar-fill " style="width: 33.3%;"></div></div>
@@ -142,10 +138,6 @@
 			<span class="bar-value">23%</span>
 		</div>
 	</div>
-
-	<p class="chart-note">
-		Percentage of municipalities that answered this question (n&nbsp;=&nbsp;135).
-	</p>
 
 	<p>
 		Municipalities with larger land areas were substantially more likely to hold an
@@ -173,12 +165,7 @@
 		of municipalities, almost always alongside field data rather than instead of it.
 	</p>
 
-	<div class="chart">
-		<div class="bar-row">
-			<span class="bar-label">Field-based partial survey</span>
-			<div class="bar-track"><div class="bar-fill " style="width: 65.0%;"></div></div>
-			<span class="bar-value">65%</span>
-		</div>
+	<div class="census-chart" data-chart='{"n": 103, "note": "Percentage of municipalities with an inventory that answered this question (n&nbsp;=&nbsp;103). Most use more than one method, averaging 1.9.", "series": [{"label": "Field-based partial survey", "count": 67, "group": "Field-based"}, {"label": "Remote sensing (lidar, satellite)", "count": 49, "group": "Remote"}, {"label": "Sample survey", "count": 26, "group": "Field-based"}, {"label": "One side of tree (driveby)", "count": 23, "group": "Field-based"}, {"label": "Elm or ash inventory", "count": 23, "group": "Field-based"}, {"label": "Virtual survey (Street View)", "count": 8, "group": "Remote"}]}'></div>
 		<div class="bar-row">
 			<span class="bar-label">Remote sensing (lidar, satellite)</span>
 			<div class="bar-track"><div class="bar-fill " style="width: 47.6%;"></div></div>
@@ -206,11 +193,6 @@
 		</div>
 	</div>
 
-	<p class="chart-note">
-		Percentage of municipalities with an inventory that answered this question
-		(n&nbsp;=&nbsp;103). Most use more than one method, averaging 1.9.
-	</p>
-
 	<p>
 		Collection has gone digital. Handheld devices &mdash; phones and tablets &mdash; are the
 		most common tool at 76%, followed by GPS and GIS receivers at 51%. Pen and paper
@@ -226,12 +208,7 @@
 		volunteer findings show about where volunteer effort actually goes.
 	</p>
 
-	<div class="chart">
-		<div class="bar-row">
-			<span class="bar-label">Municipal staff</span>
-			<div class="bar-track"><div class="bar-fill " style="width: 91.3%;"></div></div>
-			<span class="bar-value">91.3%</span>
-		</div>
+	<div class="census-chart" data-chart='{"n": 104, "note": "Percentage of municipalities with an inventory that answered this question (n&nbsp;=&nbsp;104).", "series": [{"label": "Municipal staff", "count": 95}, {"label": "Consultants", "count": 48}, {"label": "Interns", "count": 14}, {"label": "University or college", "count": 5}, {"label": "Volunteers", "count": 3}, {"label": "Non-profit or NGO", "count": 3}, {"label": "Local government", "count": 3}, {"label": "Province or territory staff", "count": 2}, {"label": "Regional government staff", "count": 1}, {"label": "Indigenous communities", "count": 1}]}'></div>
 		<div class="bar-row">
 			<span class="bar-label">Consultants</span>
 			<div class="bar-track"><div class="bar-fill " style="width: 46.2%;"></div></div>
@@ -259,11 +236,6 @@
 		</div>
 	</div>
 
-	<p class="chart-note">
-		Percentage of municipalities with an inventory that answered this question
-		(n&nbsp;=&nbsp;104).
-	</p>
-
 	<h2>Which trees get counted</h2>
 
 	<p>
@@ -273,12 +245,7 @@
 		broaden that coverage.
 	</p>
 
-	<div class="chart">
-		<div class="bar-row">
-			<span class="bar-label">Street trees</span>
-			<div class="bar-track"><div class="bar-fill " style="width: 99.0%;"></div></div>
-			<span class="bar-value">99%</span>
-		</div>
+	<div class="census-chart" data-chart='{"n": 104, "note": "Percentage of municipalities with an inventory that answered this question (n&nbsp;=&nbsp;104).", "series": [{"label": "Street trees", "count": 103, "group": "Municipal Trees"}, {"label": "Park trees", "count": 99, "group": "Municipal Trees"}, {"label": "Municipal greenbelts", "count": 31, "group": "Natural Areas"}, {"label": "Woodlots, unmaintained forests", "count": 31, "group": "Natural Areas"}, {"label": "Riparian areas", "count": 24, "group": "Natural Areas"}, {"label": "Sample of private trees", "count": 13, "group": "Private"}, {"label": "Privately owned ash or elm", "count": 12, "group": "Private"}, {"label": "All privately owned trees", "count": 11, "group": "Private"}, {"label": "K-12 schools", "count": 10, "group": "Other Governmental"}, {"label": "Provincial and federal properties", "count": 8, "group": "Other Governmental"}]}'></div>
 		<div class="bar-row">
 			<span class="bar-label">Park trees</span>
 			<div class="bar-track"><div class="bar-fill " style="width: 95.2%;"></div></div>
@@ -316,11 +283,6 @@
 		</div>
 	</div>
 
-	<p class="chart-note">
-		Percentage of municipalities with an inventory that answered this question
-		(n&nbsp;=&nbsp;104).
-	</p>
-
 	<h2>What gets recorded</h2>
 
 	<p>
@@ -328,12 +290,7 @@
 		it is, how big it is, and what condition it is in.
 	</p>
 
-	<div class="chart">
-		<div class="bar-row">
-			<span class="bar-label">Tree location</span>
-			<div class="bar-track"><div class="bar-fill " style="width: 96.1%;"></div></div>
-			<span class="bar-value">96.1%</span>
-		</div>
+	<div class="census-chart" data-chart='{"n": 103, "note": "Percentage of municipalities with an inventory that answered this question (n&nbsp;=&nbsp;103).", "series": [{"label": "Tree location", "count": 99, "group": "Site Information"}, {"label": "Species common name", "count": 93, "group": "Species Identification"}, {"label": "Diameter at breast height", "count": 82, "group": "Tree Metric"}, {"label": "Tree condition", "count": 79, "group": "Tree Metric"}, {"label": "Species scientific name", "count": 73, "group": "Species Identification"}, {"label": "Tree planting locations", "count": 54, "group": "Site Information"}, {"label": "Tree maintenance needs", "count": 54, "group": "Maintenance Needs"}, {"label": "Insect / disease problems", "count": 49, "group": "Tree Metric"}, {"label": "Work orders", "count": 46, "group": "Maintenance Needs"}, {"label": "Stumps", "count": 44, "group": "Maintenance Needs"}, {"label": "Tree risk assessment", "count": 42, "group": "Tree Metric"}, {"label": "Site conditions", "count": 32, "group": "Site Information"}, {"label": "Height of DBH measurement", "count": 28, "group": "Tree Metric"}, {"label": "Species code", "count": 24, "group": "Species Identification"}, {"label": "Potential debris volume", "count": 3, "group": "Maintenance Needs"}]}'></div>
 		<div class="bar-row">
 			<span class="bar-label">Species common name</span>
 			<div class="bar-track"><div class="bar-fill " style="width: 90.3%;"></div></div>
@@ -396,11 +353,6 @@
 		</div>
 	</div>
 
-	<p class="chart-note">
-		Percentage of municipalities with an inventory that answered this question
-		(n&nbsp;=&nbsp;103).
-	</p>
-
 	<p>
 		Two details matter for anyone hoping to combine these datasets. Common names are
 		recorded far more often than scientific names, and species codes appear in under a
@@ -417,12 +369,7 @@
 		policy applications trail well behind.
 	</p>
 
-	<div class="chart">
-		<div class="bar-row">
-			<span class="bar-label">Identifying planting locations</span>
-			<div class="bar-track"><div class="bar-fill " style="width: 83.7%;"></div></div>
-			<span class="bar-value">83.7%</span>
-		</div>
+	<div class="census-chart" data-chart='{"n": 92, "note": "Percentage of municipalities with an inventory that answered this question (n&nbsp;=&nbsp;92). Municipalities average 4.7 uses.", "series": [{"label": "Identifying planting locations", "count": 77, "group": "Planning"}, {"label": "Scheduling tree pruning", "count": 57, "group": "Operational"}, {"label": "Selecting species for planting", "count": 57, "group": "Planning"}, {"label": "Removing trees exceeding risk", "count": 47, "group": "Operational"}, {"label": "Create / update management plan", "count": 39, "group": "Planning"}, {"label": "Pruning for height clearance", "count": 38, "group": "Operational"}, {"label": "Calculating tree benefits", "count": 30, "group": "Assessment"}, {"label": "Policy and ordinance development", "count": 28, "group": "Policy"}, {"label": "Tree equity assessment", "count": 26, "group": "Assessment"}, {"label": "Assessing canopy cover change", "count": 26, "group": "Assessment"}, {"label": "Developing soil recommendations", "count": 7, "group": "Policy"}]}'></div>
 		<div class="bar-row">
 			<span class="bar-label">Scheduling tree pruning</span>
 			<div class="bar-track"><div class="bar-fill " style="width: 62.0%;"></div></div>
@@ -474,11 +421,6 @@
 			<span class="bar-value">7.6%</span>
 		</div>
 	</div>
-
-	<p class="chart-note">
-		Percentage of municipalities with an inventory that answered this question
-		(n&nbsp;=&nbsp;92).
-	</p>
 
 	<p>
 		Most municipalities put their inventory to several uses, averaging 4.7, but more
@@ -543,6 +485,12 @@
 		approved by the University of Toronto Research Ethics Board (Protocol #48443).
 	</p>
 </footer>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		CensusChart.initAll(".census-chart");
+	});
+</script>
 
 <script>
 	(function () {
