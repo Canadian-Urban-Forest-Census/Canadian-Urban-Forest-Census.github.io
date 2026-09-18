@@ -870,3 +870,69 @@ footer a { color: var(--gray70); }
 	.definition { padding: 16px 18px; }
 	.definition blockquote p { font-size: 17px !important; line-height: 27px !important; }
 }
+
+/* ==========================================================================
+   Interactive charts
+   ========================================================================== */
+
+.census-chart { margin: 26px 0 8px 0; }
+
+.cc-controls {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 14px;
+}
+
+.cc-filters { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.cc-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 5px 10px;
+	border: 1px solid var(--gray);
+	border-radius: 2px;
+	background: var(--white);
+	font-family: "Open Sans", sans-serif;
+	font-size: 12px;
+	color: var(--gray70);
+	cursor: pointer;
+	opacity: 0.45;
+	transition: opacity 0.15s ease, border-color 0.15s ease;
+}
+
+.cc-chip.on { opacity: 1; color: var(--gray80); border-color: #b5b8b0; }
+.cc-chip:hover { opacity: 1; }
+.cc-chip i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+.cc-toggles { display: flex; gap: 8px; margin-left: auto; }
+
+.cc-seg {
+	display: inline-flex;
+	border: 1px solid var(--gray);
+	border-radius: 2px;
+	overflow: hidden;
+}
+
+.cc-seg button {
+	border: 0;
+	background: var(--white);
+	padding: 5px 11px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 12px;
+	color: var(--gray70);
+	cursor: pointer;
+}
+
+.cc-seg button.on { background: var(--green-dark); color: var(--white); }
+
+.cc-rows .bar-row { margin-bottom: 7px; }
+
+.cc-rows .bar-fill { transition: width 0.25s ease, background 0.25s ease; }
+
+@media (max-width: 650px) {
+	.cc-toggles { margin-left: 0; }
+	.cc-chip { font-size: 11px; padding: 4px 8px; }
+}
