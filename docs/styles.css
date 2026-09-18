@@ -613,16 +613,6 @@ footer a { color: var(--gray70); }
 
 .cmap-back[disabled] { opacity: 0.4; cursor: default; }
 
-.cmap-toggle {
-	display: inline-flex;
-	align-items: center;
-	gap: 7px;
-	font-family: "Open Sans", sans-serif;
-	font-size: 13px;
-	color: var(--gray70);
-	margin-left: auto;
-}
-
 .cmap-layout {
 	display: grid;
 	grid-template-columns: 1fr 210px;
@@ -729,5 +719,4 @@ footer a { color: var(--gray70); }
 
 @media (max-width: 720px) {
 	.cmap-layout { grid-template-columns: 1fr; }
-	.cmap-toggle { margin-left: 0; }
 }
