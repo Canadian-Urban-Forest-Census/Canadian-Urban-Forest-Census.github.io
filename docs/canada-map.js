@@ -192,15 +192,19 @@ window.CanadaMap = (function () {
 
 			var zoneClickable = (mode === "eco" && !selected && options.interactive !== false);
 
-			gZone.selectAll("path").data(mode === "eco" ? ecozones.features : []).join("path")
+			gZone.selectAll("path").data(ecozones.features).join("path")
 				.attr("class", "cmap-region")
 				.attr("d", path)
 				.attr("fill", function (f) { return ZONE_COLOURS[f.properties.name_en] || "#ccc"; })
 				.attr("stroke", "#ffffff")
 				.attr("stroke-width", 0.4)
 				.attr("opacity", function (f) {
-					if (!selected) return 0.85;
-					return f.properties.name_en === selected ? 0.9 : 0.15;
+					if (mode === "eco") {
+						if (!selected) return 0.85;
+						return f.properties.name_en === selected ? 0.9 : 0.15;
+					}
+					// province mode: zones are context only
+					return selected ? 0.3 : 0.55;
 				})
 				.style("pointer-events", zoneClickable ? "auto" : "none")
 				.style("cursor", zoneClickable ? "pointer" : "default")
