@@ -7,6 +7,19 @@
 
 window.CanadaMap = (function () {
 
+	// Lakes drawn at national scale. Everything else appears once a province or
+	// ecozone is selected. Matched on name_en; duplicates of the same lake are
+	// included automatically.
+	var NATIONAL_LAKES = [
+		"Great Slave Lake",
+		"Great Bear Lake",
+		"Lake Winnipeg",
+		"Lake Manitoba",
+		"Lake Winnipegosis",
+		"Reindeer Lake",
+		"Lake Athabasca"
+	];
+
 	var DATA = {
 		provinces: "/data/provinces.topo.json",
 		ecozones: "/data/ecozones.topo.json",
@@ -203,7 +216,17 @@ window.CanadaMap = (function () {
 				.on("mousemove", function (e, f) { if (clickable) showTip(e, provName(f)); })
 				.on("mouseleave", hideTip);
 
-			gWater.selectAll("path").data(water.features).join("path")
+			var nationalLakes = options.nationalLakes || NATIONAL_LAKES;
+
+			var visibleWater = selected
+				? water.features
+				: water.features.filter(function (f) {
+					return nationalLakes.indexOf(f.properties.name_en) !== -1;
+				});
+
+			gWater.selectAll("path")
+				.data(visibleWater, function (f) { return f.properties.name_en + f.properties.area_km2; })
+				.join("path")
 				.attr("d", path)
 				.attr("fill", "#c5dae6")
 				.attr("stroke", "#ffffff")
