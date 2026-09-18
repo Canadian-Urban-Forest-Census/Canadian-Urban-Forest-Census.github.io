@@ -347,6 +347,101 @@
 		color: var(--gray70);
 	}
 
+	/* ---------- respondent chart ---------- */
+
+	.chart { margin: 26px 0 8px 0; }
+
+	.bar-row {
+		display: grid;
+		grid-template-columns: 200px 1fr 64px;
+		align-items: center;
+		gap: 12px;
+		margin-bottom: 7px;
+	}
+
+	.bar-label {
+		font-family: "Open Sans", sans-serif;
+		font-size: 13px;
+		line-height: 18px;
+		color: var(--gray80);
+		text-align: right;
+	}
+
+	.bar-track { background-color: #eceee8; height: 20px; }
+
+	.bar-fill { height: 20px; }
+
+	.bar-fill.mgmt { background-color: var(--green-dark); }
+	.bar-fill.nonmgmt { background-color: var(--green-med); }
+
+	.bar-value {
+		font-family: "Open Sans", sans-serif;
+		font-size: 13px;
+		color: var(--gray70);
+	}
+
+	.chart-legend {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 18px;
+		margin: 4px 0 0 212px;
+	}
+
+	.chart-legend span {
+		display: inline-flex;
+		align-items: center;
+		gap: 7px;
+		font-family: "Open Sans", sans-serif;
+		font-size: 13px;
+		color: var(--gray70);
+	}
+
+	.chart-legend i {
+		width: 12px;
+		height: 12px;
+		border-radius: 2px;
+		display: inline-block;
+	}
+
+	.chart-note {
+		font-family: "Open Sans", sans-serif;
+		font-size: 12px;
+		line-height: 18px;
+		color: var(--gray70);
+		margin-top: 14px;
+	}
+
+	.split {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1px;
+		background-color: var(--gray);
+		border: 1px solid var(--gray);
+		margin: 30px 0 4px 0;
+	}
+
+	.split div { background-color: var(--white); padding: 18px 16px; }
+
+	.split .n {
+		display: block;
+		font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+		font-weight: 700;
+		font-size: 30px;
+		line-height: 1.1;
+		color: var(--green-dark);
+	}
+
+	.split div.alt .n { color: var(--green-med); }
+
+	.split .l {
+		display: block;
+		margin-top: 4px;
+		font-family: "Open Sans", sans-serif;
+		font-size: 13px;
+		line-height: 18px;
+		color: var(--gray70);
+	}
+
 	.steps {
 		counter-reset: step;
 		list-style: none;
@@ -384,6 +479,9 @@
 		.hero-text { left: 20px; right: 20px; bottom: 30px; }
 		.hero-text h1 { font-size: 32px; }
 		.credit { right: 12px; bottom: 10px; font-size: 11px; }
+		.bar-row { grid-template-columns: 124px 1fr 58px; gap: 8px; }
+		.bar-label { font-size: 12px; line-height: 16px; }
+		.chart-legend { margin-left: 0; }
 		.page-head { padding-top: 32px; }
 		.page-head .standfirst { font-size: 18px; line-height: 28px; }
 		main { padding: 30px 20px 60px 20px; }
@@ -568,10 +666,70 @@
 	<h2>Who answered</h2>
 
 	<p>
-		Just under 60% of responses came from people in management roles &mdash; most often
-		managers, then directors and supervisors &mdash; and the remaining 40% from
-		non-management staff, most commonly arborists and technicians, coordinators and
-		forepersons.
+		We asked each respondent for their job title. Just under 60% of the 137 responses
+		came from people in management roles, and 40% from staff in non-management
+		positions &mdash; the people who do the tree work rather than budget for it.
+	</p>
+
+	<div class="split">
+		<div><span class="n">59%</span><span class="l">management roles (n&nbsp;=&nbsp;81)</span></div>
+		<div class="alt"><span class="n">40%</span><span class="l">non-management roles (n&nbsp;=&nbsp;55)</span></div>
+	</div>
+
+	<p>
+		Manager was the single most common title, followed by director and supervisor. On
+		the non-management side, arborists and urban forestry technicians answered as often
+		as supervisors did.
+	</p>
+
+	<div class="chart">
+		<div class="bar-row">
+			<span class="bar-label">Manager</span>
+			<div class="bar-track"><div class="bar-fill mgmt" style="width: 92.3%;"></div></div>
+			<span class="bar-value">n&nbsp;=&nbsp;38</span>
+		</div>
+		<div class="bar-row">
+			<span class="bar-label">Director</span>
+			<div class="bar-track"><div class="bar-fill mgmt" style="width: 43.7%;"></div></div>
+			<span class="bar-value">n&nbsp;=&nbsp;18</span>
+		</div>
+		<div class="bar-row">
+			<span class="bar-label">Supervisor</span>
+			<div class="bar-track"><div class="bar-fill mgmt" style="width: 39.0%;"></div></div>
+			<span class="bar-value">n&nbsp;=&nbsp;16</span>
+		</div>
+		<div class="bar-row">
+			<span class="bar-label">Arborist / technician</span>
+			<div class="bar-track"><div class="bar-fill nonmgmt" style="width: 39.0%;"></div></div>
+			<span class="bar-value">n&nbsp;=&nbsp;16</span>
+		</div>
+		<div class="bar-row">
+			<span class="bar-label">Coordinator</span>
+			<div class="bar-track"><div class="bar-fill nonmgmt" style="width: 31.7%;"></div></div>
+			<span class="bar-value">n&nbsp;=&nbsp;13</span>
+		</div>
+		<div class="bar-row">
+			<span class="bar-label">Foreperson</span>
+			<div class="bar-track"><div class="bar-fill nonmgmt" style="width: 26.7%;"></div></div>
+			<span class="bar-value">n&nbsp;=&nbsp;11</span>
+		</div>
+		<div class="bar-row">
+			<span class="bar-label">Chief administrative officer</span>
+			<div class="bar-track"><div class="bar-fill mgmt" style="width: 12.0%;"></div></div>
+			<span class="bar-value">n&nbsp;=&nbsp;5</span>
+		</div>
+	</div>
+	<div class="chart-legend">
+		<span><i style="background: var(--green-dark);"></i> Management role</span>
+		<span><i style="background: var(--green-med);"></i> Non-management role</span>
+	</div>
+
+	<p class="chart-note">
+		The seven most frequently reported job titles, as a count of the 137 eligible
+		responses. Five responses came from a municipality&rsquo;s chief administrative
+		officer, and one from the chair of a municipal urban forestry committee &mdash; the
+		only respondent who was not a municipal employee. Remaining responses fall into
+		less common titles within each group.
 	</p>
 
 	<h2>Checking for bias</h2>
