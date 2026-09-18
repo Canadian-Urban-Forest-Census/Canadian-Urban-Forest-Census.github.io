@@ -932,6 +932,31 @@ footer a { color: var(--gray70); }
 
 .cc-rows .bar-fill { transition: width 0.25s ease, background 0.25s ease; }
 
+.cc-hoverable { cursor: default; }
+
+.cc-hoverable .bar-track { transition: background 0.15s ease; }
+
+.cc-hoverable:hover .bar-track { background: #e2e5dd; }
+
+.cc-hoverable:hover .bar-label { color: var(--gray90); }
+
+.cc-tip {
+	position: fixed;
+	pointer-events: none;
+	background: var(--white);
+	border: 1px solid #ccc;
+	color: var(--gray80);
+	font-family: "Open Sans", sans-serif;
+	font-size: 12px;
+	padding: 4px 8px;
+	border-radius: 3px;
+	white-space: nowrap;
+	transform: translate(14px, -50%);
+	z-index: 100;
+}
+
+.cc-tip strong { color: var(--green-dark); }
+
 @media (max-width: 650px) {
 	.cc-toggles { margin-left: 0; }
 	.cc-chip { font-size: 11px; padding: 4px 8px; }
