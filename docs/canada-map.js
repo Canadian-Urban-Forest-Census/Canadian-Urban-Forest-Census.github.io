@@ -10,6 +10,7 @@ window.CanadaMap = (function () {
 	var DATA = {
 		provinces: "/data/provinces.topo.json",
 		ecozones: "/data/ecozones.topo.json",
+		water: "/data/waterbodies.topo.json",
 		cities: "/data/cities.json"
 	};
 
@@ -82,7 +83,9 @@ window.CanadaMap = (function () {
 		var svg = root.select("svg");
 		var gFill = svg.append("g");
 		var gZone = svg.append("g");
+		var gWater = svg.append("g");
 		var gBord = svg.append("g");
+		var gSel = svg.append("g");
 		var gDots = svg.append("g");
 
 		var tip = d3.select("body").select(".cmap-tip");
@@ -91,17 +94,27 @@ window.CanadaMap = (function () {
 		var projection = d3.geoConicConformal().parallels([49, 77]).rotate([96, 0]);
 		var path = d3.geoPath(projection);
 
-		var provinces = null, ecozones = null, cities = null;
+		var provinces = null, ecozones = null, water = null, cities = null;
+		var provTopo = null, interiorBorders = null, outerBoundary = null;
 		var mode = "prov", selected = null;
 
 		Promise.all([
 			d3.json(DATA.provinces),
 			d3.json(DATA.ecozones),
+			d3.json(DATA.water),
 			d3.json(DATA.cities)
 		]).then(function (res) {
-			provinces = firstObject(res[0]);
+			provTopo = res[0];
+			provinces = firstObject(provTopo);
 			ecozones = firstObject(res[1]);
-			cities = res[2];
+			water = firstObject(res[2]);
+
+			// interior borders (shared by two provinces) vs the coastline / US border
+			var provObj = provTopo.objects[Object.keys(provTopo.objects)[0]];
+			interiorBorders = topojson.mesh(provTopo, provObj, function (a, b) { return a !== b; });
+			outerBoundary = topojson.mesh(provTopo, provObj, function (a, b) { return a === b; });
+
+			cities = res[3];
 			render();
 		}).catch(function (err) {
 			root.select(".cmap-box").html('<p style="padding:20px;font-family:sans-serif;font-size:14px;color:#a33;">Map data failed to load: ' + err.message + "</p>");
@@ -190,6 +203,13 @@ window.CanadaMap = (function () {
 				.on("mousemove", function (e, f) { if (clickable) showTip(e, provName(f)); })
 				.on("mouseleave", hideTip);
 
+			gWater.selectAll("path").data(water.features).join("path")
+				.attr("d", path)
+				.attr("fill", "#c5dae6")
+				.attr("stroke", "#ffffff")
+				.attr("stroke-width", 0.3)
+				.style("pointer-events", "none");
+
 			var zoneClickable = (mode === "eco" && !selected && options.interactive !== false);
 
 			gZone.selectAll("path").data(ecozones.features).join("path")
@@ -212,15 +232,34 @@ window.CanadaMap = (function () {
 				.on("mousemove", function (e, f) { if (zoneClickable) showTip(e, f.properties["name_" + lang]); })
 				.on("mouseleave", hideTip);
 
-			gBord.selectAll("path").data(provinces.features).join("path")
+			gBord.selectAll("path.interior").data([interiorBorders]).join("path")
+				.attr("class", "interior")
 				.attr("d", path)
 				.attr("fill", "none")
-				.attr("stroke", function (f) {
-					return (mode === "prov" && selected === f.properties.name_en) ? "#111111" : "#ffffff";
-				})
-				.attr("stroke-width", function (f) {
-					return (mode === "prov" && selected === f.properties.name_en) ? 1.6 : 0.9;
-				})
+				.attr("stroke", "#ffffff")
+				.attr("stroke-width", 0.9)
+				.attr("stroke-linejoin", "round")
+				.style("pointer-events", "none");
+
+			gBord.selectAll("path.outer").data([outerBoundary]).join("path")
+				.attr("class", "outer")
+				.attr("d", path)
+				.attr("fill", "none")
+				.attr("stroke", "#b4b7ae")
+				.attr("stroke-width", 0.7)
+				.attr("stroke-linejoin", "round")
+				.style("pointer-events", "none");
+
+			gSel.selectAll("path").data(
+					(mode === "prov" && selected)
+						? provinces.features.filter(function (f) { return f.properties.name_en === selected; })
+						: []
+				).join("path")
+				.attr("d", path)
+				.attr("fill", "none")
+				.attr("stroke", "#111111")
+				.attr("stroke-width", 1.6)
+				.attr("stroke-linejoin", "round")
 				.style("pointer-events", "none");
 
 			var sets = selectedCities();
