@@ -1309,7 +1309,7 @@ footer a { color: var(--gray70); }
 	margin-bottom: 36px;
 }
 
-.cp-photo {
+.cp-shape {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -1318,7 +1318,9 @@ footer a { color: var(--gray70); }
 	border: 1px dashed var(--gray);
 }
 
-.cp-photo span {
+.cp-shape.is-drawn { border-style: solid; border-color: var(--gray); }
+
+.cp-shape span {
 	font-family: "Open Sans", sans-serif;
 	font-size: 12px;
 	letter-spacing: 0.04em;
@@ -1326,69 +1328,77 @@ footer a { color: var(--gray70); }
 	color: #8b8f88;
 }
 
+.cp-shape svg { width: 100%; height: auto; display: block; }
+.cp-shape path { fill: var(--green-dark); }
+
 .cp-keys {
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
+	justify-content: space-between;
+	gap: 14px;
 }
 
-.cp-key {
-	background: var(--sand);
-	padding: 12px 16px;
+/* label above, grey body, source beneath */
+
+.cp-metric { display: block; }
+
+.cp-metric-label {
+	display: block;
+	margin-bottom: 4px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--gray80);
 }
 
-.cp-key-head {
+.cp-metric-body {
 	display: flex;
-	align-items: baseline;
-	gap: 10px;
+	align-items: center;
+	gap: 12px;
+	min-height: 40px;
+	background: var(--sand);
+	padding: 8px 14px;
 }
 
-/* 0-100% scale under the canopy figure */
+.cp-metric-value {
+	font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+	font-weight: 700;
+	font-size: 22px;
+	color: var(--green-dark);
+	white-space: nowrap;
+}
 
-.cp-scale { margin-top: 8px; }
+.cp-metric-unit {
+	margin-left: 8px;
+	font-family: "Open Sans", sans-serif;
+	font-weight: 400;
+	font-size: 13px;
+	color: var(--gray70);
+}
 
-.cp-scale-track {
-	position: relative;
-	height: 8px;
+/* the 0-100% canopy scale fills the grey area */
+
+.cp-scale {
+	flex: 1;
+	height: 14px;
 	background: #e2e5dd;
-	border-radius: 4px;
+	border-radius: 2px;
 	overflow: hidden;
 }
 
 .cp-scale-fill {
 	height: 100%;
 	background: var(--green-med);
-	border-radius: 4px;
+	border-radius: 2px;
 }
 
-.cp-scale-ends {
-	display: flex;
-	justify-content: space-between;
-	margin-top: 3px;
+.cp-metric-source {
+	display: block;
+	margin-top: 4px;
 	font-family: "Open Sans", sans-serif;
 	font-size: 11px;
+	line-height: 16px;
 	color: #8b8f88;
-}
-
-.cp-sources {
-	margin: 6px 0 0 0;
-	font-family: "Open Sans", sans-serif;
-	font-size: 12px;
-	line-height: 18px;
-	color: #8b8f88;
-}
-
-.cp-key .n {
-	font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
-	font-weight: 700;
-	font-size: 24px;
-	color: var(--green-dark);
-}
-
-.cp-key .l {
-	font-family: "Open Sans", sans-serif;
-	font-size: 13px;
-	color: var(--gray70);
 }
 
 .cp-section { margin-bottom: 30px; }
@@ -1442,5 +1452,5 @@ footer a { color: var(--gray70); }
 
 @media (max-width: 650px) {
 	.cp-top { grid-template-columns: 1fr; }
-	.cp-photo { min-height: 140px; }
+	.cp-shape { min-height: 150px; }
 }
