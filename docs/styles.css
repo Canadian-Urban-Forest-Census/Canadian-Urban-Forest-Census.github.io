@@ -1310,32 +1310,37 @@ footer a { color: var(--gray70); }
 }
 
 .cp-shape {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	min-height: 168px;
-	background: #f1f3ee;
-	border: 1px dashed var(--gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 168px;
+    background: transparent;
+    border: 0;
 }
 
-.cp-shape.is-drawn { border-style: solid; border-color: var(--gray); }
+.cp-shape.is-drawn {
+    border: 0;
+}
 
 .cp-shape span {
-	font-family: "Open Sans", sans-serif;
-	font-size: 12px;
-	letter-spacing: 0.04em;
-	text-transform: uppercase;
-	color: #8b8f88;
+    font-family: "Open Sans", sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #8b8f88;
 }
 
-.cp-shape svg { width: 100%; height: auto; display: block; }
-.cp-shape path { fill: var(--green-dark); }
+.cp-shape svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
 
-.cp-keys {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	gap: 14px;
+.cp-shape path {
+    fill: none;
+    stroke: #000;
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
 }
 
 /* label above, grey body, source beneath */
