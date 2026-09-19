@@ -1384,17 +1384,27 @@ footer a { color: var(--gray70); }
 /* the 0-100% canopy scale fills the grey area */
 
 .cp-scale {
-	flex: 1;
-	height: 14px;
-	background: #e2e5dd;
-	border-radius: 2px;
-	overflow: hidden;
+    position: relative;
+    flex: 1;
+    height: 40px;
+    background: var(--sand);
+    overflow: hidden;
 }
 
 .cp-scale-fill {
-	height: 100%;
-	background: var(--green-med);
-	border-radius: 2px;
+    height: 100%;
+    background: var(--green-med);
+}
+
+.cp-scale-value {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--green-dark);
+    white-space: nowrap;
 }
 
 .cp-metric-source {
