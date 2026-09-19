@@ -144,6 +144,91 @@ nav ul a.active {
 	border-bottom-color: var(--green-light);
 }
 
+/* ---------- nav dropdown ---------- */
+
+.has-menu { position: relative; }
+
+.menu-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	border: 0;
+	padding: 0 0 2px 0;
+	background: none;
+	font-family: "Open Sans", sans-serif;
+	font-size: 14px;
+	line-height: inherit;
+	color: var(--white);
+	opacity: 0.8;
+	cursor: pointer;
+	border-bottom: 2px solid transparent;
+}
+
+.menu-toggle:hover { opacity: 1; }
+
+.menu-toggle.active {
+	opacity: 1;
+	border-bottom-color: var(--green-light);
+}
+
+.menu-toggle .caret {
+	font-size: 10px;
+	transition: transform 0.15s ease;
+}
+
+.menu-toggle[aria-expanded="true"] .caret { transform: rotate(180deg); }
+
+.menu {
+	display: none;
+	position: absolute;
+	z-index: 60;
+	top: calc(100% + 10px);
+	left: 0;
+	min-width: 208px;
+	flex-direction: column;
+	gap: 0;
+	padding: 6px 0;
+	background: var(--white);
+	border: 1px solid var(--gray);
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.menu-toggle[aria-expanded="true"] + .menu { display: flex; }
+
+@media (hover: hover) {
+	.has-menu:hover .menu { display: flex; }
+}
+
+.menu li { display: block; }
+
+.menu a,
+.menu .soon {
+	display: block;
+	padding: 8px 14px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 14px;
+	color: var(--gray80);
+	text-decoration: none;
+	opacity: 1;
+	border-bottom: 0;
+}
+
+.menu a:hover,
+.menu a:focus { background: #f1f3ee; color: var(--green-dark); }
+
+.menu a.active { color: var(--green-dark); font-weight: 600; border-bottom: 0; }
+
+.menu .soon { color: #8b8f88; cursor: default; }
+
+.menu .soon .tag {
+	display: block;
+	margin-top: 2px;
+	font-size: 11px;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+	color: #9aa39a;
+}
+
 /* ---------- page head ---------- */
 
 .page-head {
@@ -265,6 +350,30 @@ main a { color: var(--green-dark); }
 	line-height: 18px;
 	color: var(--gray70);
 }
+
+/* ---------- under construction notice ---------- */
+
+.construction {
+	margin: 8px 0 24px 0;
+	padding: 24px 24px 20px 24px;
+	background-color: var(--white);
+	border: 1px solid var(--gray);
+	border-left: 4px solid var(--green-light);
+}
+
+.construction .kicker {
+	display: inline-block;
+	margin-bottom: 10px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--green-dark);
+}
+
+.construction p { margin: 0 0 14px 0; }
+.construction p:last-child { margin-bottom: 0; }
 
 /* ---------- key figures ---------- */
 
@@ -440,7 +549,7 @@ main a { color: var(--green-dark); }
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 	gap: 16px;
-	max-width: 1120px;
+	max-width: 880px; /* holds the grid to 3 columns at most */
 	margin: 24px auto 0 auto;
 	padding: 0 20px;
 }
@@ -472,6 +581,27 @@ main a { color: var(--green-dark); }
 	font-size: 14px;
 	line-height: 21px;
 	color: var(--gray70);
+}
+
+.card-soon {
+	border-top-color: var(--gray);
+	background-color: #f7f8f5;
+	cursor: default;
+}
+
+.card-soon:hover { border-top-color: var(--gray); transform: none; }
+.card-soon h4 { color: var(--gray70); }
+
+.card-tag {
+	position: absolute;
+	left: 22px;
+	bottom: 18px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: #9aa39a;
 }
 
 .card .arrow {
@@ -928,7 +1058,16 @@ footer a { color: var(--gray70); }
 
 .cc-seg button.on { background: var(--green-dark); color: var(--white); }
 
-.cc-rows .bar-row { margin-bottom: 7px; }
+/* wider label column so every label sits on a single line */
+.cc-rows .bar-row {
+	grid-template-columns: 268px 1fr 44px;
+	margin-bottom: 7px;
+}
+
+.cc-rows .bar-label {
+	white-space: nowrap;
+	font-size: 12px;
+}
 
 .cc-rows .bar-fill { transition: width 0.25s ease, background 0.25s ease; }
 
@@ -960,4 +1099,23 @@ footer a { color: var(--gray70); }
 @media (max-width: 650px) {
 	.cc-toggles { margin-left: 0; }
 	.cc-chip { font-size: 11px; padding: 4px 8px; }
+
+	/* label gets its own full-width line so it still reads as one line */
+	.cc-rows .bar-row {
+		grid-template-columns: 1fr 44px;
+		grid-template-areas:
+			"label label"
+			"track value";
+		gap: 2px 8px;
+		margin-bottom: 12px;
+	}
+
+	.cc-rows .bar-label {
+		grid-area: label;
+		text-align: left;
+		font-size: 11px;
+	}
+
+	.cc-rows .bar-track { grid-area: track; }
+	.cc-rows .bar-value { grid-area: value; }
 }
