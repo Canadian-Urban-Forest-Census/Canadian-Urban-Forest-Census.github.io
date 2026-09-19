@@ -189,7 +189,7 @@ window.CitySearch = (function () {
 				box.innerHTML =
 					'<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Outline of ' +
 						escapeHtml(c.name) + '">' +
-						'<path d="' + boundarySvg(rings, W, H, 10) + '" />' +
+						'<path d="' + boundarySvg(rings, W, H, 7) + '" />' +
 					'</svg>';
 				box.classList.add("is-drawn");
 			}).catch(function () { /* leave the placeholder as it is */ });
