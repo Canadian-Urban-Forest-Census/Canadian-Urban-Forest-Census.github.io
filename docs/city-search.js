@@ -87,7 +87,7 @@ window.CitySearch = (function () {
 				});
 
 				input.disabled = false;
-				input.placeholder = "Start typing a city name \u2014 Win, Tor, Vic\u2026";
+				input.placeholder = "Start typing a city name";
 			})
 			.catch(function () {
 				input.placeholder = "City list could not be loaded";
