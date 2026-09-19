@@ -383,11 +383,16 @@ window.CitySearch = (function () {
 							'<div class="cp-metric-body cp-scale" role="img" aria-label="' +
 							    one(d.canopy) + ' percent, on a scale of 0 to 100 percent">' +
 							    '<div class="cp-scale-fill" style="width:' + d.canopy + '%;"></div>' +
-							    '<span class="cp-scale-value" style="left:calc(' + d.canopy + '% + 10px);">' +
+							    /* past ~72% there is no room to the right, so sit inside the green,
+							       anchored to the fill's own right edge */
+							    '<span class="cp-scale-value' + (d.canopy > 72 ? ' on-fill' : '') + '" style="' +
+							        (d.canopy > 72
+							            ? 'right:calc(' + (100 - d.canopy) + '% + 10px);'
+							            : 'left:calc(' + d.canopy + '% + 10px);') + '">' +
 							        one(d.canopy) + '%</span>' +
 							'</div>' +
 							'<span class="cp-metric-source">Global Canopy Height Map ' +
-								'(1&nbsp;m), Meta and World Resources Institute</span>' +
+								'(1&nbsp;m resolution), Meta and World Resources Institute</span>' +
 						'</div>' +
 
 						'<div class="cp-metric">' +
