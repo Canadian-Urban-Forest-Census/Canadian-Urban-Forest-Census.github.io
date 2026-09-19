@@ -31,6 +31,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
 
 <link rel="stylesheet" href="/styles.css" />
+<script src="/nav.js" defer></script>
 <script src="/charts.js" defer></script>
 </head>
 
@@ -53,11 +54,17 @@
 	<a class="brand" href="/">Canadian Urban Forest Census</a>
 	<ul>
 		<li><a href="/methods.html">Methods</a></li>
-		<li><a href="/tree-inventories.html">Tree Inventories</a></li>
-		<li><a href="/volunteers.html" class="active">Volunteers</a></li>
-		<li><a href="/staffing.html">Staffing</a></li>
-		<li><a href="/economics.html">Economics</a></li>
-		<li><a href="/management.html">Management</a></li>
+		<li class="has-menu">
+			<button type="button" class="menu-toggle active" aria-expanded="false" aria-haspopup="true">Results <span class="caret" aria-hidden="true">&#9662;</span></button>
+			<ul class="menu">
+				<li><a href="/tree-inventories.html">Tree Inventories</a></li>
+				<li><a href="/volunteers.html" class="active">Volunteers</a></li>
+				<li><span class="soon">Staffing <span class="tag">Under construction</span></span></li>
+				<li><span class="soon">Economics <span class="tag">Under construction</span></span></li>
+				<li><span class="soon">Management <span class="tag">Under construction</span></span></li>
+			</ul>
+		</li>
+		<li><a href="/compare-your-city.html">Compare Your City</a></li>
 		<li><a href="/publications.html">Publications</a></li>
 	</ul>
 </nav>
@@ -132,7 +139,7 @@
 		typically work with several types at once.
 	</p>
 
-	<div class="census-chart" data-chart='{"n": 70, "series": [{"label": "Individual residents", "count": 40, "group": "Individuals"}, {"label": "Local environmental groups", "count": 37, "group": "Community organizations"}, {"label": "School and youth groups", "count": 34, "group": "Community organizations"}, {"label": "Non-profit / NGO groups", "count": 26, "group": "Community organizations"}, {"label": "Private corporations", "count": 24, "group": "Business"}, {"label": "Service organizations", "count": 21, "group": "Community organizations"}, {"label": "City council / village board committees", "count": 21, "group": "Government"}, {"label": "Neighbourhood associations", "count": 16, "group": "Community organizations"}, {"label": "Beautification committees", "count": 13, "group": "Government"}, {"label": "Crown corporations", "count": 12, "group": "Business"}, {"label": "Faith- or spiritual-based organizations", "count": 10, "group": "Community organizations"}, {"label": "Park / tree boards", "count": 10, "group": "Government"}, {"label": "Business associations", "count": 8, "group": "Business"}, {"label": "Equity advocates", "count": 3, "group": "Community organizations"}]}'></div>
+	<div class="census-chart" data-chart='{"n": 70, "decimals": 0, "series": [{"label": "Individual residents", "count": 40}, {"label": "Local environmental groups", "count": 37}, {"label": "School and youth groups", "count": 34}, {"label": "Non-profit / NGO groups", "count": 26}, {"label": "Private corporations", "count": 24}, {"label": "Service organizations", "count": 21}, {"label": "City council / village board committees", "count": 21}, {"label": "Neighbourhood associations", "count": 16}, {"label": "Beautification committees", "count": 13}, {"label": "Crown corporations", "count": 12}, {"label": "Faith- or spiritual-based organizations", "count": 10}, {"label": "Park / tree boards", "count": 10}, {"label": "Business associations", "count": 8}, {"label": "Equity advocates", "count": 3}]}'></div>
 
 	<h2>What volunteers do</h2>
 
@@ -144,7 +151,7 @@
 		still. The median municipality reported two activity types.
 	</p>
 
-	<div class="census-chart" data-chart='{"n": 70, "series": [{"label": "Naturalization plantings", "count": 58, "group": "Planting"}, {"label": "Park tree planting", "count": 49, "group": "Planting"}, {"label": "Street tree planting", "count": 15, "group": "Planting"}, {"label": "Community education and engagement", "count": 14, "group": "Outreach"}]}'></div>
+	<div class="census-chart" data-chart='{"n": 70, "decimals": 0, "series": [{"label": "Naturalization plantings", "count": 58}, {"label": "Park tree planting", "count": 49}, {"label": "Street tree planting", "count": 15}, {"label": "Community education and engagement", "count": 14}]}'></div>
 
 	<p>
 		Notably, tree inventory work &mdash; a common volunteer activity in the United States
@@ -162,7 +169,7 @@
 		volunteer involvement is kept to lower-hazard tasks.
 	</p>
 
-	<div class="census-chart" data-chart='{"n": 72, "series": [{"label": "Tree planting training", "count": 60}, {"label": "Safety training", "count": 34}, {"label": "Tree identification", "count": 18}, {"label": "Community engagement (PR) training", "count": 13}, {"label": "Identifying nesting birds and wildlife", "count": 8}, {"label": "No training offered", "count": 8}, {"label": "Identifying species at risk", "count": 5}]}'></div>
+	<div class="census-chart" data-chart='{"n": 72, "decimals": 0, "series": [{"label": "Tree planting training", "count": 60}, {"label": "Safety training", "count": 34}, {"label": "Tree identification", "count": 18}, {"label": "Community engagement (PR) training", "count": 13}, {"label": "Identifying nesting birds and wildlife", "count": 8}, {"label": "No training offered", "count": 8}, {"label": "Identifying species at risk", "count": 5}]}'></div>
 
 	<h2>A complement, not a substitute</h2>
 
