@@ -221,6 +221,10 @@ window.CitySearch = (function () {
 				: v.toLocaleString("en-CA", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 		}
 
+		function yesno(v) {
+			return v ? "Yes" : "No";
+		}
+
 		/* a labelled figure row; note is optional small print under the label */
 		function row(label, value, note) {
 			return '<div class="cp-row">' +
@@ -231,9 +235,10 @@ window.CitySearch = (function () {
 				'</div>';
 		}
 
-		function section(title, rows) {
+		function section(title, rows, note) {
 			return '<section class="cp-section">' +
 				'<h3>' + title + '</h3>' +
+				(note ? '<p class="cp-section-note">' + note + '</p>' : '') +
 				'<div class="cp-rows">' + rows + '</div>' +
 				'</section>';
 		}
@@ -254,6 +259,7 @@ window.CitySearch = (function () {
 			}
 
 			var b = d.budget, s = d.staff, v = d.volunteers, t = d.street_trees;
+			var k = d.contractors || {};
 
 			panelEl.innerHTML =
 				'<div class="cp-head">' +
@@ -274,20 +280,49 @@ window.CitySearch = (function () {
 						'<span>Photo to come</span>' +
 					'</div>' +
 					'<div class="cp-keys">' +
-						'<div class="cp-key"><span class="n">' + one(d.canopy) + '%</span>' +
-							'<span class="l">Canopy cover</span></div>' +
-						'<div class="cp-key"><span class="n">' + num(d.population) + '</span>' +
-							'<span class="l">Population</span></div>' +
-						'<div class="cp-key"><span class="n">' + num(d.density) + '</span>' +
-							'<span class="l">People per km&sup2;</span></div>' +
+						'<div class="cp-key cp-key-canopy">' +
+							'<div class="cp-key-head">' +
+								'<span class="n">' + one(d.canopy) + '%</span>' +
+								'<span class="l">Canopy cover</span>' +
+							'</div>' +
+							'<div class="cp-scale" role="img" aria-label="' + one(d.canopy) +
+								' percent canopy cover on a scale of 0 to 100 percent">' +
+								'<div class="cp-scale-track">' +
+									'<div class="cp-scale-fill" style="width:' + d.canopy + '%;"></div>' +
+								'</div>' +
+								'<div class="cp-scale-ends"><span>0%</span><span>100%</span></div>' +
+							'</div>' +
+						'</div>' +
+						'<div class="cp-key"><div class="cp-key-head">' +
+							'<span class="n">' + num(d.population) + '</span>' +
+							'<span class="l">Population</span></div></div>' +
+						'<div class="cp-key"><div class="cp-key-head">' +
+							'<span class="n">' + num(d.density) + '</span>' +
+							'<span class="l">People per km&sup2;</span></div></div>' +
+						'<p class="cp-sources">' +
+							'Population and population density: Statistics Canada. ' +
+							'Canopy cover: Meta and WRI (1&nbsp;m spatial resolution).' +
+						'</p>' +
 					'</div>' +
 				'</div>' +
 
 				/* ---- budget ---- */
 				section("Predicted budget",
-					row("Urban forestry", money(b.urban_forestry), "annual") +
-					row("Street tree program", money(b.street_tree_program), "annual") +
-					row("Street tree planting", money(b.street_tree_planting), "annual")) +
+					row("Urban forestry", money(b.urban_forestry), "annual, adequacy-adjusted") +
+					row("Street tree program", money(b.street_tree_program), "annual, adequacy-adjusted") +
+					row("Street tree planting", money(b.street_tree_planting), "annual"),
+					"Urban forestry and street tree program budgets are based on " +
+					"adequacy-adjusted amounts. Street tree planting is not adjusted.") +
+
+				/* ---- contractors ---- */
+				section("Predicted contractor use",
+					row("Uses contractors", yesno(k.uses_contractor)) +
+					row("Contractor expense",
+						k.uses_contractor ? money(k.contractor_expense) : "\u2014", "annual") +
+					row("Uses contractors for street trees", yesno(k.uses_street_tree_contractor)) +
+					row("Street tree contractor expense",
+						k.uses_street_tree_contractor ? money(k.street_tree_contractor_expense) : "\u2014",
+						"annual")) +
 
 				/* ---- staff ---- */
 				section("Predicted staff",
@@ -299,7 +334,8 @@ window.CitySearch = (function () {
 				/* ---- volunteers ---- */
 				section("Predicted volunteer engagement",
 					row("Volunteers", num(v.people), "per year") +
-					row("Volunteer hours", num(v.hours), "per year")) +
+					row("Volunteer hours", num(v.hours),
+						"per year, cumulative across all volunteers")) +
 
 				/* ---- street trees ---- */
 				section("Predicted street tree work",
@@ -384,4 +420,4 @@ window.CitySearch = (function () {
 	}
 
 	return { init: init };
-})()
+})();
