@@ -1347,7 +1347,7 @@ footer a { color: var(--gray70); }
 
 .cp-metric {
     display: block;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
 }
 
 .cp-metric:last-child {
@@ -1416,7 +1416,7 @@ footer a { color: var(--gray70); }
     transform: translateY(-50%);
     font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
     font-weight: 700;
-    font-size: 22px;
+    font-size: 18px;
     color: var(--green-dark);
     white-space: nowrap;
 }
