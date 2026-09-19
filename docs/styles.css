@@ -1347,7 +1347,7 @@ footer a { color: var(--gray70); }
 
 .cp-metric {
     display: block;
-    margin-bottom: 24px;
+    margin-bottom: 14px;
 }
 
 .cp-metric:last-child {
