@@ -1313,7 +1313,7 @@ footer a { color: var(--gray70); }
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 168px;
+    min-height: 220px;
     background: transparent;
     border: 0;
 }
