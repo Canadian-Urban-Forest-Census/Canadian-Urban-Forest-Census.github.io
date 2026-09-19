@@ -63,26 +63,21 @@ window.CitySearch = (function () {
 				var mock = {};
 				both[1].cities.forEach(function (m) { mock[m.key] = m; });
 
-				var seen = {};
-
 				cities = rows.map(function (c, i) {
-					var label = c.name + ", " + c.province;
-					seen[label] = (seen[label] || 0) + 1;
-					var key = seen[label] === 1 ? label : label + " #" + seen[label];
-
 					return {
 						i: i,
+						csduid: c.csduid,
 						name: c.name,
 						province: c.province,
 						province_en: c.province_en,
 						ecozone: c.ecozone_en,
 						lat: c.lat,
 						lng: c.lng,
-						label: label,
+						label: c.name + ", " + c.province,
 						key: norm(c.name),
-						keyFull: norm(label),
-						data: mock[key] || null,
-						pop: mock[key] ? mock[key].population : 0
+						keyFull: norm(c.name + ", " + c.province),
+						data: mock[c.csduid] || null,
+						pop: mock[c.csduid] ? mock[c.csduid].population : 0
 					};
 				});
 
@@ -94,6 +89,111 @@ window.CitySearch = (function () {
 				statusEl.textContent = "The city list could not be loaded. Please refresh the page.";
 				statusEl.classList.add("cs-error");
 			});
+
+		/* ---------- boundaries ----------
+		   /data/city_boundaries.topo.json, fetched lazily the first time a city
+		   is selected, then cached. Decoded here rather than with topojson.js so
+		   the page carries no external script dependency. */
+
+		var boundaries = null;      // csduid -> array of rings, each [[lng, lat], ...]
+		var boundaryLoad = null;
+
+		function decodeTopology(topo) {
+			var sc = topo.transform.scale, tr = topo.transform.translate;
+
+			var arcs = topo.arcs.map(function (a) {
+				var x = 0, y = 0;
+				return a.map(function (d) {
+					x += d[0]; y += d[1];
+					return [x * sc[0] + tr[0], y * sc[1] + tr[1]];
+				});
+			});
+
+			function ring(indexes) {
+				var pts = [];
+				indexes.forEach(function (i) {
+					var a = arcs[i < 0 ? ~i : i];
+					var seg = i < 0 ? a.slice().reverse() : a;
+					pts = pts.concat(pts.length ? seg.slice(1) : seg);
+				});
+				return pts;
+			}
+
+			var out = {};
+			topo.objects.csds.geometries.forEach(function (gm) {
+				var polys = gm.type === "Polygon" ? [gm.arcs] : gm.arcs;
+				out[gm.properties.csduid] = polys.map(function (poly) {
+					return ring(poly[0]);            // outer ring only; holes are invisible at this size
+				});
+			});
+			return out;
+		}
+
+		function loadBoundaries() {
+			if (boundaryLoad) return boundaryLoad;
+			boundaryLoad = fetch("/data/city_boundaries.topo.json")
+				.then(function (r) {
+					if (!r.ok) throw new Error("HTTP " + r.status);
+					return r.json();
+				})
+				.then(function (topo) { boundaries = decodeTopology(topo); return boundaries; });
+			return boundaryLoad;
+		}
+
+		/* Fit the rings into the box and return an SVG path. Longitude is scaled
+		   by cos(latitude) so shapes aren't stretched sideways. */
+		function boundarySvg(rings, w, h, pad) {
+			var lat0 = 0, n = 0;
+			rings.forEach(function (r) {
+				r.forEach(function (p) { lat0 += p[1]; n++; });
+			});
+			lat0 = lat0 / n * Math.PI / 180;
+			var kx = Math.cos(lat0);
+
+			var minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+			rings.forEach(function (r) {
+				r.forEach(function (p) {
+					var x = p[0] * kx, y = -p[1];
+					if (x < minX) minX = x;
+					if (x > maxX) maxX = x;
+					if (y < minY) minY = y;
+					if (y > maxY) maxY = y;
+				});
+			});
+
+			var sx = (w - pad * 2) / (maxX - minX || 1);
+			var sy = (h - pad * 2) / (maxY - minY || 1);
+			var s = Math.min(sx, sy);
+			var ox = pad + ((w - pad * 2) - (maxX - minX) * s) / 2;
+			var oy = pad + ((h - pad * 2) - (maxY - minY) * s) / 2;
+
+			return rings.map(function (r) {
+				return "M" + r.map(function (p) {
+					return ((p[0] * kx - minX) * s + ox).toFixed(1) + " " +
+						((-p[1] - minY) * s + oy).toFixed(1);
+				}).join("L") + "Z";
+			}).join(" ");
+		}
+
+		function drawBoundary(c) {
+			var box = panelEl && panelEl.querySelector(".cp-shape");
+			if (!box) return;
+
+			loadBoundaries().then(function (map) {
+				if (!panelEl || panelEl.hidden) return;
+				if (!selected || selected.csduid !== c.csduid) return;   // a newer city was picked
+				var rings = map[c.csduid];
+				if (!rings) return;
+
+				var W = 200, H = 168;
+				box.innerHTML =
+					'<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Outline of ' +
+						escapeHtml(c.name) + '">' +
+						'<path d="' + boundarySvg(rings, W, H, 10) + '" />' +
+					'</svg>';
+				box.classList.add("is-drawn");
+			}).catch(function () { /* leave the placeholder as it is */ });
+		}
 
 		/* ---------- matching ----------
 		   Two tiers: the name starts with the query, then a word inside the
@@ -273,36 +373,41 @@ window.CitySearch = (function () {
 				'These estimates are produced by a national model, not a city&rsquo;s own reported ' +
 				'results. Individual municipalities may differ substantially from them.</p>' +
 
-				/* ---- image + headline figures ---- */
+				/* ---- boundary + headline figures ---- */
 				'<div class="cp-top">' +
-					'<div class="cp-photo" role="img" aria-label="Photograph of ' +
-						escapeHtml(c.name) + ' — not yet available">' +
-						'<span>Photo to come</span>' +
-					'</div>' +
+					'<div class="cp-shape"><span>Loading outline&hellip;</span></div>' +
 					'<div class="cp-keys">' +
-						'<div class="cp-key cp-key-canopy">' +
-							'<div class="cp-key-head">' +
-								'<span class="n">' + one(d.canopy) + '%</span>' +
-								'<span class="l">Canopy cover</span>' +
-							'</div>' +
-							'<div class="cp-scale" role="img" aria-label="' + one(d.canopy) +
-								' percent canopy cover on a scale of 0 to 100 percent">' +
-								'<div class="cp-scale-track">' +
+
+						'<div class="cp-metric">' +
+							'<span class="cp-metric-label">Canopy Cover</span>' +
+							'<div class="cp-metric-body">' +
+								'<div class="cp-scale" role="img" aria-label="' + one(d.canopy) +
+									' percent, on a scale of 0 to 100 percent">' +
 									'<div class="cp-scale-fill" style="width:' + d.canopy + '%;"></div>' +
 								'</div>' +
-								'<div class="cp-scale-ends"><span>0%</span><span>100%</span></div>' +
+								'<span class="cp-metric-value">' + one(d.canopy) + '%</span>' +
 							'</div>' +
+							'<span class="cp-metric-source">Global Canopy Height Map ' +
+								'(1&nbsp;m resolution), Meta and World Resources Institute</span>' +
 						'</div>' +
-						'<div class="cp-key"><div class="cp-key-head">' +
-							'<span class="n">' + num(d.population) + '</span>' +
-							'<span class="l">Population</span></div></div>' +
-						'<div class="cp-key"><div class="cp-key-head">' +
-							'<span class="n">' + num(d.density) + '</span>' +
-							'<span class="l">People per km&sup2;</span></div></div>' +
-						'<p class="cp-sources">' +
-							'Population and population density: Statistics Canada. ' +
-							'Canopy cover: Meta and WRI (1&nbsp;m spatial resolution).' +
-						'</p>' +
+
+						'<div class="cp-metric">' +
+							'<span class="cp-metric-label">Population</span>' +
+							'<div class="cp-metric-body">' +
+								'<span class="cp-metric-value">' + num(d.population) + '</span>' +
+							'</div>' +
+							'<span class="cp-metric-source">2021 Census, Statistics Canada</span>' +
+						'</div>' +
+
+						'<div class="cp-metric">' +
+							'<span class="cp-metric-label">Population Density</span>' +
+							'<div class="cp-metric-body">' +
+								'<span class="cp-metric-value">' + num(d.density) +
+									'<span class="cp-metric-unit">people per km&sup2;</span></span>' +
+							'</div>' +
+							'<span class="cp-metric-source">2021 Census, Statistics Canada</span>' +
+						'</div>' +
+
 					'</div>' +
 				'</div>' +
 
@@ -345,6 +450,7 @@ window.CitySearch = (function () {
 					row("Trees treated for pests and disease", num(t.treated), "per year") +
 					row("Desired pruning cycle", t.pruning_cycle_years + " years"));
 
+			drawBoundary(c);
 			panelEl.focus();
 		}
 
