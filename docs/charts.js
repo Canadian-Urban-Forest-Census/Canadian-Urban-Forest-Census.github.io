@@ -2,7 +2,8 @@
    Canadian Urban Forest Census — interactive bar charts
    Usage:
      <div class="census-chart"
-          data-chart='{ "n": 103, "note": "...", "series": [...] }'></div>
+          data-chart='{ "n": 103, "note": "...", "decimals": 1, "series": [...] }'></div>
+     "decimals" is optional and defaults to 1; set it to 0 for whole percentages.
    Each series item: { "label": "...", "count": 99, "group": "Site Information" }
    Percentages are computed from count / n, so only the counts are stored.
    ========================================================================== */
@@ -29,9 +30,11 @@ window.CensusChart = (function () {
 
 	function pct(count, n) { return (count / n) * 100; }
 
-	function fmtPct(v) {
-		var s = v.toFixed(1);
-		return (s.indexOf(".0") === v.toFixed(1).length - 2) ? s.replace(".0", "") : s;
+	/* decimals: how many decimal places to show (default 1; 0 = whole percent) */
+	function fmtPct(v, decimals) {
+		if (decimals === 0) return String(Math.round(v));
+		var s = v.toFixed(decimals);
+		return s.replace(/\.0+$/, "");
 	}
 
 	var tip = null;
@@ -59,6 +62,7 @@ window.CensusChart = (function () {
 		}
 
 		var n = cfg.n;
+		var decimals = (cfg.decimals === undefined) ? 1 : cfg.decimals;
 		var series = cfg.series.slice();
 		var groups = [];
 		series.forEach(function (d) {
@@ -134,7 +138,7 @@ window.CensusChart = (function () {
 					'<span class="bar-label">' + d.label + '</span>' +
 					'<div class="bar-track"><div class="bar-fill" style="width:' + width.toFixed(1) +
 						'%;background:' + colour + ';"></div></div>' +
-					'<span class="bar-value">' + fmtPct(value) + '%</span>' +
+					'<span class="bar-value">' + fmtPct(value, decimals) + '%</span>' +
 					'</div>';
 			}).join("");
 
