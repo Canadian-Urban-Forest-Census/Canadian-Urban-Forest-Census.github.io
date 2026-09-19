@@ -1225,13 +1225,6 @@ footer a { color: var(--gray70); }
 
 .cs-list li.on .cs-prov { color: var(--green-dark); }
 
-.cs-hint {
-	margin: 10px 0 0 0;
-	font-family: "Open Sans", sans-serif;
-	font-size: 13px;
-	color: var(--gray70);
-}
-
 /* visible only to screen readers, unless it carries an error */
 .cs-status {
 	position: absolute;
@@ -1399,16 +1392,6 @@ footer a { color: var(--gray70); }
 	font-size: 17px;
 	color: var(--gray90);
 	white-space: nowrap;
-}
-
-.cp-foot {
-	margin-top: 26px;
-	padding-top: 16px;
-	border-top: 1px solid var(--gray);
-	font-family: "Open Sans", sans-serif;
-	font-size: 13px;
-	line-height: 20px;
-	color: var(--gray70);
 }
 
 @media (max-width: 650px) {
