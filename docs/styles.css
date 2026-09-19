@@ -1302,11 +1302,11 @@ footer a { color: var(--gray70); }
 }
 
 .cp-top {
-	display: grid;
-	grid-template-columns: 200px 1fr;
-	gap: 20px;
-	align-items: stretch;
-	margin-bottom: 36px;
+    display: grid;
+    grid-template-columns: 280px 360px;
+    gap: 30px;
+    align-items: stretch;
+    margin-bottom: 36px;
 }
 
 .cp-shape {
