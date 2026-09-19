@@ -263,7 +263,9 @@ window.CitySearch = (function () {
 				'</div>' +
 
 				'<p class="cp-mock">All figures below are <strong>placeholder values</strong>, not ' +
-				'survey responses and not modelled estimates for ' + escapeHtml(c.name) + '.</p>' +
+				'survey responses and not modelled estimates for ' + escapeHtml(c.name) + '. ' +
+				'These estimates are produced by a national model, not a city&rsquo;s own reported ' +
+				'results. Individual municipalities may differ substantially from them.</p>' +
 
 				/* ---- image + headline figures ---- */
 				'<div class="cp-top">' +
@@ -305,12 +307,7 @@ window.CitySearch = (function () {
 					row("Trees pruned", num(t.pruned), "per year") +
 					row("Trees removed", num(t.removed), "per year") +
 					row("Trees treated for pests and disease", num(t.treated), "per year") +
-					row("Desired pruning cycle", t.pruning_cycle_years + " years")) +
-
-				'<p class="cp-foot">Placeholder data, shown to test the layout of this page. ' +
-				'When the real figures are published they will be estimates produced by a ' +
-				'national model, not ' + escapeHtml(c.name) + '&rsquo;s own reported results, and ' +
-				'individual municipalities may differ substantially from them.</p>';
+					row("Desired pruning cycle", t.pruning_cycle_years + " years"));
 
 			panelEl.focus();
 		}
