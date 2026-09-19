@@ -185,7 +185,7 @@ window.CitySearch = (function () {
 				var rings = map[c.csduid];
 				if (!rings) return;
 
-				var W = 200, H = 168;
+				var W = 280, H = 220;
 				box.innerHTML =
 					'<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Outline of ' +
 						escapeHtml(c.name) + '">' +
