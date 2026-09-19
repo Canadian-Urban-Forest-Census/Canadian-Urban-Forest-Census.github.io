@@ -1345,7 +1345,14 @@ footer a { color: var(--gray70); }
 
 /* label above, grey body, source beneath */
 
-.cp-metric { display: block; }
+.cp-metric {
+    display: block;
+    margin-bottom: 24px;
+}
+
+.cp-metric:last-child {
+    margin-bottom: 0;
+}
 
 .cp-metric-label {
 	display: block;
@@ -1379,6 +1386,13 @@ footer a { color: var(--gray70); }
 	font-weight: 400;
 	font-size: 13px;
 	color: var(--gray70);
+}
+
+.cp-keys {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 14px;
 }
 
 /* the 0-100% canopy scale fills the grey area */
