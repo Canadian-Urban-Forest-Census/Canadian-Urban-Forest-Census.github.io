@@ -2,7 +2,7 @@
    Canadian Urban Forest Census — city search
    Type-ahead over the 343 urban municipalities in /data/cities.json.
 
-   Markup it expects (see compare-your-city.html):
+   Markup it expects (see benchmarking.html):
      .citysearch > input#city-input + ul#city-list + #city-status
    Selecting a city fires a "cityselect" event on the container with the
    city record in event.detail, so the comparison panels can listen for it.
@@ -384,4 +384,4 @@ window.CitySearch = (function () {
 	}
 
 	return { init: init };
-})();
+})()
