@@ -1421,6 +1421,9 @@ footer a { color: var(--gray70); }
     white-space: nowrap;
 }
 
+/* a nearly full bar puts the figure inside the green instead */
+.cp-scale-value.on-fill { color: var(--white); }
+
 .cp-metric-source {
 	display: block;
 	margin-top: 4px;
