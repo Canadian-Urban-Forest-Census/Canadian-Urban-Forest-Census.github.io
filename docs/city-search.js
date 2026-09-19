@@ -387,7 +387,7 @@ window.CitySearch = (function () {
 							        one(d.canopy) + '%</span>' +
 							'</div>' +
 							'<span class="cp-metric-source">Global Canopy Height Map ' +
-								'(1&nbsp;m resolution), Meta and World Resources Institute</span>' +
+								'(1&nbsp;m), Meta and World Resources Institute</span>' +
 						'</div>' +
 
 						'<div class="cp-metric">' +
