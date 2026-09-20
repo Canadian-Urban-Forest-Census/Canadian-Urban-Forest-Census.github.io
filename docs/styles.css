@@ -1343,6 +1343,12 @@ footer a { color: var(--gray70); }
     vector-effect: non-scaling-stroke;
 }
 
+/* canopy raster, drawn under the outline; the PNG carries its own alpha
+   so nothing outside the municipality shows */
+.cp-shape .cp-canopy {
+    image-rendering: auto;
+}
+
 /* label above, grey body, source beneath */
 
 .cp-metric {
