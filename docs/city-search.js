@@ -122,9 +122,15 @@ window.CitySearch = (function () {
 			var out = {};
 			topo.objects.csds.geometries.forEach(function (gm) {
 				var polys = gm.type === "Polygon" ? [gm.arcs] : gm.arcs;
-				out[gm.properties.csduid] = polys.map(function (poly) {
-					return ring(poly[0]);            // outer ring only; holes are invisible at this size
-				});
+				out[gm.properties.csduid] = polys
+					.map(function (poly) {
+						return ring(poly[0]);        // outer ring only; holes are invisible at this size
+					})
+					/* Simplification collapsed a few offshore islands to a single
+					   repeated point. They draw nothing, but they still stretched
+					   the fitted bounding box, shrinking the city by up to 10px
+					   in places (Châteauguay, Boucherville, Parry Sound). */
+					.filter(function (r) { return r.length >= 4; });
 			});
 			return out;
 		}
@@ -140,8 +146,13 @@ window.CitySearch = (function () {
 			return boundaryLoad;
 		}
 
-		/* Fit the rings into the box and return an SVG path. Longitude is scaled
-		   by cos(latitude) so shapes aren't stretched sideways. */
+		/* Fit the rings into the box. Longitude is scaled by cos(latitude) so
+		   shapes aren't stretched sideways.
+
+		   Returns { d, project } where d is the SVG path and project(lng, lat)
+		   maps a geographic point into the same box. The canopy raster is placed
+		   with project(), so it lands on the outline no matter what the fit
+		   worked out to be. */
 		function boundarySvg(rings, w, h, pad) {
 			var lat0 = 0, n = 0;
 			rings.forEach(function (r) {
@@ -167,29 +178,79 @@ window.CitySearch = (function () {
 			var ox = pad + ((w - pad * 2) - (maxX - minX) * s) / 2;
 			var oy = pad + ((h - pad * 2) - (maxY - minY) * s) / 2;
 
-			return rings.map(function (r) {
+			function project(lng, lat) {
+				return [(lng * kx - minX) * s + ox, (-lat - minY) * s + oy];
+			}
+
+			var d = rings.map(function (r) {
 				return "M" + r.map(function (p) {
 					return ((p[0] * kx - minX) * s + ox).toFixed(1) + " " +
 						((-p[1] - minY) * s + oy).toFixed(1);
 				}).join("L") + "Z";
 			}).join(" ");
+
+			return { d: d, project: project };
+		}
+
+		/* ---------- canopy rasters ----------
+		   /data/canopy/manifest.json is csduid -> { bbox: [w, s, e, n] }, the
+		   geographic extent of /data/canopy/<csduid>.png. The PNGs are plain
+		   lon/lat grids, so placing one is just projecting its two bbox corners
+		   with the fit above; preserveAspectRatio="none" absorbs the cos(lat)
+		   squeeze. A city missing from the manifest just draws the outline. */
+
+		var canopy = null;
+		var canopyLoad = null;
+
+		function loadCanopy() {
+			if (canopyLoad) return canopyLoad;
+			canopyLoad = fetch("/data/canopy/manifest.json")
+				.then(function (r) {
+					if (!r.ok) throw new Error("HTTP " + r.status);
+					return r.json();
+				})
+				.then(function (j) { canopy = j; return canopy; })
+				.catch(function () { canopy = {}; return canopy; });   // outline only
+			return canopyLoad;
 		}
 
 		function drawBoundary(c) {
 			var box = panelEl && panelEl.querySelector(".cp-shape");
 			if (!box) return;
 
-			loadBoundaries().then(function (map) {
+			Promise.all([loadBoundaries(), loadCanopy()]).then(function (both) {
+				var map = both[0], cov = both[1];
 				if (!panelEl || panelEl.hidden) return;
 				if (!selected || selected.csduid !== c.csduid) return;   // a newer city was picked
 				var rings = map[c.csduid];
 				if (!rings) return;
 
 				var W = 280, H = 220;
+				var fit = boundarySvg(rings, W, H, 5);
+
+				var img = "";
+				var m = cov && cov[c.csduid];
+
+				if (m && m.bbox) {
+					var tl = fit.project(m.bbox[0], m.bbox[3]);   // west, north
+					var br = fit.project(m.bbox[2], m.bbox[1]);   // east, south
+					img =
+						'<image class="cp-canopy" href="/data/canopy/' + c.csduid + '.png" ' +
+							/* xlink:href for Safari before 12 and other SVG 1.1 renderers */
+							'xlink:href="/data/canopy/' + c.csduid + '.png" ' +
+							'x="' + tl[0].toFixed(2) + '" y="' + tl[1].toFixed(2) + '" ' +
+							'width="' + (br[0] - tl[0]).toFixed(2) + '" ' +
+							'height="' + (br[1] - tl[1]).toFixed(2) + '" ' +
+							'preserveAspectRatio="none" />';
+				}
+
 				box.innerHTML =
-					'<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Outline of ' +
-						escapeHtml(c.name) + '">' +
-						'<path d="' + boundarySvg(rings, W, H, 5) + '" />' +
+					'<svg viewBox="0 0 ' + W + ' ' + H + '" ' +
+						'xmlns:xlink="http://www.w3.org/1999/xlink" ' +
+						'role="img" aria-label="' +
+						(m ? 'Canopy cover in ' : 'Outline of ') + escapeHtml(c.name) + '">' +
+						img +
+						'<path d="' + fit.d + '" />' +
 					'</svg>';
 				box.classList.add("is-drawn");
 			}).catch(function () { /* leave the placeholder as it is */ });
