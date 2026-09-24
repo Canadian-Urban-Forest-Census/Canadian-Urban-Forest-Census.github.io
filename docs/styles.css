@@ -193,6 +193,16 @@ nav ul a.active {
 	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
 }
 
+/* invisible bridge over the 10px gap so the menu stays open while the mouse moves down to it */
+.menu::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: -12px;
+	height: 12px;
+}
+
 .menu-toggle[aria-expanded="true"] + .menu { display: flex; }
 
 @media (hover: hover) {
