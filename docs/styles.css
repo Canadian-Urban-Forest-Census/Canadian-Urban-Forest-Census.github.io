@@ -219,6 +219,8 @@ nav ul a.active {
 .menu a.active { color: var(--green-dark); font-weight: 600; border-bottom: 0; }
 
 .menu .soon { color: #8b8f88; cursor: default; }
+a.soon { cursor: pointer; }
+.menu a.soon.active { color: var(--green-dark); }
 
 .menu .soon .tag {
 	display: block;
@@ -377,6 +379,18 @@ main a { color: var(--green-dark); }
 
 .construction p { margin: 0 0 14px 0; }
 .construction p:last-child { margin-bottom: 0; }
+
+.construction-gif {
+	display: block;
+	width: 100%;
+	max-width: 576px;
+	height: auto;
+	margin: 4px auto 18px auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.construction-gif { display: none; }
+}
 
 /* ---------- key figures ---------- */
 
@@ -594,6 +608,8 @@ main a { color: var(--green-dark); }
 
 .card-soon:hover { border-top-color: var(--gray); transform: none; }
 .card-soon h4 { color: var(--gray70); }
+a.card-soon { cursor: pointer; }
+a.card-soon:hover { border-top-color: var(--green-light); }
 
 .card-tag {
 	position: absolute;
