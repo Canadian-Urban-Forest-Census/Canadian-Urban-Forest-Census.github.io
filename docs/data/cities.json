@@ -947,7 +947,7 @@
  },
  {
   "csduid": "5915001",
-  "name": "Langley",
+  "name": "Langley (Township)",
   "province": "BC",
   "province_en": "British Columbia",
   "province_fr": "Colombie-Britannique",
@@ -958,7 +958,7 @@
  },
  {
   "csduid": "5915002",
-  "name": "Langley",
+  "name": "Langley (City)",
   "province": "BC",
   "province_en": "British Columbia",
   "province_fr": "Colombie-Britannique",
@@ -1024,7 +1024,7 @@
  },
  {
   "csduid": "5915046",
-  "name": "North Vancouver",
+  "name": "North Vancouver (District)",
   "province": "BC",
   "province_en": "British Columbia",
   "province_fr": "Colombie-Britannique",
@@ -1035,7 +1035,7 @@
  },
  {
   "csduid": "5915051",
-  "name": "North Vancouver",
+  "name": "North Vancouver (City)",
   "province": "BC",
   "province_en": "British Columbia",
   "province_fr": "Colombie-Britannique",
