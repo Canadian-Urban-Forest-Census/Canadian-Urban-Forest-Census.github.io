@@ -6,6 +6,7 @@
      "decimals" is optional and defaults to 1; set it to 0 for whole percentages.
    Each series item: { "label": "...", "count": 99, "group": "Site Information" }
    Percentages are computed from count / n, so only the counts are stored.
+   Bars are always drawn on a 0-100% scale: a bar's length is its percentage.
    ========================================================================== */
 
 window.CensusChart = (function () {
@@ -119,10 +120,6 @@ window.CensusChart = (function () {
 				shown.sort(function (a, b) { return b.count - a.count; });
 			}
 
-			var max = 0;
-			shown.forEach(function (d) { if (d.count > max) max = d.count; });
-			var scaleMax = Math.max(pct(max, n), 1);
-
 			if (!shown.length) {
 				rowsEl.innerHTML = '<p class="chart-note">No categories selected.</p>';
 				return;
@@ -130,7 +127,8 @@ window.CensusChart = (function () {
 
 			rowsEl.innerHTML = shown.map(function (d) {
 				var value = pct(d.count, n);
-				var width = (value / scaleMax) * 100;
+				/* bars are drawn on a fixed 0-100% scale, so a full-width bar means 100% */
+				var width = Math.min(value, 100);
 				var colour = GROUP_COLOURS[d.group] || "#00A189";
 				return '<div class="bar-row cc-hoverable"' +
 						' data-count="' + d.count + '"' +
