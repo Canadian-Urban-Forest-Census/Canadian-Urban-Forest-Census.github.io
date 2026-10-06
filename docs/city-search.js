@@ -53,15 +53,23 @@ window.CitySearch = (function () {
 				if (!r.ok) throw new Error("HTTP " + r.status);
 				return r.json();
 			}),
+			fetch("/data/municipality_predictions.json").then(function (r) {
+				if (!r.ok) throw new Error("HTTP " + r.status);
+				return r.json();
+			}),
+			/* Only the 2021 Census population is read from this file. Its
+			   density and canopy values are placeholders and are not shown. */
 			fetch("/data/mock-city-data.json").then(function (r) {
 				if (!r.ok) throw new Error("HTTP " + r.status);
 				return r.json();
 			})
 		])
-			.then(function (both) {
-				var rows = both[0];
-				var mock = {};
-				both[1].cities.forEach(function (m) { mock[m.key] = m; });
+			.then(function (all) {
+				var rows = all[0];
+				var pred = {};
+				all[1].forEach(function (p) { pred[String(p.CSDUID)] = p; });
+				var popn = {};
+				all[2].cities.forEach(function (m) { popn[m.key] = m.population; });
 
 				cities = rows.map(function (c, i) {
 					return {
@@ -76,8 +84,9 @@ window.CitySearch = (function () {
 						label: c.name + ", " + c.province,
 						key: norm(c.name),
 						keyFull: norm(c.name + ", " + c.province),
-						data: mock[c.csduid] || null,
-						pop: mock[c.csduid] ? mock[c.csduid].population : 0
+						data: pred[c.csduid] || null,
+						population: popn[c.csduid] || null,
+						pop: popn[c.csduid] || 0
 					};
 				});
 
@@ -382,9 +391,19 @@ window.CitySearch = (function () {
 				: v.toLocaleString("en-CA", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 		}
 
-		function yesno(v) {
-			return v ? "Yes" : "No";
+		/* model outputs like 38.57 volunteers read as whole numbers */
+		function whole(v) {
+			return (v === null || v === undefined) ? "\u2014"
+				: Math.round(v).toLocaleString("en-CA");
 		}
+
+		/* 0.4295 -> "43%" */
+		function pct(v) {
+			return (v === null || v === undefined) ? "\u2014"
+				: Math.round(v * 100) + "%";
+		}
+
+		var TBD = "<em>TBD</em>";
 
 		/* a labelled figure row; note is optional small print under the label */
 		function row(label, value, note) {
@@ -419,9 +438,6 @@ window.CitySearch = (function () {
 				return;
 			}
 
-			var b = d.budget, s = d.staff, v = d.volunteers, t = d.street_trees;
-			var k = d.contractors || {};
-
 			panelEl.innerHTML =
 				'<div class="cp-head">' +
 					'<h2>' + escapeHtml(c.name) + '</h2>' +
@@ -429,10 +445,9 @@ window.CitySearch = (function () {
 						' &middot; ' + escapeHtml(c.ecozone) + ' ecozone</p>' +
 				'</div>' +
 
-				'<p class="cp-mock">All figures below are <strong>placeholder values</strong>, not ' +
-				'survey responses and not modelled estimates for ' + escapeHtml(c.name) + '. ' +
-				'These estimates are produced by a national model, not a city&rsquo;s own reported ' +
-				'results. Individual municipalities may differ substantially from them.</p>' +
+				'<p class="cp-mock">Values are predictions produced by a national model, not ' +
+				escapeHtml(c.name) + '&rsquo;s own reported results. Individual municipalities ' +
+				'may differ substantially from them.</p>' +
 
 				/* ---- boundary + headline figures ---- */
 				'<div class="cp-top">' +
@@ -441,16 +456,8 @@ window.CitySearch = (function () {
 
 						'<div class="cp-metric">' +
 							'<span class="cp-metric-label">Canopy Cover</span>' +
-							'<div class="cp-metric-body cp-scale" role="img" aria-label="' +
-							    one(d.canopy) + ' percent, on a scale of 0 to 100 percent">' +
-							    '<div class="cp-scale-fill" style="width:' + d.canopy + '%;"></div>' +
-							    /* past ~72% there is no room to the right, so sit inside the green,
-							       anchored to the fill's own right edge */
-							    '<span class="cp-scale-value' + (d.canopy > 72 ? ' on-fill' : '') + '" style="' +
-							        (d.canopy > 72
-							            ? 'right:calc(' + (100 - d.canopy) + '% + 10px);'
-							            : 'left:calc(' + d.canopy + '% + 10px);') + '">' +
-							        one(d.canopy) + '%</span>' +
+							'<div class="cp-metric-body">' +
+								'<span class="cp-metric-value">' + TBD + '</span>' +
 							'</div>' +
 							'<span class="cp-metric-source">Global Canopy Height Map ' +
 								'(1&nbsp;m resolution), Meta and World Resources Institute</span>' +
@@ -459,7 +466,7 @@ window.CitySearch = (function () {
 						'<div class="cp-metric">' +
 							'<span class="cp-metric-label">Population</span>' +
 							'<div class="cp-metric-body">' +
-								'<span class="cp-metric-value">' + num(d.population) + '</span>' +
+								'<span class="cp-metric-value">' + num(c.population) + '</span>' +
 							'</div>' +
 							'<span class="cp-metric-source">2021 Census, Statistics Canada</span>' +
 						'</div>' +
@@ -467,8 +474,7 @@ window.CitySearch = (function () {
 						'<div class="cp-metric">' +
 							'<span class="cp-metric-label">Population Density</span>' +
 							'<div class="cp-metric-body">' +
-								'<span class="cp-metric-value">' + num(d.density) +
-									'<span class="cp-metric-unit">people per km&sup2;</span></span>' +
+								'<span class="cp-metric-value">' + TBD + '</span>' +
 							'</div>' +
 							'<span class="cp-metric-source">2021 Census, Statistics Canada</span>' +
 						'</div>' +
@@ -477,43 +483,40 @@ window.CitySearch = (function () {
 				'</div>' +
 
 				/* ---- budget ---- */
-				section("Predicted budget",
-					row("Urban forestry", money(b.urban_forestry), "annual, adequacy-adjusted") +
-					row("Street tree program", money(b.street_tree_program), "annual, adequacy-adjusted") +
-					row("Street tree planting", money(b.street_tree_planting), "annual"),
-					"Urban forestry and street tree program budgets are based on " +
-					"adequacy-adjusted amounts. Street tree planting is not adjusted.") +
+				section("Predicted Budget",
+					row("Urban forestry", money(d.predicted_total), "annual, raw") +
+					row("Urban forestry", money(d.predicted_adjusted_total), "annual, adequacy-adjusted") +
+					row("Street tree program", money(d.predicted_street), "annual, raw") +
+					row("Street tree program", money(d.predicted_adjusted_street), "annual, adequacy-adjusted") +
+					row("Street tree planting", money(d.predicted_planting), "annual, raw"),
+					"Urban forestry and street tree program budgets are shown both raw and " +
+					"adequacy-adjusted. Street tree planting is not adjusted.") +
 
 				/* ---- contractors ---- */
-				section("Predicted contractor use",
-					row("Uses contractors", yesno(k.uses_contractor)) +
-					row("Contractor expense",
-						k.uses_contractor ? money(k.contractor_expense) : "\u2014", "annual") +
-					row("Uses contractors for street trees", yesno(k.uses_street_tree_contractor)) +
-					row("Street tree contractor expense",
-						k.uses_street_tree_contractor ? money(k.street_tree_contractor_expense) : "\u2014",
-						"annual")) +
+				section("Predicted Contractor Use",
+					row("Contractor expense", money(d.predicted_contractor_expenditure), "annual") +
+					row("Share of contractor expense for street trees", pct(d.predicted_street_tree_share)) +
+					row("Street tree contractor expense", money(d.predicted_street_tree_expenditure), "annual")) +
 
 				/* ---- staff ---- */
-				section("Predicted staff",
-					row("Urban forestry staff", num(s.urban_forestry_staff), "people") +
-					row("Urban forestry FTE positions", one(s.urban_forestry_fte), "2,080-hour base") +
-					row("Street tree staff", num(s.street_tree_staff), "people") +
-					row("Street tree FTE positions", one(s.street_tree_fte), "2,080-hour base")) +
+				section("Predicted Staffing Level",
+					row("Urban forestry staff", num(d.urban_forestry_staff), "people") +
+					row("Urban forestry FTE positions", one(d.urban_forestry_fte), "2,080-hour base") +
+					row("Street tree staff", num(d.street_tree_staff), "people") +
+					row("Street tree FTE positions", one(d.street_tree_fte), "2,080-hour base")) +
 
 				/* ---- volunteers ---- */
-				section("Predicted volunteer engagement",
-					row("Volunteers", num(v.people), "per year") +
-					row("Volunteer hours", num(v.hours),
+				section("Predicted Volunteer Engagement",
+					row("Likelihood of working with volunteers", pct(d.predicted_pr_works_with_volunteers)) +
+					row("Volunteers", whole(d.predicted_volunteers), "per year") +
+					row("Volunteer hours", whole(d.predicted_volunteer_hours),
 						"per year, cumulative across all volunteers")) +
 
 				/* ---- street trees ---- */
-				section("Predicted street tree work",
-					row("Trees planted", num(t.planted), "per year") +
-					row("Trees pruned", num(t.pruned), "per year") +
-					row("Trees removed", num(t.removed), "per year") +
-					row("Trees treated for pests and disease", num(t.treated), "per year") +
-					row("Desired pruning cycle", t.pruning_cycle_years + " years"));
+				'<section class="cp-section">' +
+					'<h3>Predicted Street Tree Work</h3>' +
+					'<p class="cp-section-note">' + TBD + '</p>' +
+				'</section>';
 
 			drawBoundary(c);
 			panelEl.focus();
