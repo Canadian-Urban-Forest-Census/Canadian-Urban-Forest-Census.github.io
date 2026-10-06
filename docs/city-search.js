@@ -56,20 +56,12 @@ window.CitySearch = (function () {
 			fetch("/data/municipality_predictions.json").then(function (r) {
 				if (!r.ok) throw new Error("HTTP " + r.status);
 				return r.json();
-			}),
-			/* Only the 2021 Census population is read from this file. Its
-			   density and canopy values are placeholders and are not shown. */
-			fetch("/data/mock-city-data.json").then(function (r) {
-				if (!r.ok) throw new Error("HTTP " + r.status);
-				return r.json();
 			})
 		])
 			.then(function (all) {
 				var rows = all[0];
 				var pred = {};
 				all[1].forEach(function (p) { pred[String(p.CSDUID)] = p; });
-				var popn = {};
-				all[2].cities.forEach(function (m) { popn[m.key] = m.population; });
 
 				cities = rows.map(function (c, i) {
 					return {
@@ -85,8 +77,7 @@ window.CitySearch = (function () {
 						key: norm(c.name),
 						keyFull: norm(c.name + ", " + c.province),
 						data: pred[c.csduid] || null,
-						population: popn[c.csduid] || null,
-						pop: popn[c.csduid] || 0
+						pop: pred[c.csduid] ? pred[c.csduid]["Population, 2021"] : 0
 					};
 				});
 
@@ -438,6 +429,8 @@ window.CitySearch = (function () {
 				return;
 			}
 
+			var canopy = d.canopy_proportion_csd;      // already a percentage, 0-100
+
 			panelEl.innerHTML =
 				'<div class="cp-head">' +
 					'<h2>' + escapeHtml(c.name) + '</h2>' +
@@ -456,8 +449,18 @@ window.CitySearch = (function () {
 
 						'<div class="cp-metric">' +
 							'<span class="cp-metric-label">Canopy Cover</span>' +
-							'<div class="cp-metric-body">' +
-								'<span class="cp-metric-value">' + TBD + '</span>' +
+							/* no padding here: the fill and its label both measure from the box's
+							   outer left edge, otherwise they collide at low canopy values */
+							'<div class="cp-metric-body cp-scale" style="padding:0;" role="img" aria-label="' +
+							    one(canopy) + ' percent, on a scale of 0 to 100 percent">' +
+							    '<div class="cp-scale-fill" style="width:' + canopy + '%;"></div>' +
+							    /* past ~72% there is no room to the right, so sit inside the green,
+							       anchored to the fill's own right edge */
+							    '<span class="cp-scale-value' + (canopy > 72 ? ' on-fill' : '') + '" style="' +
+							        (canopy > 72
+							            ? 'right:calc(' + (100 - canopy) + '% + 10px);'
+							            : 'left:calc(' + canopy + '% + 10px);') + '">' +
+							        one(canopy) + '%</span>' +
 							'</div>' +
 							'<span class="cp-metric-source">Global Canopy Height Map ' +
 								'(1&nbsp;m resolution), Meta and World Resources Institute</span>' +
@@ -466,7 +469,7 @@ window.CitySearch = (function () {
 						'<div class="cp-metric">' +
 							'<span class="cp-metric-label">Population</span>' +
 							'<div class="cp-metric-body">' +
-								'<span class="cp-metric-value">' + num(c.population) + '</span>' +
+								'<span class="cp-metric-value">' + num(d["Population, 2021"]) + '</span>' +
 							'</div>' +
 							'<span class="cp-metric-source">2021 Census, Statistics Canada</span>' +
 						'</div>' +
@@ -474,7 +477,8 @@ window.CitySearch = (function () {
 						'<div class="cp-metric">' +
 							'<span class="cp-metric-label">Population Density</span>' +
 							'<div class="cp-metric-body">' +
-								'<span class="cp-metric-value">' + TBD + '</span>' +
+								'<span class="cp-metric-value">' + one(d["Population Density (sq km)"]) +
+									'<span class="cp-metric-unit">people per km&sup2;</span></span>' +
 							'</div>' +
 							'<span class="cp-metric-source">2021 Census, Statistics Canada</span>' +
 						'</div>' +
