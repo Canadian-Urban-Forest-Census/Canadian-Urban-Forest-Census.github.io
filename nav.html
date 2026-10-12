@@ -1,0 +1,34 @@
+{%- comment -%}
+  Site navigation, shared by every page.
+  Edit menu items here once and every page updates.
+  The current page is highlighted automatically using page.url.
+{%- endcomment -%}
+{%- assign url = page.url | replace: "index.html", "" -%}
+{%- assign results_pages = "/tree-inventories.html,/volunteers.html,/staffing.html,/economics.html,/management.html,/contracting.html,/community-support.html" | split: "," -%}
+{%- assign pub_pages = "/publications.html,/ontario-arborist.html" | split: "," -%}
+<nav>
+	<a class="brand" href="/">Canadian Urban Forest Census</a>
+	<ul>
+		<li><a href="/methods.html"{% if url == "/methods.html" %} class="active" aria-current="page"{% endif %}>Methods</a></li>
+		<li class="has-menu">
+			<button type="button" class="menu-toggle{% if results_pages contains url %} active{% endif %}" aria-expanded="false" aria-haspopup="true">Results <span class="caret" aria-hidden="true">&#9662;</span></button>
+			<ul class="menu">
+				<li><a href="/tree-inventories.html"{% if url == "/tree-inventories.html" %} class="active" aria-current="page"{% endif %}>Tree Inventories</a></li>
+				<li><a href="/volunteers.html"{% if url == "/volunteers.html" %} class="active" aria-current="page"{% endif %}>Volunteers</a></li>
+				<li><a class="soon{% if url == "/staffing.html" %} active{% endif %}" href="/staffing.html">Staffing <span class="tag">Under construction</span></a></li>
+				<li><a class="soon{% if url == "/economics.html" %} active{% endif %}" href="/economics.html">Economics <span class="tag">Under construction</span></a></li>
+				<li><a class="soon{% if url == "/management.html" %} active{% endif %}" href="/management.html">Management <span class="tag">Under construction</span></a></li>
+				<li><a class="soon{% if url == "/contracting.html" %} active{% endif %}" href="/contracting.html">Contracting <span class="tag">Under construction</span></a></li>
+				<li><a class="soon{% if url == "/community-support.html" %} active{% endif %}" href="/community-support.html">Community Support <span class="tag">Under construction</span></a></li>
+			</ul>
+		</li>
+		<li><a href="/benchmarking.html"{% if url == "/benchmarking.html" %} class="active" aria-current="page"{% endif %}>Benchmarking</a></li>
+		<li class="has-menu">
+			<button type="button" class="menu-toggle{% if pub_pages contains url %} active{% endif %}" aria-expanded="false" aria-haspopup="true">Publications <span class="caret" aria-hidden="true">&#9662;</span></button>
+			<ul class="menu menu-right">
+				<li><a href="/publications.html"{% if url == "/publications.html" %} class="active" aria-current="page"{% endif %}>Journal Articles</a></li>
+				<li><a href="/ontario-arborist.html"{% if url == "/ontario-arborist.html" %} class="active" aria-current="page"{% endif %}><em>Ontario Arborist</em></a></li>
+			</ul>
+		</li>
+	</ul>
+</nav>
