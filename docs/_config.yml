@@ -1,0 +1,9 @@
+# Jekyll settings for the Canadian Urban Forest Census site.
+# GitHub Pages builds the site from this /docs folder automatically.
+
+title: Canadian Urban Forest Census
+url: "https://canadian-urban-forest-census.github.io"
+
+# Files Jekyll should not publish or process
+exclude:
+  - data/canopy/README.md
