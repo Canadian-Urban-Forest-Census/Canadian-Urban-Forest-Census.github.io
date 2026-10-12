@@ -1,0 +1,186 @@
+---
+layout: default
+title: Tree Inventories
+description: "77% of Canadian municipalities have an existing or in-progress tree inventory. What they record, how they collect it, and what they use it for."
+scripts:
+  - src: /assets/js/charts.js
+    defer: true
+---
+
+<div class="page-head">
+	<p class="standfirst">
+		A tree inventory is any record a municipality keeps of its trees. Data from tree inventories
+		can be used to guide species selection, identify planting locations, coordiante tree 
+		maintenance, and monitor change over time.
+	</p>
+</div>
+
+<div class="paper">
+	<span class="kicker">Published findings</span>
+	<p>
+		Martin, A.J.F., Conway, T.M., Olson, L.G., &amp; Bacon, E.S. (2026). Urban tree
+		inventories in Canadian municipalities.
+		<span class="journal">Journal of Forestry</span>. Advance online publication.
+	</p>
+	<div class="links">
+		<a href="https://doi.org/10.1007/s44392-026-00117-5" target="_blank" rel="noopener noreferrer">Read the paper (DOI)</a>
+	</div>
+	<p class="licence">
+		Open access. The figures on this page are drawn from that paper.
+	</p>
+</div>
+
+<main>
+
+	<p class="lede">
+		Among the 135 municipalities that responded to the tree inventory section of the Census,
+		77% reported having a tree inventory in place or in progress. This is an increase from previous decades: 
+		49% of Canadian municipalities had an inventory in 1998, and 67% in 2014.
+	</p>
+
+	<div class="figures">
+		<div class="figure"><span class="n">77%</span><span class="l">have an inventory, existing or in progress</span></div>
+		<div class="figure"><span class="n">91%</span><span class="l">of those inventories are digitized</span></div>
+		<div class="figure"><span class="n">99%</span><span class="l">cover street trees</span></div>
+		<div class="figure"><span class="n">4.7</span><span class="l">average number of uses per inventory</span></div>
+	</div>
+
+	<p>
+		The rise is probably steeper than those numbers suggest. Our survey included 48
+		municipalities with populations between 1,000 and 10,000, whereas the 2014
+		survey excluded communities under 10,000 &mdash; and smaller municipalities are much
+		less likely to have a tree inventory.
+	</p>
+
+	<h2>How current are they</h2>
+
+	<p>
+		Having an inventory is different than it reflecting the current tree population.
+		Only about a quarter of municipalities described theirs as up to date, while a 
+		third were in the process of reinventorying their trees.
+	</p>
+
+	<div class="census-chart" data-chart='{"n": 135, "series": [{"label": "No inventory", "count": 31}, {"label": "Incomplete, no plans to continue", "count": 3}, {"label": "Outdated", "count": 20}, {"label": "In development", "count": 45}, {"label": "Up to date", "count": 36}]}'></div>
+
+	<p>
+		Municipalities with larger land areas were substantially more likely to have a tree inventory,
+		as was the municipality having an urban forestry budget. Meanwhile, more complete, up-to-date 
+		inventories were more common in municipalities with larger land area and higher population density,
+		with additional strong associations with larger urban forestry budgets and higher staffing levels.
+	</p>
+
+	<p>
+		Municipalities' initial tree inventories were completed anywhere between 1950 and 2025, with a median of
+		2014. Among municipalities currently conducting their first inventory, completion is expected
+		between 2025 and 2033. Where inventories are maintained, half of municipalities
+		update them daily or weekly as work is carried out, while another sixth update only to record a
+		planting or a removal.
+	</p>
+
+	<h2>How they are built</h2>
+
+	<p>
+		Field-based partial tree inventories are the most common. That is, an inventory of all
+		street trees or all park trees, where streets or parks are a "stratum." Remote sensing 
+		is now used by nearly half of municipalities, almost always complementing rather than
+		replacing a field-based inventory. Most municipalities use multiple approaches.
+	</p>
+
+	<div class="census-chart" data-chart='{"n": 103, "series": [{"label": "Field-based partial survey", "count": 67, "group": "Field-based"}, {"label": "Remote sensing (lidar, satellite)", "count": 49, "group": "Remote"}, {"label": "Sample survey", "count": 26, "group": "Field-based"}, {"label": "One side of tree (driveby)", "count": 23, "group": "Field-based"}, {"label": "Elm or ash inventory", "count": 23, "group": "Field-based"}, {"label": "Virtual survey (Street View)", "count": 8, "group": "Remote"}]}'></div>
+
+	<p>
+		Collection has gone digital. Handheld devices &mdash; phones and tablets &mdash; are the
+		most common tool at 76%, followed by GPS and GIS receivers at 51%. Pen and paper
+		persists in about a quarter of municipalities, though only 12.5% rely on it
+		exclusively. Nine in ten inventories are computerized or digitized, up from 43% a
+		decade ago.
+	</p>
+
+	<p>
+		Municipal staff do most of the work, contributing in 91% of municipalities,
+		followed by consultants in 46%. Volunteers and non-profits appear in under 3% each
+		&mdash; a striking contrast with the United States, and consistent with what the
+		volunteer findings show about where volunteer effort actually goes.
+	</p>
+
+	<div class="census-chart" data-chart='{"n": 104, "series": [{"label": "Municipal staff", "count": 95}, {"label": "Consultants", "count": 48}, {"label": "Interns", "count": 14}, {"label": "University or college", "count": 5}, {"label": "Volunteers", "count": 3}, {"label": "Non-profit or NGO", "count": 3}, {"label": "Local government", "count": 3}, {"label": "Province or territory staff", "count": 2}, {"label": "Regional government staff", "count": 1}, {"label": "Indigenous communities", "count": 1}]}'></div>
+
+	<h2>Which trees get counted</h2>
+
+	<p>
+		Inventories follow municipal responsibility. Street and park trees are almost
+		universally covered. Natural areas appear in under half, and privately owned trees
+		in under a third &mdash; and notably, using remote sensing did not meaningfully
+		broaden that coverage.
+	</p>
+
+	<div class="census-chart" data-chart='{"n": 104, "series": [{"label": "Street trees", "count": 103, "group": "Municipal Trees"}, {"label": "Park trees", "count": 99, "group": "Municipal Trees"}, {"label": "Municipal greenbelts", "count": 31, "group": "Natural Areas"}, {"label": "Woodlots, unmaintained forests", "count": 31, "group": "Natural Areas"}, {"label": "Riparian areas", "count": 24, "group": "Natural Areas"}, {"label": "Sample of private trees", "count": 13, "group": "Private"}, {"label": "Privately owned ash or elm", "count": 12, "group": "Private"}, {"label": "All privately owned trees", "count": 11, "group": "Private"}, {"label": "K-12 schools", "count": 10, "group": "Other Governmental"}, {"label": "Provincial and federal properties", "count": 8, "group": "Other Governmental"}]}'></div>
+
+	<h2>What gets recorded</h2>
+
+	<p>
+		The commonly collected fields are the ones operations need: where the tree is, what
+		it is, how big it is, and what condition it is in.
+	</p>
+
+	<div class="census-chart" data-chart='{"n": 103, "series": [{"label": "Tree location", "count": 99, "group": "Site Information"}, {"label": "Species common name", "count": 93, "group": "Species Identification"}, {"label": "Diameter at breast height", "count": 82, "group": "Tree Metric"}, {"label": "Tree condition", "count": 79, "group": "Tree Metric"}, {"label": "Species scientific name", "count": 73, "group": "Species Identification"}, {"label": "Tree planting locations", "count": 54, "group": "Site Information"}, {"label": "Tree maintenance needs", "count": 54, "group": "Maintenance Needs"}, {"label": "Insect / disease problems", "count": 49, "group": "Tree Metric"}, {"label": "Work orders", "count": 46, "group": "Maintenance Needs"}, {"label": "Stumps", "count": 44, "group": "Maintenance Needs"}, {"label": "Tree risk assessment", "count": 42, "group": "Tree Metric"}, {"label": "Site conditions", "count": 32, "group": "Site Information"}, {"label": "Height of DBH measurement", "count": 28, "group": "Tree Metric"}, {"label": "Species code", "count": 24, "group": "Species Identification"}, {"label": "Potential debris volume", "count": 3, "group": "Maintenance Needs"}]}'></div>
+
+	<p>
+		Two details matter for anyone hoping to combine these datasets. Common names are
+		recorded far more often than scientific names, and species codes appear in under a
+		quarter of inventories &mdash; which makes cross-municipal comparison harder than it
+		needs to be. On the other hand, 82% now link records to GPS or GIS coordinates,
+		ahead of street addresses at 55%, giving trees a stable spatial reference that
+		survives renumbering and re-surveying.
+	</p>
+
+	<h2>What they are used for</h2>
+
+	<p>
+		Inventory use is overwhelmingly operational and planning-oriented. Assessment and
+		policy applications trail well behind.
+	</p>
+
+	<div class="census-chart" data-chart='{"n": 92, "series": [{"label": "Identifying planting locations", "count": 77, "group": "Planning"}, {"label": "Scheduling tree pruning", "count": 57, "group": "Operational"}, {"label": "Selecting species for planting", "count": 57, "group": "Planning"}, {"label": "Removing trees exceeding risk", "count": 47, "group": "Operational"}, {"label": "Create / update management plan", "count": 39, "group": "Planning"}, {"label": "Pruning for height clearance", "count": 38, "group": "Operational"}, {"label": "Calculating tree benefits", "count": 30, "group": "Assessment"}, {"label": "Policy and ordinance development", "count": 28, "group": "Policy"}, {"label": "Tree equity assessment", "count": 26, "group": "Assessment"}, {"label": "Assessing canopy cover change", "count": 26, "group": "Assessment"}, {"label": "Developing soil recommendations", "count": 7, "group": "Policy"}]}'></div>
+
+	<p>
+		Most municipalities put their inventory to several uses, averaging 4.7, but more
+		than one in five reported using it for a single purpose only. The number of uses
+		rose with budget and staffing, not with the mere existence of a budget.
+	</p>
+
+	<div class="pull">
+		<p>
+			Support for tree inventories needs to extend beyond creating them, to the
+			staff, maintenance and data-management capacity that keeps them current and
+			useful.
+		</p>
+	</div>
+
+	<h2>What this suggests</h2>
+
+	<p>
+		Inventories appear to follow a trajectory &mdash; adoption, development, maintenance,
+		use &mdash; with institutional capacity mattering more at each later stage. A budget
+		line is enough to get an inventory started; keeping it current and getting value
+		from it depends on the size of that budget and the people behind it.
+	</p>
+
+	<p>
+		The paper sets out four practices worth adopting: manage the data digitally, use
+		geographic coordinates as the primary spatial reference, record accepted scientific
+		names alongside common ones, and archive past inventory data rather than
+		overwriting it. Together these make an inventory useful not just for this year's
+		pruning schedule but for monitoring change over decades, and for comparison across
+		municipalities.
+	</p>
+
+	{% include share.html %}
+
+</main>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		CensusChart.initAll(".census-chart");
+	});
+</script>

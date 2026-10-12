@@ -1,0 +1,334 @@
+---
+layout: default
+title: Methods
+description: "How the 2025 Canadian Urban Forest Census was designed, who was eligible, how it was distributed, and how response bias was assessed."
+scripts:
+  - src: https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js
+  - src: https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js
+  - src: /assets/js/canada-map.js
+    defer: true
+---
+
+<div class="page-head">
+	<p class="standfirst">
+		This page discusses how the 2025 census was developed, who it was distributed to, and how we 
+		checked whether the 137 participating municipalities were reflective of the non-participating
+		municipalities.
+	</p>
+</div>
+
+<div class="paper">
+	<span class="kicker">Published methods paper</span>
+	<p>
+		Martin, A.J.F., Conway, T.M., Bacon, E.S., Almas, A., Hauer, R.J., King, G.,
+		Koeser, A.K., &amp; Ngan, A. (2026). Conducting a national urban forest management
+		survey &ndash; Insights from the 2025 Canadian Urban Forest Census.
+		<span class="journal">Urban Forestry &amp; Urban Greening</span>, 121, 129459.
+	</p>
+	<div class="links">
+		<a href="https://doi.org/10.1016/j.ufug.2026.129459" target="_blank" rel="noopener noreferrer">Read the paper (DOI)</a>
+	</div>
+	<p class="licence">
+		Open access under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.
+		This page summarises that paper; the article itself carries the full detail,
+		including the survey instruments and email scripts in its supplementary materials.
+	</p>
+</div>
+
+<main>
+
+	<p class="lede">
+		The census followed four steps: designing the survey instrument, identifying which
+		municipalities were eligible and finding their contact details, distributing the
+		survey, and evaluating how well it performed.
+	</p>
+
+	<h2>Designing the survey</h2>
+
+	<p>
+		We began from the long-form questionnaire used by the 2025 Urban and Community
+		Forest Census in the United States, adapting its questions to the Canadian
+		context by replacing American government programs, standards and terminology with
+		their Canadian equivalents. The draft ran to 92 questions.
+	</p>
+
+	<p>
+		Three municipal urban forestry managers &mdash; one each in British Columbia, Ontario
+		and Qu&eacute;bec &mdash; then reviewed it. Two changes came out of that review. First,
+		because responsibility for trees in natural areas frequently sits with a different
+		business unit, questions about all municipally owned trees were not comparable
+		between municipalities; we added 15 questions dealing specifically with street
+		trees. Second, the original budget section asked for more granularity than municipalities
+		typically record, itemising budgets and expenses that appear as a single line in an annual
+		report, so two questions were removed to simplify the budget questions.
+	</p>
+
+	<p>
+		Seven urban forestry researchers from across Canada then peer reviewed the
+		revised survey, and a final question on local research needs and priorities was
+		added, bringing it to 106 questions in eight sections: your community and staff,
+		operations profile, budget, tree management profile, inventory and assessment,
+		contractors, volunteers and partnerships, and concluding comments.
+	</p>
+
+	<p>
+		The survey was written in English and translated into French for Qu&eacute;bec and
+		New Brunswick, with the translation reviewed by a bilingual research assistant
+		and peer reviewed by a francophone researcher and a francophone practitioner.
+		It was delivered online through Qualtrics rather than on paper, which lowered
+		costs and allowed repeated contact without wasting printed surveys.
+	</p>
+
+	<h2>Who was eligible</h2>
+
+	<p>
+		Rather than setting our own population threshold, we adopted Statistics
+		Canada&rsquo;s definition of an urban area:
+	</p>
+
+	<figure class="definition">
+		<blockquote cite="https://www.statcan.gc.ca/en/concepts/index">
+			<p>
+				Urban areas are those continuously built-up areas having a minimum
+				population concentration of 1,000 persons and a population density of at
+				least 400 persons per square kilometer based on the previous census.
+			</p>
+		</blockquote>
+		<figcaption>
+			Statistics Canada, <cite>Urban and rural areas &mdash; &lsquo;Urban&rsquo; versus
+			&lsquo;rural&rsquo; variant</cite>, 2019
+		</figcaption>
+	</figure>
+
+	<p>
+		Applying that definition to all 5,161 census subdivisions from the 2021 Census
+		left 362 that qualified as urban. Of those, 16 were Indigenous communities, which
+		we excluded because they operate under governance structures different from those
+		of municipalities. That left 346 urban, non-Indigenous subdivisions.
+	</p>
+
+	<p>
+		Three of those 346 subdivisions needed reconciling against current municipal
+		boundaries:
+	</p>
+
+	<ol class="steps">
+		<li>
+			<strong>Turner Valley and Black Diamond, Alberta</strong> amalgamated into a
+			single new municipality, Diamond Valley, which still met the urban criteria
+			and was included as one.
+		</li>
+		<li>
+			<strong>Petit-Rocher, New Brunswick</strong> amalgamated with neighbouring
+			villages and unincorporated areas to form Belle-Baie. At 25.72 people per
+			square kilometre, the new municipality no longer met the density threshold
+			and was excluded.
+		</li>
+		<li>
+			<strong>Lloydminster</strong> sits on the Alberta&ndash;Saskatchewan border and
+			appears as two separate subdivisions, one in each province. Both met the urban
+			definition, and we merged them into the single municipality they are. For
+			analysis we treated it as Albertan, since its city hall moved from the
+			Saskatchewan side to the Alberta side in 2000.
+		</li>
+	</ol>
+
+	<p>
+		That produced a final list of <strong>343 eligible municipalities</strong>. They
+		are spread across all ten provinces, ranging from four each in Prince Edward
+		Island and Newfoundland and Labrador to 88 in Qu&eacute;bec. None of the three
+		territories contained a municipality meeting the urban definition.
+	</p>
+
+	<p>
+		The map below shows all 343. Choose a province to zoom in and hover any point
+		for the municipality name.
+	</p>
+
+</main>
+
+<div class="map-wide">
+	<div id="eligibility-map"></div>
+</div>
+
+<main>
+
+	<h2>Finding contacts</h2>
+
+	<p>
+		Every municipality received an email to its general inbox. Beyond that we
+		looked for named people, working down a hierarchy of sources:
+	</p>
+
+	<ol class="steps">
+		<li>Municipal websites, searching for forestry, parks, horticulture, environment or planning departments and their senior staff.</li>
+		<li>Google and LinkedIn, searching for urban foresters, arborists and parks staff by municipality.</li>
+		<li>Public sector salary disclosure records, where the province publishes them.</li>
+		<li>Phoning the municipality&rsquo;s information line and asking for the relevant department.</li>
+	</ol>
+
+	<p>
+		We prioritised individual work addresses, then departmental ones, then
+		administrative contacts, and capped contact at four addresses per municipality
+		to avoid flooding any one organisation.
+	</p>
+
+	<h2>Distributing the survey</h2>
+
+	<p>
+		The survey opened on 6 August 2025 and closed on 17 October. Three mass emails
+		went out &mdash; on 6 August, 5 September and 2 October &mdash; each subsequent one
+		only to municipalities that had not yet responded, and each reporting the
+		participation rate so far. Emails went out in the official language of the
+		province, with bilingual emails to New Brunswick.
+	</p>
+
+	<p>
+		Alongside email, each municipality received a single postcard carrying a QR
+		code, addressed to the department most closely tied to urban forestry. We also
+		posted bilingual notices to CANUFNET, the national urban forest mailing list run
+		by Tree Canada, and on LinkedIn.
+	</p>
+
+	<h2>What worked</h2>
+
+	<p>
+		Of the responses, 133 came through the emailed link and four through the postcard QR codes. 
+		Municipalities where we had found at least one individual work address had 3.57 times 
+		the odds of participating compared with those reached only through a general inbox; 
+		departmental addresses gave 2.69 times the odds. Adding more addresses per municipality 
+		made no significant difference &mdash; what mattered was reaching a specific person or
+		department, not sending more mail.
+	</p>
+
+	<p>
+		Notably, only about a third of the responses came from someone we had emailed
+		directly. The rest were completed by colleagues the survey had been forwarded to,
+		which suggests reaching the right department matters as much as reaching the
+		right individual.
+	</p>
+
+	<h2>Who answered</h2>
+
+	<p>
+		We asked each respondent for their job title. Just under 60% of the 137 responses
+		came from people in management roles, and 40% from staff in non-management
+		positions.
+	</p>
+
+	<div class="split">
+		<div><span class="n">59%</span><span class="l">management roles (n&nbsp;=&nbsp;81)</span></div>
+		<div class="alt"><span class="n">40%</span><span class="l">non-management roles (n&nbsp;=&nbsp;55)</span></div>
+	</div>
+
+	<p>
+		Manager was the single most common title, followed by director and supervisor. On
+		the non-management side, arborists and urban forestry technicians answered as often
+		as supervisors did.
+	</p>
+
+	<div class="chart" id="title-chart" data-n="137">
+		<div class="bar-row cc-hoverable" data-count="38" aria-label="Manager: 38 of 137 responses">
+			<span class="bar-label">Manager</span>
+			<div class="bar-track"><div class="bar-fill mgmt" style="width: 27.7%;"></div></div>
+			<span class="bar-value">28%</span>
+		</div>
+		<div class="bar-row cc-hoverable" data-count="18" aria-label="Director: 18 of 137 responses">
+			<span class="bar-label">Director</span>
+			<div class="bar-track"><div class="bar-fill mgmt" style="width: 13.1%;"></div></div>
+			<span class="bar-value">13%</span>
+		</div>
+		<div class="bar-row cc-hoverable" data-count="16" aria-label="Supervisor: 16 of 137 responses">
+			<span class="bar-label">Supervisor</span>
+			<div class="bar-track"><div class="bar-fill mgmt" style="width: 11.7%;"></div></div>
+			<span class="bar-value">12%</span>
+		</div>
+		<div class="bar-row cc-hoverable" data-count="16" aria-label="Arborist or technician: 16 of 137 responses">
+			<span class="bar-label">Arborist / technician</span>
+			<div class="bar-track"><div class="bar-fill nonmgmt" style="width: 11.7%;"></div></div>
+			<span class="bar-value">12%</span>
+		</div>
+		<div class="bar-row cc-hoverable" data-count="13" aria-label="Coordinator: 13 of 137 responses">
+			<span class="bar-label">Coordinator</span>
+			<div class="bar-track"><div class="bar-fill nonmgmt" style="width: 9.5%;"></div></div>
+			<span class="bar-value">9%</span>
+		</div>
+		<div class="bar-row cc-hoverable" data-count="11" aria-label="Foreperson: 11 of 137 responses">
+			<span class="bar-label">Foreperson</span>
+			<div class="bar-track"><div class="bar-fill nonmgmt" style="width: 8.0%;"></div></div>
+			<span class="bar-value">8%</span>
+		</div>
+		<div class="bar-row cc-hoverable" data-count="5" aria-label="Chief administrative officer: 5 of 137 responses">
+			<span class="bar-label">Chief administrative officer</span>
+			<div class="bar-track"><div class="bar-fill mgmt" style="width: 3.6%;"></div></div>
+			<span class="bar-value">4%</span>
+		</div>
+	</div>
+	<div class="chart-legend">
+		<span><i style="background: var(--green-dark);"></i> Management role</span>
+		<span><i style="background: var(--green-med);"></i> Non-management role</span>
+	</div>
+
+	<h2>Checking for bias</h2>
+
+	<p>
+		To see whether responding municipalities differ systematically from those that
+		did not respond, we compared the two groups on population, population density,
+		land area and canopy cover, with canopy cover derived from a one-metre global
+		canopy height model. Participating municipalities were significantly larger in 
+		both land area and population. Population density and canopy cover showed no 
+		significant difference. We also compared early and late responders, and found 
+		no significant differences on any of the four measures.
+	</p>
+
+	<p>
+		In short, larger municipalities were more likely to answer, but responders and
+		non-responders are not distinguishable by their population density or canopy cover.
+	</p>
+
+	{% include share.html %}
+
+
+</main>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		CanadaMap.init("#eligibility-map", { lang: "en" });
+	});
+</script>
+
+<script>
+	/* Hover a bar to see the number of responses behind it. */
+	document.addEventListener("DOMContentLoaded", function () {
+		var chart = document.getElementById("title-chart");
+		if (!chart) return;
+
+		var n = chart.getAttribute("data-n");
+		var tip = document.createElement("div");
+		tip.className = "cc-tip";
+		tip.style.display = "none";
+		document.body.appendChild(tip);
+
+		function show(row, x, y) {
+			tip.innerHTML = "<strong>" + row.getAttribute("data-count") + "</strong> of " + n + " responses";
+			tip.style.display = "block";
+			tip.style.left = x + "px";
+			tip.style.top = y + "px";
+		}
+
+		function hide() { tip.style.display = "none"; }
+
+		Array.prototype.forEach.call(chart.querySelectorAll(".bar-row"), function (row) {
+			row.setAttribute("tabindex", "0");
+			row.addEventListener("mousemove", function (e) { show(row, e.clientX, e.clientY); });
+			row.addEventListener("mouseleave", hide);
+			row.addEventListener("focus", function () {
+				var r = row.getBoundingClientRect();
+				show(row, r.right - 60, r.top + r.height / 2);
+			});
+			row.addEventListener("blur", hide);
+		});
+
+		window.addEventListener("scroll", hide, { passive: true });
+	});
+</script>

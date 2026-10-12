@@ -1,0 +1,52 @@
+---
+layout: default
+title: Benchmarking
+description: "Modelled estimates of urban forestry programs for all 343 urban municipalities in Canada. Under construction."
+scripts:
+  - src: /assets/js/city-search.js
+    defer: true
+---
+
+<div class="page-head">
+	<p class="standfirst">
+		Search any of the 343 urban municipalities in Canada to see a set of modelled
+		estimates of its urban forestry program. Models were developed based on survey
+		responses for staffing, budget, street tree work, and volunteer engagement.
+	</p>
+</div>
+
+<main>
+
+	<div class="citysearch" data-panel="#city-panel">
+		<label class="cs-label" for="city-input">Search for a municipality</label>
+
+		<div class="cs-field">
+			<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5 21 21"/></svg>
+			<input
+				id="city-input"
+				type="text"
+				role="combobox"
+				autocomplete="off"
+				autocapitalize="off"
+				spellcheck="false"
+				aria-expanded="false"
+				aria-controls="city-list"
+				aria-autocomplete="list"
+				placeholder="Loading the city list&hellip;"
+				disabled />
+		</div>
+
+		<ul class="cs-list" id="city-list" role="listbox" aria-label="Matching municipalities"></ul>
+
+		<p class="cs-status" role="status" aria-live="polite"></p>
+	</div>
+
+	<div class="city-panel" id="city-panel" tabindex="-1" hidden></div>
+
+</main>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		CitySearch.init(".citysearch");
+	});
+</script>

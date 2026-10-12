@@ -1,0 +1,59 @@
+---
+layout: default
+title: Ontario Arborist
+heading: "<em>Ontario Arborist</em>"
+description: "Plain-language summaries of the 2025 Canadian Urban Forest Census, published in Ontario Arborist magazine."
+scripts:
+  - src: /assets/js/pdf-viewer.js
+    defer: true
+---
+
+<div class="page-head">
+	<p class="standfirst">
+		Plain-language summaries of census findings, written for practitioners and published
+		in ISA Ontario&rsquo;s <em>Ontario Arborist</em> magazine. Each one draws on a
+		peer-reviewed journal article.
+	</p>
+</div>
+
+<main>
+
+	<h2>2026</h2>
+
+	<article class="pub has-cover">
+		<a class="pub-cover js-pdf" href="/articles/volunteering.pdf" target="_blank" rel="noopener" aria-label="Read Volunteerism in Canadian urban forestry (PDF)">
+			<img src="/articles/thumbs/ontario-arborist-2026-oct-nov.jpg" alt="" width="440" height="570" loading="lazy" />
+		</a>
+		<span class="pub-year">October / November 2026</span>
+		<h3><a class="js-pdf" href="/articles/volunteering.pdf" target="_blank" rel="noopener">Volunteerism in Canadian urban forestry: Results from the 2025 Canadian Urban Forest Census</a></h3>
+		<p class="pub-authors">Alexander Martin &amp; Tenley Conway</p>
+		<p class="pub-source"><span class="journal">Ontario Arborist</span>, October/November 2026, pp. 34&ndash;36</p>
+		<p class="pub-summary">
+			An estimated 105,000 volunteers give roughly 379,000 hours a year to municipal urban
+			forestry in Canada, mostly planting trees in parks and naturalized areas. Individual
+			residents and local environmental groups are the most common partners, and
+			municipalities with bigger budgets and more staff engage volunteers more.
+		</p>
+		<div class="pub-links">
+			<a class="js-pdf" href="/articles/volunteering.pdf" target="_blank" rel="noopener">Read (PDF)</a>
+			<a href="https://doi.org/10.1016/j.ufug.2026.129618" target="_blank" rel="noopener noreferrer">Journal article</a>
+			<a href="/volunteers.html">Findings on this site</a>
+		</div>
+	</article>
+
+	<p>
+		More summaries will be added here as they are published.
+	</p>
+
+	<dialog id="pdf-viewer" aria-label="PDF viewer">
+		<div class="viewer-bar">
+			<a id="pdf-download" href="#" download>Download PDF</a>
+			<button type="button" id="pdf-close">Close</button>
+		</div>
+		<iframe id="pdf-frame" title="PDF viewer"></iframe>
+	</dialog>
+
+	{% include share.html %}
+
+
+</main>
