@@ -1,0 +1,92 @@
+{%- comment -%}
+  Shared page template. Every page uses it via "layout: default".
+
+  Page settings (in each page's front matter, between the --- lines):
+    title        Page name, used in the browser tab and the hero heading.
+                 Leave out on the home page.
+    heading      Optional. Hero heading if it should differ from the title
+                 (e.g. with italics).
+    description  One-sentence summary for search engines and link previews.
+    tagline      Optional. Line under the hero heading (home page).
+    body_class   Optional. CSS class on <body> (the home page uses "home").
+    scripts      Optional. Extra scripts for this page, each with a src
+                 and optionally "defer: true".
+{%- endcomment -%}
+{%- if page.title -%}
+	{%- assign full_title = page.title | append: " | " | append: site.title -%}
+{%- else -%}
+	{%- assign full_title = site.title -%}
+{%- endif -%}
+{%- assign page_url = page.url | replace: "index.html", "" | prepend: site.url -%}
+{%- assign card_image = "/images/web-card.jpg" | prepend: site.url -%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>{{ full_title }}</title>
+<meta name="description" content="{{ page.description }}" />
+<link rel="canonical" href="{{ page_url }}" />
+
+<!-- Open Graph: used by LinkedIn, Facebook, Slack, WhatsApp -->
+<meta property="og:site_name" content="{{ site.title }}" />
+<meta property="og:title" content="{{ full_title }}" />
+<meta property="og:description" content="{{ page.description }}" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="{{ page_url }}" />
+<meta property="og:image" content="{{ card_image }}" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Street trees in a Canadian city" />
+<meta property="og:locale" content="en_CA" />
+
+<!-- X / Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="{{ full_title }}" />
+<meta name="twitter:description" content="{{ page.description }}" />
+<meta name="twitter:image" content="{{ card_image }}" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="/assets/css/styles.css" />
+<script src="/assets/js/nav.js" defer></script>
+{%- for script in page.scripts %}
+<script src="{{ script.src }}"{% if script.defer %} defer{% endif %}></script>
+{%- endfor %}
+</head>
+
+<body{% if page.body_class %} class="{{ page.body_class }}"{% endif %}>
+
+<header class="hero">
+	<img src="/images/TitleImage.jpg" alt="Street trees in a Canadian city" />
+
+	<div class="hero-text">
+		<h1>{{ page.heading | default: page.title | default: site.title }}</h1>
+		{%- if page.tagline %}
+		<p>{{ page.tagline }}</p>
+		{%- endif %}
+	</div>
+
+	<div class="credit">
+		Photo: <a href="https://unsplash.com/@sophienito" target="_blank" rel="noopener noreferrer">Sophie Nitoslawski</a>
+		on <a href="https://unsplash.com/" target="_blank" rel="noopener noreferrer">Unsplash</a>
+	</div>
+</header>
+
+{% include nav.html %}
+
+{{ content }}
+
+<footer>
+	<p>
+		The Canadian Urban Forest Census was supported through the Jack Kimmel Grant,
+		awarded by the Canadian TREE Fund to Dr. Tenley Conway. Survey methods were
+		approved by the University of Toronto Research Ethics Board (Protocol #48443).
+	</p>
+</footer>
+
+</body>
+</html>
