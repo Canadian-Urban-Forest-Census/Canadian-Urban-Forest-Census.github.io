@@ -1,0 +1,601 @@
+/* ==========================================================================
+   Canadian Urban Forest Census — city search
+   Type-ahead over the 343 urban municipalities in /data/cities.json.
+
+   Markup it expects (see benchmarking.html):
+     .citysearch > input#city-input + ul#city-list + #city-status
+   Selecting a city fires a "cityselect" event on the container with the
+   city record in event.detail, so the comparison panels can listen for it.
+   ========================================================================== */
+
+window.CitySearch = (function () {
+
+	var MAX_RESULTS = 8;
+
+	/* "Montréal" -> "montreal", so accents never block a match */
+	function norm(s) {
+		return s
+			.normalize("NFD")
+			.replace(/[\u0300-\u036f]/g, "")
+			.toLowerCase()
+			.replace(/[\u2019']/g, "'")
+			.trim();
+	}
+
+	function escapeHtml(s) {
+		return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+	}
+
+	/* Bold the part of the label the person actually typed */
+	function mark(label, start, len) {
+		if (start < 0) return escapeHtml(label);
+		return escapeHtml(label.slice(0, start)) +
+			"<mark>" + escapeHtml(label.slice(start, start + len)) + "</mark>" +
+			escapeHtml(label.slice(start + len));
+	}
+
+	function build(el) {
+		var input   = el.querySelector("input");
+		var listEl  = el.querySelector(".cs-list");
+		var statusEl = el.querySelector(".cs-status");
+		var panelEl = document.querySelector(el.getAttribute("data-panel") || "#city-panel");
+		var pageNote = document.querySelector(el.getAttribute("data-page-note") || "#page-note");
+
+		var cities = [];
+		var results = [];
+		var active = -1;      // index of the highlighted option
+		var selected = null;
+
+		/* ---------- data ---------- */
+
+		Promise.all([
+			fetch("/data/cities.json").then(function (r) {
+				if (!r.ok) throw new Error("HTTP " + r.status);
+				return r.json();
+			}),
+			fetch("/data/municipality_predictions.json").then(function (r) {
+				if (!r.ok) throw new Error("HTTP " + r.status);
+				return r.json();
+			})
+		])
+			.then(function (all) {
+				var rows = all[0];
+				var pred = {};
+				all[1].forEach(function (p) { pred[String(p.CSDUID)] = p; });
+
+				cities = rows.map(function (c, i) {
+					return {
+						i: i,
+						csduid: c.csduid,
+						name: c.name,
+						province: c.province,
+						province_en: c.province_en,
+						ecozone: c.ecozone_en,
+						lat: c.lat,
+						lng: c.lng,
+						label: c.name + ", " + c.province,
+						key: norm(c.name),
+						keyFull: norm(c.name + ", " + c.province),
+						data: pred[c.csduid] || null,
+						pop: pred[c.csduid] ? pred[c.csduid]["Population, 2021"] : 0
+					};
+				});
+
+				input.disabled = false;
+				input.placeholder = "Start typing a city name";
+			})
+			.catch(function () {
+				input.placeholder = "City list could not be loaded";
+				statusEl.textContent = "The city list could not be loaded. Please refresh the page.";
+				statusEl.classList.add("cs-error");
+			});
+
+		/* ---------- boundaries ----------
+		   /data/city_boundaries.topo.json, fetched lazily the first time a city
+		   is selected, then cached. Decoded here rather than with topojson.js so
+		   the page carries no external script dependency. */
+
+		var boundaries = null;      // csduid -> array of rings, each [[lng, lat], ...]
+		var boundaryLoad = null;
+
+		function decodeTopology(topo) {
+			var sc = topo.transform.scale, tr = topo.transform.translate;
+
+			var arcs = topo.arcs.map(function (a) {
+				var x = 0, y = 0;
+				return a.map(function (d) {
+					x += d[0]; y += d[1];
+					return [x * sc[0] + tr[0], y * sc[1] + tr[1]];
+				});
+			});
+
+			function ring(indexes) {
+				var pts = [];
+				indexes.forEach(function (i) {
+					var a = arcs[i < 0 ? ~i : i];
+					var seg = i < 0 ? a.slice().reverse() : a;
+					pts = pts.concat(pts.length ? seg.slice(1) : seg);
+				});
+				return pts;
+			}
+
+			var out = {};
+			topo.objects.csds.geometries.forEach(function (gm) {
+				var polys = gm.type === "Polygon" ? [gm.arcs] : gm.arcs;
+				out[gm.properties.csduid] = polys
+					.map(function (poly) {
+						return ring(poly[0]);        // outer ring only; holes are invisible at this size
+					})
+					/* Simplification collapsed a few offshore islands to a single
+					   repeated point. They draw nothing, but they still stretched
+					   the fitted bounding box, shrinking the city by up to 10px
+					   in places (Châteauguay, Boucherville, Parry Sound). */
+					.filter(function (r) { return r.length >= 4; });
+			});
+			return out;
+		}
+
+		function loadBoundaries() {
+			if (boundaryLoad) return boundaryLoad;
+			boundaryLoad = fetch("/data/city_boundaries.topo.json")
+				.then(function (r) {
+					if (!r.ok) throw new Error("HTTP " + r.status);
+					return r.json();
+				})
+				.then(function (topo) { boundaries = decodeTopology(topo); return boundaries; });
+			return boundaryLoad;
+		}
+
+		/* Fit the rings into the box. Longitude is scaled by cos(latitude) so
+		   shapes aren't stretched sideways.
+
+		   Returns { d, project } where d is the SVG path and project(lng, lat)
+		   maps a geographic point into the same box. The canopy raster is placed
+		   with project(), so it lands on the outline no matter what the fit
+		   worked out to be. */
+		function boundarySvg(rings, w, h, pad) {
+			var lat0 = 0, n = 0;
+			rings.forEach(function (r) {
+				r.forEach(function (p) { lat0 += p[1]; n++; });
+			});
+			lat0 = lat0 / n * Math.PI / 180;
+			var kx = Math.cos(lat0);
+
+			var minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+			rings.forEach(function (r) {
+				r.forEach(function (p) {
+					var x = p[0] * kx, y = -p[1];
+					if (x < minX) minX = x;
+					if (x > maxX) maxX = x;
+					if (y < minY) minY = y;
+					if (y > maxY) maxY = y;
+				});
+			});
+
+			var sx = (w - pad * 2) / (maxX - minX || 1);
+			var sy = (h - pad * 2) / (maxY - minY || 1);
+			var s = Math.min(sx, sy);
+			var ox = pad + ((w - pad * 2) - (maxX - minX) * s) / 2;
+			var oy = pad + ((h - pad * 2) - (maxY - minY) * s) / 2;
+
+			function project(lng, lat) {
+				return [(lng * kx - minX) * s + ox, (-lat - minY) * s + oy];
+			}
+
+			var d = rings.map(function (r) {
+				return "M" + r.map(function (p) {
+					return ((p[0] * kx - minX) * s + ox).toFixed(1) + " " +
+						((-p[1] - minY) * s + oy).toFixed(1);
+				}).join("L") + "Z";
+			}).join(" ");
+
+			return { d: d, project: project };
+		}
+
+		/* ---------- canopy rasters ----------
+		   /data/canopy/manifest.json is csduid -> { bbox: [w, s, e, n] }, the
+		   geographic extent of /data/canopy/<csduid>.png. The PNGs are plain
+		   lon/lat grids, so placing one is just projecting its two bbox corners
+		   with the fit above; preserveAspectRatio="none" absorbs the cos(lat)
+		   squeeze. A city missing from the manifest just draws the outline. */
+
+		var canopy = null;
+		var canopyLoad = null;
+
+		function loadCanopy() {
+			if (canopyLoad) return canopyLoad;
+			canopyLoad = fetch("/data/canopy/manifest.json")
+				.then(function (r) {
+					if (!r.ok) throw new Error("HTTP " + r.status);
+					return r.json();
+				})
+				.then(function (j) { canopy = j; return canopy; })
+				.catch(function () { canopy = {}; return canopy; });   // outline only
+			return canopyLoad;
+		}
+
+		function drawBoundary(c) {
+			var box = panelEl && panelEl.querySelector(".cp-shape");
+			if (!box) return;
+
+			Promise.all([loadBoundaries(), loadCanopy()]).then(function (both) {
+				var map = both[0], cov = both[1];
+				if (!panelEl || panelEl.hidden) return;
+				if (!selected || selected.csduid !== c.csduid) return;   // a newer city was picked
+				var rings = map[c.csduid];
+				if (!rings) return;
+
+				var W = 280, H = 220;
+				var fit = boundarySvg(rings, W, H, 5);
+
+				var img = "";
+				var m = cov && cov[c.csduid];
+
+				if (m && m.bbox) {
+					var tl = fit.project(m.bbox[0], m.bbox[3]);   // west, north
+					var br = fit.project(m.bbox[2], m.bbox[1]);   // east, south
+					img =
+						'<image class="cp-canopy" href="/data/canopy/' + c.csduid + '.png" ' +
+							/* xlink:href for Safari before 12 and other SVG 1.1 renderers */
+							'xlink:href="/data/canopy/' + c.csduid + '.png" ' +
+							'x="' + tl[0].toFixed(2) + '" y="' + tl[1].toFixed(2) + '" ' +
+							'width="' + (br[0] - tl[0]).toFixed(2) + '" ' +
+							'height="' + (br[1] - tl[1]).toFixed(2) + '" ' +
+							'preserveAspectRatio="none" />';
+				}
+
+				box.innerHTML =
+					'<svg viewBox="0 0 ' + W + ' ' + H + '" ' +
+						'xmlns:xlink="http://www.w3.org/1999/xlink" ' +
+						'role="img" aria-label="' +
+						(m ? 'Canopy cover in ' : 'Outline of ') + escapeHtml(c.name) + '">' +
+						img +
+						'<path d="' + fit.d + '" />' +
+					'</svg>';
+				box.classList.add("is-drawn");
+			}).catch(function () { /* leave the placeholder as it is */ });
+		}
+
+		/* ---------- matching ----------
+		   Two tiers: the name starts with the query, then a word inside the
+		   name starts with it (so "perrot" finds L'Île-Perrot). Matches in the
+		   middle of a word are ignored, or "Tor" would drag in Victoria.
+		   Alphabetical within each tier. */
+
+		function search(qRaw) {
+			var q = norm(qRaw);
+			if (!q) return [];
+
+			var tiers = [[], []];
+
+			cities.forEach(function (c) {
+				var at = c.key.indexOf(q);
+				var tier = -1;
+
+				if (at === 0) {
+					tier = 0;
+				} else if (at > 0 && /[\s\-'.]/.test(c.key.charAt(at - 1))) {
+					tier = 1;
+				} else if (c.keyFull.indexOf(q) === 0) {
+					tier = 0;                       // typed "winnipeg, mb"
+					at = 0;
+				}
+
+				if (tier > -1) tiers[tier].push({ c: c, at: at, len: q.length });
+			});
+
+			/* biggest first, so "Win" leads with Winnipeg, not Winkler */
+			function byPop(a, b) {
+				return (b.c.pop - a.c.pop) ||
+					a.c.name.localeCompare(b.c.name, "en") ||
+					a.c.province.localeCompare(b.c.province, "en");
+			}
+
+			return tiers[0].sort(byPop).concat(tiers[1].sort(byPop));
+		}
+
+		/* ---------- rendering ---------- */
+
+		function render() {
+			if (!results.length) {
+				listEl.innerHTML = "";
+				close();
+				return;
+			}
+
+			var shown = results.slice(0, MAX_RESULTS);
+
+			listEl.innerHTML = shown.map(function (r, idx) {
+				return '<li role="option" id="cs-opt-' + idx + '"' +
+					(idx === active ? ' class="on" aria-selected="true"' : ' aria-selected="false"') +
+					' data-idx="' + idx + '">' +
+					'<span class="cs-name">' + mark(r.c.name, r.at, r.len) + '</span>' +
+					'<span class="cs-prov">' + r.c.province + '</span>' +
+					'</li>';
+			}).join("");
+
+			el.classList.add("cs-open");
+			input.setAttribute("aria-expanded", "true");
+			setActiveDescendant();
+
+			var extra = results.length - shown.length;
+			statusEl.textContent = results.length + (results.length === 1 ? " city" : " cities") +
+				" found" + (extra > 0 ? ", showing the first " + MAX_RESULTS : "");
+		}
+
+		function close() {
+			el.classList.remove("cs-open");
+			input.setAttribute("aria-expanded", "false");
+			input.removeAttribute("aria-activedescendant");
+			active = -1;
+		}
+
+		function setActiveDescendant() {
+			if (active > -1) input.setAttribute("aria-activedescendant", "cs-opt-" + active);
+			else input.removeAttribute("aria-activedescendant");
+		}
+
+		function highlight(idx) {
+			var opts = listEl.querySelectorAll("li");
+			if (!opts.length) return;
+			if (active > -1 && opts[active]) {
+				opts[active].classList.remove("on");
+				opts[active].setAttribute("aria-selected", "false");
+			}
+			active = idx;
+			if (active > -1 && opts[active]) {
+				opts[active].classList.add("on");
+				opts[active].setAttribute("aria-selected", "true");
+				opts[active].scrollIntoView({ block: "nearest" });
+			}
+			setActiveDescendant();
+		}
+
+		/* ---------- selection ---------- */
+
+		function select(idx) {
+			var r = results[idx];
+			if (!r) return;
+			selected = r.c;
+			input.value = r.c.label;
+			results = [];
+			close();
+			statusEl.textContent = r.c.label + " selected";
+			showPanel(r.c);
+			el.dispatchEvent(new CustomEvent("cityselect", { detail: r.c, bubbles: true }));
+		}
+
+		/* ---------- number formatting ---------- */
+
+		function num(v) {
+			return (v === null || v === undefined) ? "\u2014"
+				: v.toLocaleString("en-CA");
+		}
+
+		function money(v) {
+			return (v === null || v === undefined) ? "\u2014"
+				: "$" + Math.round(v).toLocaleString("en-CA");
+		}
+
+		function one(v) {
+			return (v === null || v === undefined) ? "\u2014"
+				: v.toLocaleString("en-CA", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+		}
+
+		/* model outputs like 38.57 volunteers read as whole numbers */
+		function whole(v) {
+			return (v === null || v === undefined) ? "\u2014"
+				: Math.round(v).toLocaleString("en-CA");
+		}
+
+		/* 0.4295 -> "43%" */
+		function pct(v) {
+			return (v === null || v === undefined) ? "\u2014"
+				: Math.round(v * 100) + "%";
+		}
+
+		var TBD = "<em>TBD</em>";
+
+		/* a labelled figure row; note is optional small print under the label */
+		function row(label, value, note) {
+			return '<div class="cp-row">' +
+				'<span class="cp-row-label">' + label +
+					(note ? '<span class="cp-row-note">' + note + '</span>' : '') +
+				'</span>' +
+				'<span class="cp-row-value">' + value + '</span>' +
+				'</div>';
+		}
+
+		function section(title, rows, note) {
+			return '<section class="cp-section">' +
+				'<h3>' + title + '</h3>' +
+				(note ? '<p class="cp-section-note">' + note + '</p>' : '') +
+				'<div class="cp-rows">' + rows + '</div>' +
+				'</section>';
+		}
+
+		function showPanel(c) {
+			if (pageNote) pageNote.hidden = true;
+			if (!panelEl) return;
+
+			var d = c.data;
+			panelEl.hidden = false;
+
+			if (!d) {
+				panelEl.innerHTML = '<h2>' + escapeHtml(c.name) + '</h2>' +
+					'<p class="cs-meta">' + escapeHtml(c.province_en) + '</p>' +
+					'<p>No figures are available for this municipality yet.</p>';
+				panelEl.focus();
+				return;
+			}
+
+			var canopy = d.canopy_proportion_csd;      // already a percentage, 0-100
+
+			panelEl.innerHTML =
+				'<div class="cp-head">' +
+					'<h2>' + escapeHtml(c.name) + '</h2>' +
+					'<p class="cs-meta">' + escapeHtml(c.province_en) +
+						' &middot; ' + escapeHtml(c.ecozone) + ' ecozone</p>' +
+				'</div>' +
+
+				'<p class="cp-mock">Values are predictions produced by a national model, not ' +
+				escapeHtml(c.name) + '&rsquo;s own reported results. Individual municipalities ' +
+				'may differ substantially from them.</p>' +
+
+				/* ---- boundary + headline figures ---- */
+				'<div class="cp-top">' +
+					'<div class="cp-shape"><span>Loading outline&hellip;</span></div>' +
+					'<div class="cp-keys">' +
+
+						'<div class="cp-metric">' +
+							'<span class="cp-metric-label">Canopy Cover</span>' +
+							/* no padding here: the fill and its label both measure from the box's
+							   outer left edge, otherwise they collide at low canopy values */
+							'<div class="cp-metric-body cp-scale" style="padding:0;" role="img" aria-label="' +
+							    one(canopy) + ' percent, on a scale of 0 to 100 percent">' +
+							    '<div class="cp-scale-fill" style="width:' + canopy + '%;"></div>' +
+							    /* past ~72% there is no room to the right, so sit inside the green,
+							       anchored to the fill's own right edge */
+							    '<span class="cp-scale-value' + (canopy > 72 ? ' on-fill' : '') + '" style="' +
+							        (canopy > 72
+							            ? 'right:calc(' + (100 - canopy) + '% + 10px);'
+							            : 'left:calc(' + canopy + '% + 10px);') + '">' +
+							        one(canopy) + '%</span>' +
+							'</div>' +
+							'<span class="cp-metric-source">Global Canopy Height Map ' +
+								'(1&nbsp;m resolution), Meta and World Resources Institute</span>' +
+						'</div>' +
+
+						'<div class="cp-metric">' +
+							'<span class="cp-metric-label">Population</span>' +
+							'<div class="cp-metric-body">' +
+								'<span class="cp-metric-value">' + num(d["Population, 2021"]) + '</span>' +
+							'</div>' +
+							'<span class="cp-metric-source">2021 Census, Statistics Canada</span>' +
+						'</div>' +
+
+						'<div class="cp-metric">' +
+							'<span class="cp-metric-label">Population Density</span>' +
+							'<div class="cp-metric-body">' +
+								'<span class="cp-metric-value">' + one(d["Population Density (sq km)"]) +
+									'<span class="cp-metric-unit">people per km&sup2;</span></span>' +
+							'</div>' +
+							'<span class="cp-metric-source">2021 Census, Statistics Canada</span>' +
+						'</div>' +
+
+					'</div>' +
+				'</div>' +
+
+				/* ---- budget ---- */
+				section("Predicted Budget",
+					row("Urban forestry", money(d.predicted_total), "annual, raw") +
+					row("Urban forestry", money(d.predicted_adjusted_total), "annual, adequacy-adjusted") +
+					row("Street tree program", money(d.predicted_street), "annual, raw") +
+					row("Street tree program", money(d.predicted_adjusted_street), "annual, adequacy-adjusted") +
+					row("Street tree planting", money(d.predicted_planting), "annual, raw"),
+					"Urban forestry and street tree program budgets are shown both raw and " +
+					"adequacy-adjusted. Street tree planting is not adjusted.") +
+
+				/* ---- contractors ---- */
+				section("Predicted Contractor Use",
+					row("Contractor expense", money(d.predicted_contractor_expenditure), "annual") +
+					row("Share of contractor expense for street trees", pct(d.predicted_street_tree_share)) +
+					row("Street tree contractor expense", money(d.predicted_street_tree_expenditure), "annual")) +
+
+				/* ---- staff ---- */
+				section("Predicted Staffing Level",
+					row("Urban forestry staff", num(d.urban_forestry_staff), "people") +
+					row("Urban forestry FTE positions", one(d.urban_forestry_fte), "2,080-hour base") +
+					row("Street tree staff", num(d.street_tree_staff), "people") +
+					row("Street tree FTE positions", one(d.street_tree_fte), "2,080-hour base")) +
+
+				/* ---- volunteers ---- */
+				section("Predicted Volunteer Engagement",
+					row("Likelihood of working with volunteers", pct(d.predicted_pr_works_with_volunteers)) +
+					row("Volunteers", whole(d.predicted_volunteers), "per year") +
+					row("Volunteer hours", whole(d.predicted_volunteer_hours),
+						"per year, cumulative across all volunteers")) +
+
+				/* ---- street trees ---- */
+				'<section class="cp-section">' +
+					'<h3>Predicted Street Tree Work</h3>' +
+					'<p class="cp-section-note">' + TBD + '</p>' +
+				'</section>';
+
+			drawBoundary(c);
+			panelEl.focus();
+		}
+
+		function clearSelection() {
+			selected = null;
+			if (pageNote) pageNote.hidden = false;
+			if (panelEl) { panelEl.hidden = true; panelEl.innerHTML = ""; }
+		}
+
+		/* ---------- events ---------- */
+
+		input.addEventListener("input", function () {
+			if (selected && input.value !== selected.label) clearSelection();
+			results = search(input.value);
+			active = results.length ? 0 : -1;
+			render();
+			if (input.value.trim() && !results.length) {
+				statusEl.textContent = "No city matches \u201c" + input.value.trim() + "\u201d";
+			} else if (!input.value.trim()) {
+				statusEl.textContent = "";
+			}
+		});
+
+		input.addEventListener("keydown", function (e) {
+			var opts = listEl.querySelectorAll("li").length;
+
+			if (e.key === "ArrowDown") {
+				e.preventDefault();
+				if (!el.classList.contains("cs-open") && input.value) {
+					results = search(input.value); active = -1; render();
+				}
+				if (opts) highlight((active + 1) % opts);
+			} else if (e.key === "ArrowUp") {
+				e.preventDefault();
+				if (opts) highlight((active - 1 + opts) % opts);
+			} else if (e.key === "Enter") {
+				if (active > -1) { e.preventDefault(); select(active); }
+			} else if (e.key === "Escape") {
+				if (el.classList.contains("cs-open")) { close(); }
+				else { input.value = ""; clearSelection(); statusEl.textContent = ""; }
+			} else if (e.key === "Home" && el.classList.contains("cs-open")) {
+				e.preventDefault(); highlight(0);
+			} else if (e.key === "End" && el.classList.contains("cs-open")) {
+				e.preventDefault(); highlight(opts - 1);
+			}
+		});
+
+		/* mousedown, not click: it fires before the input loses focus */
+		listEl.addEventListener("mousedown", function (e) {
+			var li = e.target.closest("li");
+			if (!li) return;
+			e.preventDefault();
+			select(parseInt(li.getAttribute("data-idx"), 10));
+		});
+
+		listEl.addEventListener("mousemove", function (e) {
+			var li = e.target.closest("li");
+			if (li) highlight(parseInt(li.getAttribute("data-idx"), 10));
+		});
+
+		input.addEventListener("focus", function () {
+			if (input.value && !selected) { results = search(input.value); render(); }
+		});
+
+		document.addEventListener("click", function (e) {
+			if (!el.contains(e.target)) close();
+		});
+	}
+
+	function init(selector) {
+		var els = document.querySelectorAll(selector || ".citysearch");
+		Array.prototype.forEach.call(els, build);
+	}
+
+	return { init: init };
+})();
