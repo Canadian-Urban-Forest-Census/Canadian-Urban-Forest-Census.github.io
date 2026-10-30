@@ -1,31 +1,121 @@
 ---
 layout: default
 title: Contracting
-description: "How municipalities use contractors for planting, pruning, inspection and removal, and how that work is procured. Under construction."
+description: "Nearly all Canadian municipalities use contractors for tree care. What contractors do, and the standards and qualifications municipalities ask of them."
+scripts:
+  - src: /assets/js/charts.js
+    defer: true
 ---
 
 <div class="page-head">
 	<p class="standfirst">
-		How municipalities use contractors for planting, pruning, inspection and removal, and how that work is procured.
+		Contractors carry out a large share of the tree care in Canadian municipalities,
+		from planting to pruning and removal. The 2025 Canadian Urban Forest Census asked
+		municipalities whether they use contractors, what work they hire them for, and
+		what standards and qualifications they expect contractors to bring.
 	</p>
 </div>
 
 <main>
 
-	<div class="construction" id="page-note">
-		<span class="kicker">Under construction</span>
-		<img class="construction-gif" src="/images/under-construction.gif" width="576" height="274"
-			alt="Animation of two lumberjacks building a tree: stacking logs, gluing on branches and adding leaves." />
+	<p class="lede">
+		Nearly all participating municipalities (97.1%) use paid contractors for at least
+		some of their arboriculture work, and 87.1% of those use contractors for street
+		trees. Removal and pruning are the most commonly contracted activities, while
+		just over half of municipalities contract street tree planting.
+	</p>
+
+	<div class="figures">
+		<div class="figure"><span class="n">97%</span><span class="l">use contractors for some arboriculture work</span></div>
+		<div class="figure"><span class="n">87%</span><span class="l">of those contract street tree work</span></div>
+		<div class="figure"><span class="n">92%</span><span class="l">of street tree contractor users contract removals</span></div>
+		<!-- UPDATE after rerun: ISA Certified Arborist preference (currently 97 of 113) -->
+		<div class="figure"><span class="n">86%</span><span class="l">give hiring preference to ISA Certified Arborists</span></div>
+	</div>
+
+	<h2>Who uses contractors</h2>
+
+	<p>
+		Of the 136 municipalities that answered the question, 132 (97.1%) use paid
+		contractors for at least some arboriculture activities, such as tree planting,
+		pruning, or removal. Among those, 115 (87.1%) use contractors for work on street
+		trees specifically. Contracting is therefore close to universal in Canadian urban
+		forestry, and the more useful questions are what work is contracted and what is
+		expected of the contractors who do it.
+	</p>
+
+	<h2>What contractors do</h2>
+
+	<p>
+		Among municipalities that contract street tree work, removal (92.2%) and pruning
+		(84.3%) were by far the most commonly contracted activities. Just over half
+		(58.3%) contracted tree planting, and just under half (47.0%) contracted plant
+		health care, such as pesticide injections or spraying. Few municipalities (7.0%)
+		used contractors for education and outreach.
+	</p>
+
+	<div class="census-chart" data-chart='{"n": 115, "decimals": 0, "series": [{"label": "Tree removal", "count": 106}, {"label": "Tree pruning", "count": 97}, {"label": "Tree planting", "count": 67}, {"label": "Plant health care", "count": 54}, {"label": "Education and outreach", "count": 8}]}'></div>
+
+	<p>
+		Removal and pruning often involve large trees, specialized equipment, and
+		significant risk, which may explain why they are contracted so widely. Larger
+		municipalities were more likely to contract tree planting, and municipalities
+		that planted more street trees were also more likely to contract that work.
+	</p>
+
+	<h2>What municipalities ask of contractors</h2>
+
+	<!-- UPDATE after rerun: percentages in this section come from the Q8.7 counts -->
+	<p>
+		Municipalities can set formal requirements for contracted work, such as following
+		industry standards, and can give hiring preference to contractors with particular
+		qualifications. Hiring preference for ISA Certified Arborists was by far the most
+		common expectation, reported by 85.8% of municipalities that use contractors. Formal
+		requirements to follow a work standard were less common: 41.6% required ISA Best
+		Management Practices and 35.4% required ANSI A300 Standards.
+	</p>
+
+	<p>
+		Use the buttons to compare municipalities that contract each activity. The black
+		tick on each bar marks the value for all contractor users.
+	</p>
+
+	<div class="census-chart" data-chart='{"decimals": 0, "viewLabel": "Municipalities in this group", "reference": 0, "referenceLabel": "All contractor users", "note": "Municipalities could select more than one requirement and preference. BNQ 0605-100 and 200 are Québec standards, so that bar uses Québec municipalities only.", "views": [{"name": "All contractor users", "n": 113, "series": [{"label": "ISA Best Management Practices", "count": 47, "group": "Requirement"}, {"label": "ANSI A300 Standards", "count": 40, "group": "Requirement"}, {"label": "Canadian Nursery Stock Standard", "count": 32, "group": "Requirement"}, {"label": "BNQ 0605-100 and 200 (Québec only)", "count": 12, "n": 20, "group": "Requirement"}, {"label": "ISA Certified Arborists", "count": 97, "group": "Hiring preference"}, {"label": "ISA TRAQ holders", "count": 42, "group": "Hiring preference"}]}, {"name": "Planting", "n": 65, "series": [{"label": "ISA Best Management Practices", "count": 32, "group": "Requirement"}, {"label": "ANSI A300 Standards", "count": 27, "group": "Requirement"}, {"label": "Canadian Nursery Stock Standard", "count": 27, "group": "Requirement"}, {"label": "BNQ 0605-100 and 200 (Québec only)", "count": 12, "n": 16, "group": "Requirement"}, {"label": "ISA Certified Arborists", "count": 54, "group": "Hiring preference"}, {"label": "ISA TRAQ holders", "count": 21, "group": "Hiring preference"}]}, {"name": "Pruning", "n": 88, "series": [{"label": "ISA Best Management Practices", "count": 43, "group": "Requirement"}, {"label": "ANSI A300 Standards", "count": 36, "group": "Requirement"}, {"label": "Canadian Nursery Stock Standard", "count": 25, "group": "Requirement"}, {"label": "BNQ 0605-100 and 200 (Québec only)", "count": 10, "n": 17, "group": "Requirement"}, {"label": "ISA Certified Arborists", "count": 80, "group": "Hiring preference"}, {"label": "ISA TRAQ holders", "count": 36, "group": "Hiring preference"}]}, {"name": "Removal", "n": 102, "series": [{"label": "ISA Best Management Practices", "count": 45, "group": "Requirement"}, {"label": "ANSI A300 Standards", "count": 38, "group": "Requirement"}, {"label": "Canadian Nursery Stock Standard", "count": 25, "group": "Requirement"}, {"label": "BNQ 0605-100 and 200 (Québec only)", "count": 9, "n": 16, "group": "Requirement"}, {"label": "ISA Certified Arborists", "count": 91, "group": "Hiring preference"}, {"label": "ISA TRAQ holders", "count": 41, "group": "Hiring preference"}]}, {"name": "Plant health care", "n": 52, "series": [{"label": "ISA Best Management Practices", "count": 30, "group": "Requirement"}, {"label": "ANSI A300 Standards", "count": 24, "group": "Requirement"}, {"label": "Canadian Nursery Stock Standard", "count": 20, "group": "Requirement"}, {"label": "BNQ 0605-100 and 200 (Québec only)", "count": 8, "n": 10, "group": "Requirement"}, {"label": "ISA Certified Arborists", "count": 45, "group": "Hiring preference"}, {"label": "ISA TRAQ holders", "count": 22, "group": "Hiring preference"}]}]}'></div>
+
+	<h2>Matching standards to the work</h2>
+
+	<!-- UPDATE after rerun: planting and Québec figures -->
+	<p>
+		Planting-specific standards followed the planting work. Among municipalities that
+		contract tree planting, 41.5% required contractors to use the Canadian Nursery Stock
+		Standard, which sets specifications for the quality of nursery trees. In Québec,
+		where the BNQ 0605-100 and 200 standards cover landscaping and tree maintenance work,
+		every municipality that required BNQ standards also contracted tree planting.
+	</p>
+
+	<p>
+		General work standards, such as ISA Best Management Practices and ANSI A300, were
+		required more often by municipalities that contract plant health care, which tend to
+		contract a wider range of work overall. This suggests that some municipalities set
+		more formal expectations across all of their contracts, rather than tailoring
+		requirements to each activity.
+	</p>
+
+	<div class="pull">
 		<p>
-			The Contracting results from the 2025 census are still being put together.
-			Check back soon.
-		</p>
-		<p>
-			In the meantime, the <a href="/methods.html">Methods</a> page explains how the
-			census was run, and the results published so far are on the
-			<a href="/tree-inventories.html">Tree Inventories</a> and
-			<a href="/volunteers.html">Volunteers</a> pages.
+			Contract specifications are one of the main ways a municipality can shape the
+			quality of contracted tree care. Naming the relevant standard for each type of
+			work, such as a nursery stock standard for planting, makes those expectations
+			explicit.
 		</p>
 	</div>
 
+	{% include share.html %}
+
 </main>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		CensusChart.initAll(".census-chart");
+	});
+</script>
