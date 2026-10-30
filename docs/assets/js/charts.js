@@ -16,6 +16,8 @@
        "viewLabel" (e.g. "Municipalities contracting") prefixes the n shown.
      - "reference": index of a view whose values are drawn as a thin tick on the
        other views' bars, for comparison; "referenceLabel" names it in the key.
+     - "sort": "group" starts a grouped chart sorted by group (its button listed
+       first); the default is "value" (Rank first).
    ========================================================================== */
 
 window.CensusChart = (function () {
@@ -86,7 +88,7 @@ window.CensusChart = (function () {
 
 		var state = {
 			view: 0,                     // index into views
-			sort: "value",               // "value" | "group"
+			sort: (cfg.sort === "group" && groups.length > 1) ? "group" : "value",  // "value" | "group"
 			active: groups.slice()       // visible groups
 		};
 
@@ -124,10 +126,11 @@ window.CensusChart = (function () {
 		}
 
 		if (groups.length > 1) {
+			var rankBtn = '<button data-sort="value"' + (state.sort === "value" ? ' class="on"' : '') + '>Rank</button>';
+			var groupBtn = '<button data-sort="group"' + (state.sort === "group" ? ' class="on"' : '') + '>Group</button>';
 			html += '<div class="cc-toggles">' +
 				'<div class="cc-seg cc-sort">' +
-				'<button data-sort="value" class="on">Rank</button>' +
-				'<button data-sort="group">Group</button>' +
+				(state.sort === "group" ? groupBtn + rankBtn : rankBtn + groupBtn) +
 				'</div></div>';
 		}
 		html += '</div>';
