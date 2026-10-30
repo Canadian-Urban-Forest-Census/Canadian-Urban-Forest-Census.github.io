@@ -7,6 +7,15 @@
    Each series item: { "label": "...", "count": 99, "group": "Site Information" }
    Percentages are computed from count / n, so only the counts are stored.
    Bars are always drawn on a 0-100% scale: a bar's length is its percentage.
+
+   Optional:
+     - An item can carry its own "n" (e.g. a Quebec-only option); its percentage
+       and tooltip then use that n instead of the chart's.
+     - "views": [{ "name": "All", "n": 113, "series": [...], "note": "..." }, ...]
+       replaces "n"/"series" with a row of buttons that switch between views.
+       "viewLabel" (e.g. "Municipalities contracting") prefixes the n shown.
+     - "reference": index of a view whose values are drawn as a thin tick on the
+       other views' bars, for comparison; "referenceLabel" names it in the key.
    ========================================================================== */
 
 window.CensusChart = (function () {
@@ -26,6 +35,8 @@ window.CensusChart = (function () {
 		"Private":                "#c4562a",
 		"Field-based":            "#0D534D",
 		"Remote":                 "#00A189",
+		"Requirement":            "#0D534D",
+		"Hiring preference":      "#00A189",
 		"Other":                  "#9aa39a"
 	};
 
@@ -62,21 +73,45 @@ window.CensusChart = (function () {
 			return;
 		}
 
-		var n = cfg.n;
+		var views = cfg.views || [{ name: "", n: cfg.n, series: cfg.series, note: cfg.note }];
+		var hasViews = !!cfg.views && views.length > 1;
+		var reference = (cfg.reference === undefined) ? null : cfg.reference;
 		var decimals = (cfg.decimals === undefined) ? 1 : cfg.decimals;
-		var series = cfg.series.slice();
 		var groups = [];
-		series.forEach(function (d) {
-			if (d.group && groups.indexOf(d.group) === -1) groups.push(d.group);
+		views.forEach(function (v) {
+			v.series.forEach(function (d) {
+				if (d.group && groups.indexOf(d.group) === -1) groups.push(d.group);
+			});
 		});
 
 		var state = {
+			view: 0,                     // index into views
 			sort: "value",               // "value" | "group"
 			active: groups.slice()       // visible groups
 		};
 
+		function itemN(d, view) { return d.n || view.n; }
+
+		function referenceValue(label) {
+			if (reference === null || reference === state.view || !views[reference]) return null;
+			var ref = views[reference];
+			for (var i = 0; i < ref.series.length; i++) {
+				if (ref.series[i].label === label) return pct(ref.series[i].count, itemN(ref.series[i], ref));
+			}
+			return null;
+		}
+
 		// ---------- markup ----------
-		var html = '<div class="cc-controls">';
+		var html = '';
+		if (hasViews) {
+			html += '<div class="cc-controls"><div class="cc-seg cc-view" role="group" aria-label="Choose a group">';
+			views.forEach(function (v, i) {
+				html += '<button type="button" data-view="' + i + '"' + (i === 0 ? ' class="on" aria-pressed="true"' : ' aria-pressed="false"') +
+					'>' + v.name + '</button>';
+			});
+			html += '</div></div>';
+		}
+		html += '<div class="cc-controls">';
 
 		if (groups.length > 1) {
 			html += '<div class="cc-filters">';
@@ -97,27 +132,41 @@ window.CensusChart = (function () {
 		}
 		html += '</div>';
 
+		if (hasViews) html += '<p class="cc-n"></p>';
 		html += '<div class="cc-rows"></div>';
-		if (cfg.note) html += '<p class="chart-note">' + cfg.note + '</p>';
+		if (reference !== null && hasViews) {
+			html += '<p class="chart-note cc-key" hidden><span class="cc-ref-key"></span>' +
+				(cfg.referenceLabel || views[reference].name) + '</p>';
+		}
+		html += '<p class="chart-note cc-note"></p>';
 
 		el.innerHTML = html;
 
 		var rowsEl = el.querySelector(".cc-rows");
+		var nEl = el.querySelector(".cc-n");
+		var keyEl = el.querySelector(".cc-key");
+		var noteEl = el.querySelector(".cc-note");
 
 		// ---------- render ----------
 		function render() {
-			var shown = series.filter(function (d) {
+			var view = views[state.view];
+			var shown = view.series.filter(function (d) {
 				return !d.group || state.active.indexOf(d.group) !== -1;
 			});
+			if (nEl) nEl.innerHTML = (cfg.viewLabel ? cfg.viewLabel + ": " : "") + "n = " + view.n;
+			if (keyEl) keyEl.hidden = (state.view === reference);
+			var note = view.note || cfg.note || "";
+			noteEl.innerHTML = note;
+			noteEl.hidden = !note;
 
 			if (state.sort === "group" && groups.length > 1) {
 				shown.sort(function (a, b) {
 					var ga = groups.indexOf(a.group), gb = groups.indexOf(b.group);
 					if (ga !== gb) return ga - gb;
-					return b.count - a.count;
+					return pct(b.count, itemN(b, view)) - pct(a.count, itemN(a, view));
 				});
 			} else {
-				shown.sort(function (a, b) { return b.count - a.count; });
+				shown.sort(function (a, b) { return pct(b.count, itemN(b, view)) - pct(a.count, itemN(a, view)); });
 			}
 
 			if (!shown.length) {
@@ -126,16 +175,22 @@ window.CensusChart = (function () {
 			}
 
 			rowsEl.innerHTML = shown.map(function (d) {
-				var value = pct(d.count, n);
+				var dn = itemN(d, view);
+				var value = pct(d.count, dn);
 				/* bars are drawn on a fixed 0-100% scale, so a full-width bar means 100% */
 				var width = Math.min(value, 100);
 				var colour = GROUP_COLOURS[d.group] || "#00A189";
+				var ref = referenceValue(d.label);
+				var refMark = (ref === null) ? "" :
+					'<span class="cc-ref" style="left:' + Math.min(ref, 100).toFixed(1) + '%"></span>';
 				return '<div class="bar-row cc-hoverable"' +
 						' data-count="' + d.count + '"' +
+						' data-n="' + dn + '"' +
+						(ref === null ? "" : ' data-ref="' + fmtPct(ref, decimals) + '"') +
 						' data-label="' + d.label.replace(/"/g, "&quot;") + '">' +
 					'<span class="bar-label">' + d.label + '</span>' +
 					'<div class="bar-track"><div class="bar-fill" style="width:' + width.toFixed(1) +
-						'%;background:' + colour + ';"></div></div>' +
+						'%;background:' + colour + ';"></div>' + refMark + '</div>' +
 					'<span class="bar-value">' + fmtPct(value, decimals) + '%</span>' +
 					'</div>';
 			}).join("");
@@ -148,7 +203,10 @@ window.CensusChart = (function () {
 			Array.prototype.forEach.call(rowsEl.querySelectorAll(".cc-hoverable"), function (row) {
 				row.addEventListener("mousemove", function (e) {
 					var count = row.getAttribute("data-count");
-					tip.innerHTML = "<strong>" + count + "</strong> of " + n + " municipalities";
+					var rowN = row.getAttribute("data-n");
+					var refText = row.getAttribute("data-ref");
+					tip.innerHTML = "<strong>" + count + "</strong> of " + rowN + " municipalities" +
+						(refText === null ? "" : "<br>" + (cfg.referenceLabel || views[reference].name) + ": " + refText + "%");
 					tip.style.display = "block";
 					tip.style.left = e.clientX + "px";
 					tip.style.top = e.clientY + "px";
@@ -164,6 +222,19 @@ window.CensusChart = (function () {
 				var i = state.active.indexOf(g);
 				if (i === -1) { state.active.push(g); btn.classList.add("on"); }
 				else if (state.active.length > 1) { state.active.splice(i, 1); btn.classList.remove("on"); }
+				render();
+			});
+		});
+
+		Array.prototype.forEach.call(el.querySelectorAll(".cc-view button"), function (btn) {
+			btn.addEventListener("click", function () {
+				state.view = parseInt(btn.getAttribute("data-view"), 10);
+				Array.prototype.forEach.call(el.querySelectorAll(".cc-view button"), function (b) {
+					b.classList.remove("on");
+					b.setAttribute("aria-pressed", "false");
+				});
+				btn.classList.add("on");
+				btn.setAttribute("aria-pressed", "true");
 				render();
 			});
 		});
