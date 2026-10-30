@@ -1160,6 +1160,38 @@ footer a { color: var(--gray70); }
 
 .cc-seg button.on { background: var(--green-dark); color: var(--white); }
 
+/* view selector (charts with "views"): a row of buttons that wraps on narrow screens */
+.cc-view { flex-wrap: wrap; }
+.cc-view button + button { border-left: 1px solid var(--gray); }
+
+.cc-n {
+	font-family: "Open Sans", sans-serif;
+	font-size: 12px;
+	color: var(--gray70);
+	margin: -4px 0 10px 0;
+}
+
+/* reference tick: the comparison view's value drawn across the bar */
+.cc-rows .bar-track { position: relative; }
+
+.cc-ref {
+	position: absolute;
+	top: -3px;
+	bottom: -3px;
+	width: 2px;
+	margin-left: -1px;
+	background: var(--gray90);
+}
+
+.cc-ref-key {
+	display: inline-block;
+	width: 2px;
+	height: 12px;
+	margin-right: 7px;
+	vertical-align: -2px;
+	background: var(--gray90);
+}
+
 /* wider label column so every label sits on a single line */
 .cc-rows .bar-row {
 	grid-template-columns: 268px 1fr 44px;
