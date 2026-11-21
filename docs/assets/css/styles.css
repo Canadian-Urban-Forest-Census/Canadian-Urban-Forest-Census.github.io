@@ -257,6 +257,10 @@ a.soon { cursor: pointer; }
 	margin: 0;
 }
 
+.page-head .standfirst + .standfirst {
+    margin-top: 1.5rem;
+}
+
 /* ---------- body ---------- */
 
 main {
