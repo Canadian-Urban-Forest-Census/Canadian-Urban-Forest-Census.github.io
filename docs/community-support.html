@@ -1,31 +1,192 @@
 ---
 layout: default
 title: Community Support
-description: "Partnerships with community groups, public engagement, and the support residents give to municipal tree care. Under construction."
+description: "Most Canadian municipalities educate residents about trees, but only a third regularly engage them. Perceived support for street trees outpaces understanding of their value."
+scripts:
+  - src: /assets/js/charts.js
+    defer: true
+  - src: /assets/js/likert.js
+    defer: true
 ---
 
 <div class="page-head">
 	<p class="standfirst">
-		Partnerships with community groups, public engagement, and the support residents give to municipal tree care.
+		Most urban trees grow on private land, so municipal urban forestry depends on
+		residents, landowners, and partners as much as on municipal staff. The 2025 Canadian
+		Urban Forest Census asked municipalities how they educate and engage residents, what
+		help they give with private trees, and how much support and understanding they see
+		for urban trees in their communities.
 	</p>
 </div>
 
+{%- comment -%}
+  Paper box: remove this comment wrapper once the manuscript is published,
+  and fill in the journal, volume and DOI.
+
+<div class="paper">
+	<span class="kicker">Published findings</span>
+	<p>
+		Martin, A.J.F., Beattie, L., Conway, T.M., King, G., &amp; Lam, J. (2026).
+		Supporting urban tree protection and stewardship across public and private lands:
+		municipal approaches and challenges in Canada. <span class="journal">Journal</span>, vol, pages.
+	</p>
+	<div class="links">
+		<a href="https://doi.org/DOI" target="_blank" rel="noopener noreferrer">Read the paper (DOI)</a>
+	</div>
+</div>
+{%- endcomment %}
+
 <main>
 
-	<div class="construction" id="page-note">
-		<span class="kicker">Under construction</span>
-		<img class="construction-gif" src="/images/under-construction.gif" width="576" height="274"
-			alt="Animation of two lumberjacks building a tree: stacking logs, gluing on branches and adding leaves." />
+	<p class="lede">
+		Nearly three-quarters of participating municipalities (72.3%) provide some form of
+		tree education to residents, and two-thirds (67.2%) offer technical or financial
+		help with private trees. But only a third (34.3%) agree that they regularly give
+		residents opportunities to take part in urban forest planning, and that engagement,
+		more than education, is what goes with stronger community support.
+	</p>
+
+	<div class="figures">
+		<div class="figure"><span class="n">72.3%</span><span class="l">provide some form of tree education to residents</span></div>
+		<div class="figure"><span class="n">34.3%</span><span class="l">agree they regularly provide resident engagement opportunities</span></div>
+		<div class="figure"><span class="n">67.2%</span><span class="l">offer technical or financial assistance with trees</span></div>
+		<div class="figure"><span class="n">55.2%</span><span class="l">agree residents understand the value of street trees</span></div>
+	</div>
+
+	<h2>Education</h2>
+
+	<p>
+		Maintaining a webpage dedicated to urban forestry was the most common form of
+		education, reported by 45.0% of municipalities. Somewhat fewer provided residents
+		with general tree education (42.7%) or education about the value of trees (36.1%),
+		and about one in five (21.4%) provided tree education to K&ndash;12 students.
+		Larger municipalities offered more types of education: each doubling in population
+		was associated with about 52% higher odds of offering more activities.
+	</p>
+
+	<div class="census-chart" data-chart='{"n": 131, "decimals": 1, "note": "Each bar uses the municipalities that answered that question (117 to 133).", "series": [{"label": "Maintains an urban forestry webpage", "count": 59}, {"label": "General tree education for residents", "count": 50, "n": 117}, {"label": "Education about the value of trees", "count": 48, "n": 133}, {"label": "Tree education for K-12 students", "count": 25, "n": 117}]}'></div>
+
+	<h2>Engagement</h2>
+
+	<p>
+		Engagement goes beyond providing information: it gives residents a say in how urban
+		forestry objectives are set and carried out. Municipalities were split on whether
+		they regularly provide these opportunities. About a third agreed (34.3%), a third
+		disagreed (35.0%), and the rest were neutral.
+	</p>
+
+	<div class="census-likert" data-chart='{"labelWidth": "220px", "groups": [{"rows": [{"label": "We regularly provide opportunities for resident engagement in urban forest planning", "n": 137, "counts": [8, 40, 42, 40, 7]}]}]}'></div>
+
+	<h2>Support versus understanding</h2>
+
+	<p>
+		Respondents saw broad support for street trees across their communities. More than
+		four in five agreed that street trees were supported by residents (81.8%), elected
+		officials (83.9%), and municipal administration (86.9%), and 72.1% said the same of
+		operations staff.
+	</p>
+
+	<p>
+		Understanding of what street trees are worth lagged behind that support. The gap was
+		widest for residents: 81.8% of respondents agreed that residents support street
+		trees, but only 55.2% agreed that residents understand their value. The gap was
+		smaller for elected officials (83.9% versus 65.7%) and administration (86.9% versus
+		73.5%), and all three differences were statistically significant. Only among
+		operations staff were support and understanding about the same (72.1% versus 73.7%).
+	</p>
+
+	<div class="census-likert" data-chart='{"labelWidth": "150px", "note": "Agreement that street trees are supported by, and that their value is understood by, each group (n = 134 to 137). Numbers inside the bars are percentages; the totals either side combine the two disagree and the two agree answers. Hover over a segment for the count.", "groups": [{"label": "Residents", "rows": [{"label": "Support street trees", "n": 137, "counts": [0, 2, 23, 80, 32]}, {"label": "Understand their value", "n": 134, "counts": [3, 14, 43, 64, 10]}]}, {"label": "Elected officials", "rows": [{"label": "Support street trees", "n": 137, "counts": [0, 2, 20, 68, 47]}, {"label": "Understand their value", "n": 137, "counts": [1, 11, 35, 57, 33]}]}, {"label": "Municipal administration", "rows": [{"label": "Support street trees", "n": 137, "counts": [0, 2, 16, 64, 55]}, {"label": "Understand their value", "n": 136, "counts": [1, 8, 27, 64, 36]}]}, {"label": "Operations staff", "rows": [{"label": "Support street trees", "n": 136, "counts": [0, 10, 28, 49, 49]}, {"label": "Understand their value", "n": 137, "counts": [2, 9, 25, 58, 43]}]}]}'></div>
+
+	<h2>Support for urban forestry goals</h2>
+
+	<p>
+		Support for the municipality&rsquo;s own urban forestry goals was weaker and varied
+		more between groups. Just over half of respondents agreed that the private tree
+		care industry (57.4%) and residents (52.6%) support these goals, and 46.7% agreed
+		that neighbouring municipalities and regional groups cooperate to support them.
+		Large landowners stood out: only 19.0% agreed that they support municipal urban
+		forestry goals. Within municipalities themselves, only 22.6% agreed that all
+		business units work toward common urban forestry goals.
+	</p>
+
+	<p>
+		Respondents generally viewed the private tree care industry positively. Besides
+		supporting municipal goals, more than half of respondents (54.4%) agreed that it
+		operates with high professional standards, while 16.2% disagreed.
+	</p>
+
+	<div class="census-likert" data-chart='{"labelWidth": "220px", "note": "Agreement with each statement (n = 136 to 137). Hover over a segment for the count.", "groups": [{"rows": [{"label": "Private tree care industry supports municipal urban forestry goals", "n": 136, "counts": [2, 19, 37, 65, 13]}, {"label": "Private tree care industry operates with high professional standards", "n": 136, "counts": [1, 21, 40, 62, 12]}, {"label": "Residents support urban forest goals", "n": 137, "counts": [2, 11, 52, 67, 5]}, {"label": "Neighbouring municipalities and regional groups cooperate on urban forest goals", "n": 137, "counts": [3, 15, 55, 51, 13]}, {"label": "All city business units work with common urban forestry goals", "n": 137, "counts": [11, 42, 53, 29, 2]}, {"label": "Large landowners support urban forest goals", "n": 137, "counts": [4, 36, 71, 24, 2]}]}]}'></div>
+
+	<h2>What goes with stronger support</h2>
+
+	<p>
+		Municipalities that agreed they regularly provide engagement opportunities also
+		reported stronger support for their urban forestry goals from residents, large
+		landowners, and the private tree care industry. The link was strongest for
+		residents. Engagement also went with greater perceived understanding of street
+		tree value among all four groups, and with stronger community support for private
+		tree protection bylaws.
+	</p>
+
+	<p>
+		Education did not show the same pattern. Neither the number nor the type of
+		educational activities was related to perceived support for urban forestry goals or
+		to understanding of street tree value. Technical and financial assistance was also
+		unrelated to support for urban forestry goals and to residents&rsquo; understanding
+		of street tree value.
+	</p>
+
+	<div class="pull">
 		<p>
-			The Community Support results from the 2025 census are still being put together.
-			Check back soon.
-		</p>
-		<p>
-			In the meantime, the <a href="/methods.html">Methods</a> page explains how the
-			census was run, and the results published so far are on the
-			<a href="/tree-inventories.html">Tree Inventories</a> and
-			<a href="/volunteers.html">Volunteers</a> pages.
+			Giving residents a regular say in urban forestry appears to matter more for
+			building support and understanding than providing information alone.
 		</p>
 	</div>
 
+	<h2>Technical and financial assistance</h2>
+
+	<p>
+		Two-thirds of municipalities (67.2%) offered at least one form of technical or
+		financial assistance with trees. The most common were wood and brush recycling
+		sites for residents (40.5%) and technical advice on maintaining private trees
+		(38.9%). Financial help with removing infested or diseased private trees was rare
+		(9.9%). Unlike bylaws and education, the number of assistance programs a
+		municipality offered was not significantly related to its population, density,
+		growth, or canopy cover.
+	</p>
+
+	<div class="census-chart" data-chart='{"n": 131, "decimals": 1, "note": "&ldquo;Requires removal&rdquo; means the municipality inspects private trees and requires removal of those that are hazardous, or infested or diseased. Diseased trees include insect-infested trees.", "series": [{"label": "Wood and brush recycling site for residents", "count": 53}, {"label": "Technical assistance for private tree maintenance", "count": 51}, {"label": "Requires removal of diseased private trees", "count": 23}, {"label": "Requires removal of hazardous private trees", "count": 15}, {"label": "Financial help removing diseased private trees", "count": 13}]}'></div>
+
+	<h2>Public land versus private land</h2>
+
+	<p>
+		Municipalities were far more active in managing risky and unhealthy trees on their
+		own land than on private property. Most routinely inspected and removed high-risk
+		trees (79.4%) and diseased trees (71.8%) on public land, but few inspected and
+		required the removal of hazardous (11.5%) or infested and diseased (17.6%) trees on
+		private land. Both differences were statistically significant. Diseased or hazardous
+		private trees can still threaten public infrastructure and spread pests to public
+		trees, so this gap matters beyond individual properties.
+	</p>
+
+	<div class="census-chart" data-chart='{"n": 131, "decimals": 1, "sort": "none", "note": "Same 131 municipalities for every bar. The public-land option asked about diseased trees; the private-land option asked about insect-infested or diseased trees.", "series": [{"label": "Hazard trees: public land", "count": 104}, {"label": "Hazard trees: private land", "count": 15}, {"label": "Diseased trees: public land", "count": 94}, {"label": "Diseased trees: private land", "count": 23}]}'></div>
+
+	<p>
+		Assistance did not consistently go hand in hand with regulation. Municipalities
+		with private tree protection bylaws offered slightly fewer assistance programs than
+		those without, even though such bylaws place responsibilities on residents who may
+		lack the money or expertise to care for large trees. More on bylaws is on the
+		<a href="/tree-protection-bylaws.html">Tree Protection Bylaws</a> page, and
+		volunteer programs are covered on the <a href="/volunteers.html">Volunteers</a> page.
+	</p>
+
+	{% include share.html %}
+
 </main>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		CensusChart.initAll(".census-chart");
+		CensusLikert.initAll(".census-likert");
+	});
+</script>

@@ -1,31 +1,261 @@
 ---
 layout: default
 title: Management
-description: "Management plans, policies, operational cycles, and tree protection practices. Under construction."
+description: "How Canadian municipalities manage their street trees: who is responsible, planting and removals, pruning cycles, tree risk, pests, wood residue, and storms."
+scripts:
+  - src: /assets/js/charts.js
+    defer: true
 ---
 
 <div class="page-head">
 	<p class="standfirst">
-		Management plans, policies, operational cycles, and tree protection practices.
+		How municipalities manage their trees day to day: which departments are responsible,
+		how street trees are planted, pruned, and removed, and how municipalities handle tree
+		risk, pests, wood residue, and storms. Plans and canopy targets are covered on
+		<a href="/urban-forest-planning.html">Urban Forest Planning</a>, and bylaws on
+		<a href="/tree-protection-bylaws.html">Tree Protection Bylaws</a>.
 	</p>
 </div>
 
 <main>
 
-	<div class="construction" id="page-note">
-		<span class="kicker">Under construction</span>
-		<img class="construction-gif" src="/images/under-construction.gif" width="576" height="274"
-			alt="Animation of two lumberjacks building a tree: stacking logs, gluing on branches and adding leaves." />
+	<p class="lede">
+		Most participating municipalities planted more street trees than they removed in
+		2024, but street tree management is still largely reactive. Half prune only as
+		needed, and nearly half say responding to residents&rsquo; complaints is their main
+		way of finding risky trees. Fewer than half have an emergency response system that
+		includes trees, and 42.6% say storms have stretched their pruning cycle.
+	</p>
+
+	<div class="figures">
+		<div class="figure"><span class="n">56.9%</span><span class="l">planted more street trees than they removed in 2024</span></div>
+		<div class="figure"><span class="n">42.6%</span><span class="l">have a regular inspection and pruning cycle</span></div>
+		<div class="figure"><span class="n">48.2%</span><span class="l">rely mainly on resident complaints to find risky trees</span></div>
+		<div class="figure"><span class="n">46.0%</span><span class="l">have an emergency response system that includes trees</span></div>
+	</div>
+
+	<h2>Who manages municipal trees</h2>
+
+	<p>
+		Nearly all participating municipalities (97.8%) carried out some urban forestry or
+		tree care in 2024, and 97.1% had someone, whether an employee, volunteer, or
+		consultant, overseeing the care of trees on public land. That responsibility was
+		often shared between departments. Parks and recreation (72.1%) and public works
+		(68.4%) were most often involved in managing municipal trees, followed by planning
+		(43.4%) and dedicated forestry or urban forestry units (37.5%).
+	</p>
+
+	<p>
+		Primary responsibility was most often held by parks and recreation (34.3%), public
+		works (28.5%), or a dedicated forestry or urban forestry unit (27.0%). Larger
+		municipalities were much more likely to give primary responsibility to a forestry
+		unit: each doubling in population was associated with nearly three times the odds.
+		Municipalities with more canopy were somewhat less likely to do so.
+	</p>
+
+	<div class="census-chart" data-chart='{"n": 136, "decimals": 1, "note": "Each full bar shows departments with some responsibility for managing municipal trees (n = 136; municipalities could select more than one). The dark segment shows the department with primary responsibility (n = 137). Hover over a bar for the counts.", "series": [{"label": "Parks and recreation", "count": 98, "inner": {"count": 47, "n": 137, "label": "Primary responsibility"}}, {"label": "Public works", "count": 93, "inner": {"count": 39, "n": 137, "label": "Primary responsibility"}}, {"label": "Planning / community development", "count": 59, "inner": {"count": 1, "n": 137, "label": "Primary responsibility"}}, {"label": "Forestry / urban forestry", "count": 51, "inner": {"count": 37, "n": 137, "label": "Primary responsibility"}}, {"label": "Engineering", "count": 46, "inner": {"count": 3, "n": 137, "label": "Primary responsibility"}}, {"label": "Environment", "count": 29, "inner": {"count": 4, "n": 137, "label": "Primary responsibility"}}, {"label": "Electric utilities", "count": 23}, {"label": "Street transportation", "count": 17, "inner": {"count": 2, "n": 137, "label": "Primary responsibility"}}, {"label": "Other", "count": 11, "inner": {"count": 4, "n": 137, "label": "Primary responsibility"}}]}'></div>
+
+	<p>
+		The department responsible for municipal trees almost always cared for both street
+		trees and park trees (97.1% each), and most (78.8%) were also responsible for trees
+		in natural areas such as ravines and riparian areas. Staff numbers, training, and
+		credentials are covered on the <a href="/staffing.html">Staffing</a> page.
+	</p>
+
+	<h2>Street tree work in 2024</h2>
+
+	<p>
+		The typical municipality planted 50 street trees, pruned 100, and removed 21 in 2024,
+		and responded to 60 street tree service requests. More than half treated no street
+		trees at all for pests or diseases.
+	</p>
+
+	<table class="est-table">
+		<caption>Street tree work in the typical municipality, 2024</caption>
+		<thead>
+			<tr><th scope="col"></th><th scope="col">Median</th><th scope="col">Middle half of municipalities</th></tr>
+		</thead>
+		<tbody>
+			<tr><th scope="row">Service requests</th><td>60</td><td>10 to 454</td></tr>
+			<tr><th scope="row">Trees planted</th><td>50</td><td>2 to 500</td></tr>
+			<tr><th scope="row">Trees pruned</th><td>100</td><td>20 to 750</td></tr>
+			<tr><th scope="row">Trees removed</th><td>21</td><td>4 to 100</td></tr>
+			<tr><th scope="row">Trees treated for pests or diseases</th><td>0</td><td>0 to 30</td></tr>
+		</tbody>
+	</table>
+	<p class="chart-note">All 137 participating municipalities.</p>
+
+	<p>
+		Population was the main driver of how much work was done: each doubling in population
+		was associated with roughly twice as many trees planted, pruned, and removed, and about
+		three times as many service requests. Pest and disease treatments followed a different
+		pattern, rising with the amount of street tree canopy and falling with population
+		density.
+	</p>
+
+	<h3>Planting versus removal</h3>
+
+	<p>
+		Across participating municipalities, 109,217 street trees were planted in 2024 and
+		71,735 removed. Significantly more municipalities planted more trees than they removed
+		(56.9%) than the reverse (32.1%).
+	</p>
+
+	<div class="census-chart" data-chart='{"n": 137, "decimals": 1, "sort": "none", "series": [{"label": "Planted more than removed", "count": 78}, {"label": "Planted the same as removed", "count": 15}, {"label": "Planted fewer than removed", "count": 44}]}'></div>
+
+	<h2>Planting</h2>
+
+	<p>
+		Most street tree planting replaced trees that had been removed: 83.2% of municipalities
+		did this, and it was the main approach for nearly half (47.4%). Planting through
+		capital projects (70.8%) and by developers (65.0%) was also common. Half of
+		municipalities planted in response to residents&rsquo; requests, but almost none relied
+		on it as their main approach. One in ten municipalities did not plant street trees.
+	</p>
+
+	<div class="census-chart" data-chart='{"n": 137, "decimals": 1, "note": "Each full bar shows approaches included in the street tree planting program (municipalities could select more than one). The dark segment shows the primary approach. Hover over a bar for the counts.", "series": [{"label": "Replacing removed trees", "count": 114, "inner": {"count": 65, "label": "Primary approach"}}, {"label": "Through capital projects", "count": 97, "inner": {"count": 29, "label": "Primary approach"}}, {"label": "Planted by developers", "count": 89, "inner": {"count": 25, "label": "Primary approach"}}, {"label": "In response to resident requests", "count": 70, "inner": {"count": 3, "label": "Primary approach"}}, {"label": "Does not plant street trees", "count": 15}]}'></div>
+
+	<p>
+		Among municipalities that plant street trees, most combined planting at the
+		municipality&rsquo;s direction with planting on request (62.3%). Nearly a quarter
+		planted at the municipality&rsquo;s direction but let property owners decline, an
+		&ldquo;opt-out&rdquo; approach (23.0%). Very few planted mainly when owners asked, an
+		&ldquo;opt-in&rdquo; approach (4.9%).
+	</p>
+
+	<div class="census-chart" data-chart='{"n": 122, "decimals": 1, "sort": "none", "note": "Municipalities that plant street trees (n = 122).", "series": [{"label": "Both municipal direction and resident request", "count": 76}, {"label": "Municipal direction, owners may decline (opt-out)", "count": 28}, {"label": "Only at the municipality&rsquo;s direction", "count": 12}, {"label": "Mainly on owner or resident request (opt-in)", "count": 6}]}'></div>
+
+	<p>
+		Nearly two-thirds of municipalities (64.9%) provided formative care for young trees in
+		their first three to five years after planting. More than half (54.7%) planted trees as
+		green stormwater infrastructure, while schoolyard (25.6%) and highway (18.8%) planting
+		were less common.
+	</p>
+
+	<div class="census-chart" data-chart='{"n": 117, "decimals": 1, "sort": "none", "note": "Formative care: n = 131. Other activities: n = 117.", "series": [{"label": "Formative care for 3 to 5 years after planting", "count": 85, "n": 131}, {"label": "Planting as green stormwater infrastructure", "count": 64}, {"label": "Schoolyard tree planting", "count": 30}, {"label": "Highway tree planting", "count": 22}]}'></div>
+
+	<h2>Pruning</h2>
+
+	<p>
+		Half of municipalities pruned street trees only as needed (50.0%), and 42.6% had a
+		regular inspection and pruning cycle. A small number pruned only after storms or other
+		emergencies, or did not prune street trees at all.
+	</p>
+
+	<div class="census-chart" data-chart='{"n": 136, "decimals": 1, "sort": "none", "series": [{"label": "Pruning as needed", "count": 68}, {"label": "Regular inspection and pruning cycle", "count": 58}, {"label": "Only after storms or emergencies", "count": 7}, {"label": "Do not prune street trees", "count": 3}]}'></div>
+
+	<p>
+		Among municipalities with a regular cycle, most pruned continuously throughout the year
+		(84.5%). The median cycle was six years, against a desired median of five. Most were
+		already on the cycle they wanted (56.4%), but 41.8% wanted a shorter one, and almost
+		none wanted a longer one. Larger municipalities tended to be further behind their
+		desired cycle, and denser municipalities closer to it, although this rests on only 53
+		municipalities.
+	</p>
+
+	<h2>Removals</h2>
+
+	<p>
+		Nearly every municipality removed trees that were declining or dead (125 of 128).
+		Measured by the number of trees, declining or dead trees (34.9%) and tree risk (33.9%)
+		each accounted for about a third of all street trees removed. Disease and insect
+		problems (9.7%) and development (9.6%) each accounted for about a tenth, and
+		infrastructure conflicts and storm damage for most of the rest. Removals at a
+		homeowner&rsquo;s request were cited by 51 municipalities but made up less than 1% of
+		trees removed.
+	</p>
+
+	<div class="census-chart" data-chart='{"n": 128, "decimals": 1, "note": "Share of municipalities citing each reason for at least some of their street tree removals in 2024 (n = 128).", "series": [{"label": "Tree declining or dead", "count": 125}, {"label": "Tree risk", "count": 103}, {"label": "Infrastructure conflicts", "count": 95}, {"label": "Storm damage", "count": 88}, {"label": "Development", "count": 76}, {"label": "Disease or insect problem", "count": 70}, {"label": "Homeowner request", "count": 51}, {"label": "Sidewalk damage", "count": 37}, {"label": "Space restrictions", "count": 27}, {"label": "Age rotation", "count": 20}, {"label": "Allergy or public health", "count": 8}]}'></div>
+
+	<h2>Tree risk</h2>
+
+	<p>
+		Most municipalities (62.5%) regularly carried out tree risk management, and 79.4%
+		routinely inspected and removed high-risk trees on public property. Yet only 27.2% had
+		a written tree risk management policy or plan. Among municipalities that rated tree
+		risk, most used the ISA Tree Risk Assessment Qualification (TRAQ) method (62.7%),
+		while 20.5% used their own system and 15.7% used none. Larger municipalities were more
+		likely to use TRAQ.
+	</p>
+
+	<p>
+		Nearly every municipality inspected trees in response to resident complaints (94.2%),
+		and for nearly half (48.2%) this was the main way risky trees were found. Proactive
+		approaches, such as routine risk inspection programs or car-based surveys, were the
+		main approach for only about a third.
+	</p>
+
+	<div class="census-chart" data-chart='{"n": 137, "decimals": 1, "note": "Each full bar shows approaches used to inspect tree risk (municipalities could select more than one). The dark segment shows the primary approach. Hover over a bar for the counts.", "series": [{"label": "Response to resident complaints", "count": 129, "inner": {"count": 66, "label": "Primary approach"}}, {"label": "Part of routine tree maintenance", "count": 70, "inner": {"count": 26, "label": "Primary approach"}}, {"label": "Windshield (car-based) survey", "count": 66, "inner": {"count": 19, "label": "Primary approach"}}, {"label": "Routine tree risk inspection program", "count": 54, "inner": {"count": 26, "label": "Primary approach"}}]}'></div>
+
+	<h2>Pests and diseases</h2>
+
+	<p>
+		Municipalities managed exotic invasive pests, such as emerald ash borer, more actively
+		than native pests. Ongoing management was much more common for invasive pests (39.0%)
+		than for native ones (23.5%), and 30.9% did no native pest management at all. Nearly a
+		third of municipalities (30.1%) managed invasive pests more intensively than native
+		ones, while few did the reverse. Most municipalities (71.8%) routinely inspected and
+		removed diseased trees on public property.
+	</p>
+
+	<table class="est-table">
+		<caption>Approach to street tree pest and pathogen management</caption>
+		<thead>
+			<tr><th scope="col"></th><th scope="col">Native pests</th><th scope="col">Exotic invasive pests</th></tr>
+		</thead>
+		<tbody>
+			<tr><th scope="row">Ongoing management</th><td>23.5%</td><td>39.0%</td></tr>
+			<tr><th scope="row">Only during outbreaks</th><td>45.6%</td><td>40.4%</td></tr>
+			<tr><th scope="row">No management</th><td>30.9%</td><td>20.6%</td></tr>
+		</tbody>
+	</table>
+	<p class="chart-note">Same 136 municipalities in both columns.</p>
+
+	<h2>Wood residue</h2>
+
+	<p>
+		When a public tree is removed, the wood is most often turned into mulch for
+		landscaping (77.6%). Many municipalities also sent wood to landfill (41.8%) or cut it
+		into firewood (36.6%). Higher-value uses, such as furniture, flooring, art, or lumber,
+		were uncommon, and a quarter of municipalities (25.6%) reported urban wood utilization
+		as an activity. Three-quarters (74.8%) tracked neither the volume of wood nor where it
+		went.
+	</p>
+
+	<div class="census-chart" data-chart='{"n": 134, "decimals": 1, "note": "Typical ways solid wood is disposed of when a public tree is removed (n = 134). Municipalities could select more than one.", "series": [{"label": "Mulch for landscaping", "count": 104}, {"label": "Discarded at a landfill", "count": 56}, {"label": "Cut into firewood", "count": 49}, {"label": "Made into furniture, flooring, or art", "count": 14}, {"label": "Burned in the open", "count": 14}, {"label": "Processed into lumber", "count": 12}, {"label": "Buried in a landfill", "count": 9}, {"label": "Sale of round wood", "count": 6}, {"label": "Converted to biochar", "count": 5}, {"label": "Biofuel for energy", "count": 2}]}'></div>
+
+	<h2>Storms</h2>
+
+	<p>
+		Fewer than half of municipalities (46.0%) had an emergency response system that
+		included trees, and in about half (51.9%) no one in the tree program had training in
+		an emergency management system. Only 19.3% said their emergency manager held storm
+		meetings that discussed trees along public roads.
+	</p>
+
+	<div class="census-chart" data-chart='{"n": 137, "decimals": 1, "sort": "none", "note": "Each bar uses the municipalities that answered that question (133 to 137). Storm planning meetings are those held by the municipality&rsquo;s emergency manager. Emergency management training includes Incident Command Systems, Emergency Operations Centre courses, and Incident Management Systems.", "series": [{"label": "Emergency response system includes trees", "count": 63}, {"label": "Staff trained in emergency management", "count": 64, "n": 133}, {"label": "Storm calls have extended the pruning cycle", "count": 58, "n": 136}, {"label": "Storm planning meetings include trees", "count": 26, "n": 135}]}'></div>
+
+	<p>
+		Storms are already affecting routine work: 42.6% of municipalities said more storm
+		response calls had extended their inspection or pruning cycle. In their own words,
+		respondents described storms using up budgets and diverting crews from planned
+		pruning, creating backlogs. Several also noted the reverse: where they had pruned
+		proactively, storm damage had dropped.
+	</p>
+
+	<div class="pull">
 		<p>
-			The Management results from the 2025 census are still being put together.
-			Check back soon.
-		</p>
-		<p>
-			In the meantime, the <a href="/methods.html">Methods</a> page explains how the
-			census was run, and the results published so far are on the
-			<a href="/tree-inventories.html">Tree Inventories</a> and
-			<a href="/volunteers.html">Volunteers</a> pages.
+			Reactive tree care and storm response compete for the same crews and budgets.
+			Several municipalities found that proactive pruning reduced storm damage.
 		</p>
 	</div>
 
+	{% include share.html %}
+
 </main>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		CensusChart.initAll(".census-chart");
+	});
+</script>

@@ -16,8 +16,13 @@
        "viewLabel" (e.g. "Municipalities contracting") prefixes the n shown.
      - "reference": index of a view whose values are drawn as a thin tick on the
        other views' bars, for comparison; "referenceLabel" names it in the key.
+     - An item can carry "inner": { "count": 66, "n": 136, "label": "Both bylaws" },
+       drawn as a darker segment inside the start of its bar (e.g. the share
+       that also has something else). "n" is optional (defaults to the item's).
+       "legend": [{ "label": "...", "colour": "#..." }] adds a key above the bars.
      - "sort": "group" starts a grouped chart sorted by group (its button listed
-       first); the default is "value" (Rank first).
+       first); "none" keeps the bars in the order written; the default is
+       "value" (Rank first).
    ========================================================================== */
 
 window.CensusChart = (function () {
@@ -39,6 +44,10 @@ window.CensusChart = (function () {
 		"Remote":                 "#00A189",
 		"Requirement":            "#0D534D",
 		"Hiring preference":      "#00A189",
+		"Bylaw":                  "#0D534D",
+		"Private-land provision": "#00A189",
+		"Public land":            "#0D534D",
+		"Private land":           "#00A189",
 		"Other":                  "#9aa39a"
 	};
 
@@ -88,7 +97,8 @@ window.CensusChart = (function () {
 
 		var state = {
 			view: 0,                     // index into views
-			sort: (cfg.sort === "group" && groups.length > 1) ? "group" : "value",  // "value" | "group"
+			sort: cfg.sort === "none" ? "none" :
+				(cfg.sort === "group" && groups.length > 1) ? "group" : "value",  // "value" | "group" | "none"
 			active: groups.slice()       // visible groups
 		};
 
@@ -136,6 +146,11 @@ window.CensusChart = (function () {
 		html += '</div>';
 
 		if (hasViews) html += '<p class="cc-n"></p>';
+		if (cfg.legend) {
+			html += '<div class="chart-legend">' + cfg.legend.map(function (k) {
+				return '<span><i style="background:' + k.colour + '"></i>' + k.label + '</span>';
+			}).join("") + '</div>';
+		}
 		html += '<div class="cc-rows"></div>';
 		if (reference !== null && hasViews) {
 			html += '<p class="chart-note cc-key" hidden><span class="cc-ref-key"></span>' +
@@ -168,7 +183,7 @@ window.CensusChart = (function () {
 					if (ga !== gb) return ga - gb;
 					return pct(b.count, itemN(b, view)) - pct(a.count, itemN(a, view));
 				});
-			} else {
+			} else if (state.sort !== "none") {
 				shown.sort(function (a, b) { return pct(b.count, itemN(b, view)) - pct(a.count, itemN(a, view)); });
 			}
 
@@ -186,14 +201,22 @@ window.CensusChart = (function () {
 				var ref = referenceValue(d.label);
 				var refMark = (ref === null) ? "" :
 					'<span class="cc-ref" style="left:' + Math.min(ref, 100).toFixed(1) + '%"></span>';
-				return '<div class="bar-row cc-hoverable"' +
+				var inner = "", innerAttr = "";
+				if (d.inner) {
+					var inN = d.inner.n || dn, inV = pct(d.inner.count, inN);
+					inner = '<div class="cc-inner" style="width:' + Math.min(inV, 100).toFixed(1) + '%;background:' +
+						(d.inner.colour || "#0D534D") + ';"></div>';
+					innerAttr = ' data-inner="' + (d.inner.label || "").replace(/"/g, "&quot;") + ': <strong>' +
+						d.inner.count + '</strong> of ' + inN + ' (' + fmtPct(inV, decimals) + '%)"';
+				}
+				return '<div class="bar-row cc-hoverable"' + innerAttr +
 						' data-count="' + d.count + '"' +
 						' data-n="' + dn + '"' +
 						(ref === null ? "" : ' data-ref="' + fmtPct(ref, decimals) + '"') +
 						' data-label="' + d.label.replace(/"/g, "&quot;") + '">' +
 					'<span class="bar-label">' + d.label + '</span>' +
 					'<div class="bar-track"><div class="bar-fill" style="width:' + width.toFixed(1) +
-						'%;background:' + colour + ';"></div>' + refMark + '</div>' +
+						'%;background:' + colour + ';"></div>' + inner + refMark + '</div>' +
 					'<span class="bar-value">' + fmtPct(value, decimals) + '%</span>' +
 					'</div>';
 			}).join("");
@@ -209,7 +232,8 @@ window.CensusChart = (function () {
 					var rowN = row.getAttribute("data-n");
 					var refText = row.getAttribute("data-ref");
 					tip.innerHTML = "<strong>" + count + "</strong> of " + rowN + " municipalities" +
-						(refText === null ? "" : "<br>" + (cfg.referenceLabel || views[reference].name) + ": " + refText + "%");
+						(refText === null ? "" : "<br>" + (cfg.referenceLabel || views[reference].name) + ": " + refText + "%") +
+						(row.getAttribute("data-inner") ? "<br>" + row.getAttribute("data-inner") : "");
 					tip.style.display = "block";
 					tip.style.left = e.clientX + "px";
 					tip.style.top = e.clientY + "px";

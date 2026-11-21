@@ -4,7 +4,7 @@
   The current page is highlighted automatically using page.url.
 {%- endcomment -%}
 {%- assign url = page.url | replace: "index.html", "" -%}
-{%- assign results_pages = "/tree-inventories.html,/volunteers.html,/staffing.html,/economics.html,/management.html,/contracting.html,/community-support.html" | split: "," -%}
+{%- assign results_pages = "/tree-inventories.html,/volunteers.html,/staffing.html,/economics.html,/management.html,/contracting.html,/community-support.html,/tree-protection-bylaws.html,/urban-forest-planning.html" | split: "," -%}
 {%- assign pub_pages = "/publications.html,/ontario-arborist.html" | split: "," -%}
 <nav>
 	<a class="brand" href="/">Canadian Urban Forest Census</a>
@@ -15,11 +15,13 @@
 			<ul class="menu">
 				<li><a href="/tree-inventories.html"{% if url == "/tree-inventories.html" %} class="active" aria-current="page"{% endif %}>Tree Inventories</a></li>
 				<li><a href="/volunteers.html"{% if url == "/volunteers.html" %} class="active" aria-current="page"{% endif %}>Volunteers</a></li>
-				<li><a class="soon{% if url == "/staffing.html" %} active{% endif %}" href="/staffing.html">Staffing <span class="tag">Under construction</span></a></li>
-				<li><a class="soon{% if url == "/economics.html" %} active{% endif %}" href="/economics.html">Economics <span class="tag">Under construction</span></a></li>
-				<li><a class="soon{% if url == "/management.html" %} active{% endif %}" href="/management.html">Management <span class="tag">Under construction</span></a></li>
+				<li><a href="/staffing.html"{% if url == "/staffing.html" %} class="active" aria-current="page"{% endif %}>Staffing</a></li>
+				<li><a href="/economics.html"{% if url == "/economics.html" %} class="active" aria-current="page"{% endif %}>Economics</a></li>
+				<li><a href="/management.html"{% if url == "/management.html" %} class="active" aria-current="page"{% endif %}>Management</a></li>
+				<li><a href="/tree-protection-bylaws.html"{% if url == "/tree-protection-bylaws.html" %} class="active" aria-current="page"{% endif %}>Tree Protection Bylaws</a></li>
+				<li><a href="/urban-forest-planning.html"{% if url == "/urban-forest-planning.html" %} class="active" aria-current="page"{% endif %}>Urban Forest Planning</a></li>
 				<li><a href="/contracting.html"{% if url == "/contracting.html" %} class="active" aria-current="page"{% endif %}>Contracting</a></li>
-				<li><a class="soon{% if url == "/community-support.html" %} active{% endif %}" href="/community-support.html">Community Support <span class="tag">Under construction</span></a></li>
+				<li><a href="/community-support.html"{% if url == "/community-support.html" %} class="active" aria-current="page"{% endif %}>Community Support</a></li>
 			</ul>
 		</li>
 		<li><a href="/benchmarking.html"{% if url == "/benchmarking.html" %} class="active" aria-current="page"{% endif %}>Benchmarking</a></li>

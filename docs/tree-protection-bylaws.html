@@ -1,0 +1,166 @@
+---
+layout: default
+title: Tree Protection Bylaws
+description: "73.5% of Canadian municipalities have a street tree protection bylaw and 57.7% a private tree bylaw, but only about half see them as actively enforced."
+scripts:
+  - src: /assets/js/charts.js
+    defer: true
+  - src: /assets/js/likert.js
+    defer: true
+---
+
+<div class="page-head">
+	<p class="standfirst">
+		Tree protection bylaws set legal obligations for keeping trees on public and private
+		land, usually by restricting the removal of trees above a minimum size. The 2025
+		Canadian Urban Forest Census asked municipalities which bylaws and related provisions
+		they have, and how well those bylaws work in practice.
+	</p>
+</div>
+
+{%- comment -%}
+  Paper box: remove this comment wrapper once the manuscript is published,
+  and fill in the journal, volume and DOI.
+
+<div class="paper">
+	<span class="kicker">Published findings</span>
+	<p>
+		Martin, A.J.F., Beattie, L., Conway, T.M., King, G., &amp; Lam, J. (2026).
+		Supporting urban tree protection and stewardship across public and private lands:
+		municipal approaches and challenges in Canada. <span class="journal">Journal</span>, vol, pages.
+	</p>
+	<div class="links">
+		<a href="https://doi.org/DOI" target="_blank" rel="noopener noreferrer">Read the paper (DOI)</a>
+	</div>
+</div>
+{%- endcomment %}
+
+<main>
+
+	<p class="lede">
+		Nearly three-quarters of participating municipalities (73.5%) have a bylaw protecting
+		street trees, and more than half (57.7%) have one protecting trees on private property.
+		Yet only about half of municipalities with these bylaws agree that they are actively
+		enforced, and most report that enforcement is not sufficiently staffed.
+	</p>
+
+	<div class="figures">
+		<div class="figure"><span class="n">73.5%</span><span class="l">have a street tree protection bylaw</span></div>
+		<div class="figure"><span class="n">57.7%</span><span class="l">have a private tree protection bylaw</span></div>
+		<div class="figure"><span class="n">50.0%</span><span class="l">agree or strongly agree that their private tree bylaws are actively enforced</span></div>
+		<div class="figure"><span class="n">59%</span><span class="l">say private tree bylaws are not sufficiently staffed</span></div>
+	</div>
+
+	<h2>Bylaws and provisions</h2>
+
+	<p>
+		Street tree bylaws were significantly more common than private tree bylaws. Of the
+		136 municipalities that answered both questions, nearly half (48.5%) had both types,
+		a quarter (25.0%) protected street trees only, and very few (8.8%) protected private
+		trees only. Overall, 17.5% of municipalities had neither a street nor a private tree
+		bylaw.
+	</p>
+
+	<div class="census-chart" data-chart='{"n": 136, "decimals": 1, "sort": "none", "note": "Street tree bylaws use the 136 municipalities that answered that question; private tree bylaws and neither use 137. The dark segment is the 66 of 136 municipalities that answered both questions and have both bylaws.", "series": [{"label": "Street tree bylaw", "count": 100, "inner": {"count": 66, "n": 136, "label": "Both bylaws"}}, {"label": "Private tree bylaw", "count": 79, "n": 137, "inner": {"count": 66, "n": 136, "label": "Both bylaws"}}, {"label": "Neither street nor private tree bylaw", "count": 24, "n": 137}]}'></div>
+
+	<p>
+		Municipalities can also protect canopy on private land through other regulatory
+		provisions. The most common were requiring residents to obtain a permit before
+		removing a tree (37.6%) and requiring landscape plans for permit approval (36.1%).
+		About one in five set minimum canopy requirements for new development sites (20.3%)
+		or gave special protection to significant, specimen, or heritage trees (18.8%).
+		Overall, 14.1% of municipalities had neither a bylaw nor any of these provisions.
+	</p>
+
+	<div class="census-chart" data-chart='{"n": 133, "decimals": 1, "sort": "group", "note": "Each bar uses the municipalities that answered that question: 136 for street tree bylaws, 137 for private tree bylaws, and 133 for the private-land provisions.", "series": [{"label": "Street tree protection bylaw", "count": 100, "n": 136, "group": "Bylaw"}, {"label": "Private tree protection bylaw", "count": 79, "n": 137, "group": "Bylaw"}, {"label": "Permit required for tree removal", "count": 50, "group": "Private-land provision"}, {"label": "Landscape plans required for permits", "count": 48, "group": "Private-land provision"}, {"label": "Minimum canopy for new developments", "count": 27, "group": "Private-land provision"}, {"label": "Significant, specimen, or heritage tree protection", "count": 25, "group": "Private-land provision"}]}'></div>
+
+	<h2>Which municipalities have them</h2>
+
+	<p>
+		Larger municipalities were more likely to have a street tree bylaw: each doubling in
+		population was associated with about 43% higher odds of having one. Private tree
+		bylaws followed a different pattern. They were more likely in denser municipalities
+		(about 11% higher odds for every additional 100 people per km&sup2;) and in
+		municipalities with more existing canopy (about 3% higher odds per percentage point
+		of canopy cover), but were not significantly related to population.
+	</p>
+
+	<p>
+		The number of private-land provisions a municipality had (0 to 4) also rose with
+		population, population density, and canopy cover. Population change between 2016
+		and 2021 was not associated with any of these regulations.
+	</p>
+
+	<h2>How well bylaws work</h2>
+
+	<p>
+		Municipalities with a bylaw rated five statements about how it works in practice.
+		Ratings were broadly similar for street and private tree bylaws. About half agreed
+		that their bylaws were actively enforced (51.5% for street trees and 50.0% for
+		private trees). The clearest challenges were staffing and penalties: more than half
+		disagreed that enforcement was sufficiently staffed (55.6% and 59.0%), and nearly
+		half disagreed that penalties were sufficiently punitive (46.5% and 49.4%). Views on
+		community support for enforcement and on whether offences were increasing each year
+		were more mixed, with many neutral responses.
+	</p>
+
+	<div class="census-likert" data-chart='{"note": "Agreement with each statement among municipalities with a street tree bylaw (n = 98 to 99) or a private tree bylaw (n = 77 to 78). Numbers inside the bars are percentages; the totals either side combine the two disagree and the two agree answers. Hover over a segment for the count.", "groups": [{"label": "Actively enforced", "rows": [{"label": "Street trees", "n": 99, "counts": [6, 24, 18, 42, 9]}, {"label": "Private trees", "n": 78, "counts": [5, 22, 12, 31, 8]}]}, {"label": "Sufficiently staffed", "rows": [{"label": "Street trees", "n": 99, "counts": [14, 41, 23, 16, 5]}, {"label": "Private trees", "n": 78, "counts": [13, 33, 19, 10, 3]}]}, {"label": "Sufficiently punitive", "rows": [{"label": "Street trees", "n": 99, "counts": [12, 34, 36, 15, 2]}, {"label": "Private trees", "n": 77, "counts": [14, 24, 23, 13, 3]}]}, {"label": "Supported by community", "rows": [{"label": "Street trees", "n": 98, "counts": [3, 17, 43, 32, 3]}, {"label": "Private trees", "n": 78, "counts": [5, 20, 26, 24, 3]}]}, {"label": "Increasing in offences annually", "rows": [{"label": "Street trees", "n": 99, "counts": [4, 15, 46, 31, 3]}, {"label": "Private trees", "n": 77, "counts": [2, 12, 36, 22, 5]}]}]}'></div>
+
+	<p>
+		Among the 65 municipalities with both types of bylaw, none of the differences between
+		their street and private tree ratings were statistically significant. The closest was
+		community support: some respondents who were neutral about support for their street
+		tree bylaw disagreed that their private tree bylaw had community support.
+	</p>
+
+	<h2>Community support and enforcement</h2>
+
+	<p>
+		Where respondents saw stronger community support for their bylaws, they also tended
+		to see enforcement as more active and better staffed. This held for both street and
+		private tree bylaws, and the relationships were stronger for private trees. For
+		private tree bylaws, stronger community support also went with seeing penalties as
+		sufficiently punitive. In contrast, community support was not related to how many
+		private-land provisions a municipality had, and perceptions of increasing offences
+		were largely unrelated to enforcement, apart from a weak link with insufficient
+		staffing for street tree bylaws.
+	</p>
+
+	<div class="pull">
+		<p>
+			Adopting a bylaw does not by itself ensure it is implemented. Enforcement capacity
+			and community support appear to rise and fall together.
+		</p>
+	</div>
+
+	<h2>Bylaws alongside education and assistance</h2>
+
+	<p>
+		Bylaws are one of three broad ways municipalities can protect and care for trees,
+		alongside community education and engagement, and technical and financial assistance
+		for residents. Municipalities with street or private tree bylaws offered more
+		educational activities than those without, and municipalities with more private-land
+		provisions also offered more education. However, municipalities with private tree
+		bylaws offered slightly fewer technical and financial assistance programs, such as
+		advice on maintaining private trees or help paying to remove diseased ones. This
+		suggests that regulation and practical support for residents do not always go together.
+	</p>
+
+	<p>
+		Engagement may help close that gap. Municipalities that agreed they regularly provide
+		opportunities for resident engagement also reported stronger community support for
+		their private tree bylaws. Education and assistance were not linked to community
+		support for bylaws. More on education, engagement, and assistance is on the
+		<a href="/community-support.html">Community Support</a> page.
+	</p>
+
+	{% include share.html %}
+
+</main>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		CensusChart.initAll(".census-chart");
+		CensusLikert.initAll(".census-likert");
+	});
+</script>
