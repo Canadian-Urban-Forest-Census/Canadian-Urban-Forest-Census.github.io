@@ -5,6 +5,8 @@ description: "Fewer than half of Canadian municipalities know their canopy cover
 scripts:
   - src: /assets/js/charts.js
     defer: true
+  - src: /assets/js/pictogram.js
+    defer: true
 ---
 
 <div class="page-head">
@@ -64,7 +66,13 @@ scripts:
 	    the number of street trees in their municipality.
 	</p>
 
-	<div class="census-chart" data-chart='{"n": 134, "decimals": 0, "series": [{"label": "Knows tree canopy cover", "count": 56}, {"label": "Knows number of municipally owned trees", "count": 52, "n": 133}, {"label": "Knows number of street trees", "count": 31}]}'></div>
+	<div class="census-pictogram" data-pictogram='{"decimals": 1, "note": "Each symbol represents 10% of municipalities.", "rows": [{"label": "Knows tree canopy cover", "count": 56, "n": 134, "symbol": "canopy"}, {"label": "Knows number of municipally owned trees", "count": 52, "n": 133, "symbol": "tree"}, {"label": "Knows number of street trees", "count": 31, "n": 134, "symbol": "tree"}]}'>
+		<ul class="pc-fallback">
+			<li>Knows tree canopy cover: 41.8% (56 of 134 municipalities)</li>
+			<li>Knows number of municipally owned trees: 39.1% (52 of 133 municipalities)</li>
+			<li>Knows number of street trees: 23.1% (31 of 134 municipalities)</li>
+		</ul>
+	</div>
 
 	<p>
 	    The greater the population of the municipality, the more likely they were to know their
@@ -224,5 +232,6 @@ scripts:
 <script>
 	document.addEventListener("DOMContentLoaded", function () {
 		CensusChart.initAll(".census-chart");
+		CensusPictogram.initAll(".census-pictogram");
 	});
 </script>
