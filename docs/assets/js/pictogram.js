@@ -77,7 +77,7 @@
 	// The fill always uses one decimal, so 41.8% fills 18% of the fifth symbol.
 	function fmtPct(v, decimals) {
 		if (decimals === 0) return String(Math.round(v));
-		return v.toFixed(1).replace(/\.0$/, "");
+		return v.toFixed(1);
 	}
 
 	function esc(s) {
@@ -177,6 +177,151 @@
 	}
 
 	window.CensusPictogram = {
+		build: build,
+		initAll: function (selector) {
+			Array.prototype.forEach.call(document.querySelectorAll(selector), build);
+		}
+	};
+})();
+
+
+/* ==========================================================================
+   Document grid: one small "plan" icon per municipality (no rounding,
+   no partial symbols). Icons are generated from the categories array,
+   and the legend uses the same values.
+
+   Usage:
+     <div class="census-docgrid" data-docgrid='{
+          "decimals": 0,
+          "note": "Each document represents one of the 137 municipalities that answered the question.",
+          "categories": [
+            {"label": "Existing plan", "count": 60, "color": "#0D534D"},
+            {"label": "In development", "count": 40, "color": "#2E8B57"},
+            {"label": "No plan", "count": 37, "color": "#D3DDD2"}
+          ]}'></div>
+
+     CensusDocGrid.initAll(".census-docgrid");
+
+   Layout: 20 columns, legend to the right (stacks below on narrow screens).
+   SCALE sets the display size: 1 SVG unit = SCALE pixels at most.
+   ========================================================================== */
+
+(function () {
+	var DOC_W = 14, DOC_H = 20;      // icon size in SVG units (portrait, like a report)
+	var STEP_X = 18, STEP_Y = 24;    // icon spacing
+	var COLS = 20;
+	var SCALE = 0.9;                 // 14 x 20 units -> about 13 x 18 px icons
+
+	// Small tree on the cover, drawn in white over the document colour.
+	var TREE =
+		'<circle cx="7" cy="7.4" r="3"/>' +
+		'<circle cx="4.9" cy="9.2" r="2.3"/>' +
+		'<circle cx="9.1" cy="9.2" r="2.3"/>' +
+		'<rect x="6.35" y="10.3" width="1.3" height="4.7" rx="0.3"/>';
+
+	var tip = null;
+	function ensureTip() {
+		if (tip) return tip;
+		tip = document.querySelector(".cc-tip");
+		if (!tip) {
+			tip = document.createElement("div");
+			tip.className = "cc-tip";
+			tip.style.display = "none";
+			document.body.appendChild(tip);
+		}
+		return tip;
+	}
+
+	function fmtPct(v, decimals) {
+		return decimals === 0 ? String(Math.round(v)) : v.toFixed(decimals);
+	}
+
+	function esc(s) {
+		var d = document.createElement("div");
+		d.textContent = s;
+		return d.innerHTML;
+	}
+
+	function gridSvg(cats, total, cols) {
+		var rows = Math.ceil(total / cols);
+		var w = STEP_X * (cols - 1) + DOC_W;
+		var h = STEP_Y * (rows - 1) + DOC_H;
+		var body = "";
+		var i = 0;
+		cats.forEach(function (c, ci) {
+			for (var k = 0; k < c.count; k++, i++) {
+				var x = (i % cols) * STEP_X;
+				var y = Math.floor(i / cols) * STEP_Y;
+				body += '<g class="dg-doc" data-cat="' + ci + '" transform="translate(' + x + ' ' + y + ')">' +
+					'<rect width="' + DOC_W + '" height="' + DOC_H + '" rx="1.6" fill="' + c.color + '"/>' +
+					'<g class="dg-tree">' + TREE + '</g></g>';
+			}
+		});
+		return '<svg class="dg-svg" viewBox="0 0 ' + w + ' ' + h + '" style="max-width:' + (w * SCALE) + 'px"' +
+			' aria-hidden="true" focusable="false">' + body + '</svg>';
+	}
+
+	function build(el) {
+		ensureTip();
+		var cfg;
+		try { cfg = JSON.parse(el.getAttribute("data-docgrid")); } catch (e) { return; }
+
+		var cats = cfg.categories;
+		var decimals = cfg.decimals === undefined ? 0 : cfg.decimals;
+		var total = cats.reduce(function (s, c) { return s + c.count; }, 0);
+		cats.forEach(function (c) { c.pct = fmtPct((c.count / total) * 100, decimals); });
+
+		var legend = '<ul class="dg-legend">' + cats.map(function (c, ci) {
+			return '<li tabindex="0" data-cat="' + ci + '"><i style="background:' + c.color + '"></i>' +
+				'<span><strong>' + esc(c.label) + '</strong><br>' + c.count + ' municipalities (' + c.pct + '%)</span></li>';
+		}).join("") + '</ul>';
+
+		function render() {
+			el.innerHTML = '<div class="dg-body"><div class="dg-grid">' + gridSvg(cats, total, COLS) + '</div>' + legend + '</div>' +
+				(cfg.note ? '<p class="chart-note">' + cfg.note + '</p>' : '');
+			wire();
+		}
+
+		function highlight(ci) {
+			el.classList.toggle("dg-focus", ci !== null);
+			Array.prototype.forEach.call(el.querySelectorAll("[data-cat]"), function (n) {
+				n.classList.toggle("dg-on", ci !== null && n.getAttribute("data-cat") === String(ci));
+			});
+		}
+
+		function tipText(c) {
+			return esc(c.label) + "<br><strong>" + c.count + "</strong> of " + total +
+				" municipalities (" + c.pct + "%)";
+		}
+
+		function wire() {
+			var svg = el.querySelector(".dg-svg");
+			svg.addEventListener("mousemove", function (e) {
+				var doc = e.target.closest ? e.target.closest(".dg-doc") : null;
+				if (!doc) { tip.style.display = "none"; highlight(null); return; }
+				var ci = +doc.getAttribute("data-cat");
+				tip.innerHTML = tipText(cats[ci]);
+				tip.style.display = "block";
+				tip.style.left = e.clientX + "px";
+				tip.style.top = e.clientY + "px";
+				highlight(ci);
+			});
+			svg.addEventListener("mouseleave", function () { tip.style.display = "none"; highlight(null); });
+
+			// Legend items: hover or keyboard focus highlights that category.
+			Array.prototype.forEach.call(el.querySelectorAll(".dg-legend li"), function (li) {
+				var ci = +li.getAttribute("data-cat");
+				li.addEventListener("mouseenter", function () { highlight(ci); });
+				li.addEventListener("mouseleave", function () { highlight(null); });
+				li.addEventListener("focus", function () { highlight(ci); });
+				li.addEventListener("blur", function () { highlight(null); });
+			});
+		}
+
+		render();
+	}
+
+	window.CensusDocGrid = {
 		build: build,
 		initAll: function (selector) {
 			Array.prototype.forEach.call(document.querySelectorAll(selector), build);
