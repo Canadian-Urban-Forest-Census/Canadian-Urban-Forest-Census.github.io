@@ -1748,6 +1748,16 @@ body.home .hero-text h1 { font-size: 58px; }
 
 .cycle { margin: 28px 0 8px 0; }
 
+/* Urban Forest Planning: space between the cycle figure and Stage 1,
+   25% less than the default (figure margin + main padding + h2 margin) */
+.planning .cycle { margin-bottom: 6px; }
+.planning main { padding-top: 37.5px; }
+.planning main > h2:first-child { margin-top: 42px; }
+
+@media (max-width: 650px) {
+	.planning main { padding-top: 24px; }
+}
+
 .cycle-svg { display: block; width: 100%; max-width: 560px; margin: 0 auto; overflow: visible; }
 
 .cy-link path { transition: filter 0.15s ease; }
