@@ -119,7 +119,7 @@ scripts:
 	</div>
 
 	<p>
-	    Among municipalities with canopy or planting goals, 37.3% had also set
+	    Among municipalities with canopy or planting goals, 37% had also set
 	    goals for individual neighbourhoods based on their existing canopy cover.
 	</p>
 
@@ -154,10 +154,10 @@ scripts:
 	<h3>Trees as infrastructure</h3>
 
 	<p>
-	    Just over half of municipalities (51.9%) reported using their urban forest
+	    Just over half of municipalities (52%) reported using their urban forest
 	    to help meet stormwater management, public health, or air quality goals.
 	    This was more common among municipalities with canopy cover or planting
-	    goals (70.7%) than among those without them (37.1%). More populous municipalities
+	    goals (71%) than among those without them (37%). More populous municipalities
 	    and those with greater canopy cover were also more likely to use their
 	    urban forest for these purposes.
 	</p>
@@ -171,7 +171,7 @@ scripts:
 	    developing one. Just over a quarter had neither.
 	</p>
 
-	<div class="census-chart" data-chart='{"n": 137, "decimals": 0, "sort": "none", "series": [{"label": "Existing strategy or master plan", "count": 60}, {"label": "Developing a strategy or master plan", "count": 40}, {"label": "No strategy or master plan", "count": 37}]}'></div>
+	<div class="census-docgrid" data-docgrid='{"decimals": 0, "note": "Each document represents one of the 137 municipalities that answered the question.", "categories": [{"label": "Existing plan", "count": 60, "color": "#0D534D"}, {"label": "In development", "count": 40, "color": "#2E8B57"}, {"label": "No plan", "count": 37, "color": "#D3DDD2"}]}'></div>
 
 	<p>
 	    Municipalities with greater populations were more likely to have a plan in place or under
@@ -242,5 +242,6 @@ scripts:
 	document.addEventListener("DOMContentLoaded", function () {
 		CensusChart.initAll(".census-chart");
 		CensusPictogram.initAll(".census-pictogram");
+		CensusDocGrid.initAll(".census-docgrid");
 	});
 </script>
