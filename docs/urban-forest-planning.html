@@ -58,22 +58,23 @@ scripts:
 	<h2 id="have"><span class="stage-no">Stage 1</span>What do we have?</h2>
 
 	<p>
-	    Urban forest goals are best established based on the extent and distribution of 
+	    Urban forest goals and strategies are best established based on the extent and distribution of 
 		the current tree population. Yet less than half of municipalities knew their tree
 	    canopy cover or the number of municipally owned trees, and even fewer knew
 	    the number of street trees in their municipality.
 	</p>
 
-	<div class="census-chart" data-chart='{"n": 134, "decimals": 1, "note": "Each bar uses the municipalities that answered that question (133 to 134). Municipally owned trees exclude forested areas and urban woodlands.", "series": [{"label": "Knows tree canopy cover", "count": 56}, {"label": "Knows number of municipally owned trees", "count": 52, "n": 133}, {"label": "Knows number of street trees", "count": 31}]}'></div>
+	<div class="census-chart" data-chart='{"n": 134, "decimals": 0, "series": [{"label": "Knows tree canopy cover", "count": 56}, {"label": "Knows number of municipally owned trees", "count": 52, "n": 133}, {"label": "Knows number of street trees", "count": 31}]}'></div>
 
 	<p>
-	    Larger municipalities were more likely to know their canopy cover and number of trees.
-		Municipalities with greater canopy cover were more likely to know their canopy cover, 
-		but less likely to know how many municipally owned trees they had.
+	    The greater the population of the municipality, the more likely they were to know their
+		canopy cover and number of trees. Municipalities with greater canopy cover were also more
+		likely to know their canopy cover, but less likely to know how many municipally owned 
+		trees they had.
 	</p>
 	
 	<p>
-	    Among municipalities that reported their canopy cover, the median was 25%.
+	    Among municipalities that knew their canopy cover, the median was 25%.
 	    Their figures were generally close to our independent estimates from
 	    high-resolution canopy height mapping, with a median difference of 2.1
 	    percentage points. However, some differed by more than 50 percentage points
@@ -97,20 +98,19 @@ scripts:
 
 	<p>
 	    Municipalities can set goals for increasing tree canopy cover, such as
-	    reaching 25% cover by 2050, or for planting a certain number of trees,
-	    such as 100,000 by 2050. Canopy cover goals were more common than planting
-	    goals, although more than half of municipalities had neither.
+	    reaching 25% canopy cover by 2050, or for planting a certain number of trees,
+	    such as planting 100,000 trees by 2050. Canopy cover goals were more common than planting
+	    goals, although more than half of municipalities had neither. Among municipalities with canopy or planting goals, 37.3% had also set
+	    goals for individual neighbourhoods based on their existing canopy cover.
 	</p>
 
-	<div class="census-chart" data-chart='{"n": 133, "decimals": 1, "sort": "none", "note": "The dark segment is the 16 municipalities (12.0%) with both a canopy goal and a planting goal. Hover over a bar for the counts.", "series": [{"label": "Tree canopy goal", "count": 51, "inner": {"count": 16, "label": "Both goals"}}, {"label": "Tree planting goal", "count": 24, "inner": {"count": 16, "label": "Both goals"}}, {"label": "Neither goal", "count": 74}]}'></div>
+	<div class="census-chart" data-chart='{"n": 133, "decimals": 0, "sort": "none", "note": "The dark segment is the 16 municipalities (12%) with both a canopy goal and a planting goal. Hover over a bar for the counts.", "series": [{"label": "Tree canopy goal", "count": 51, "inner": {"count": 16, "label": "Both goals"}}, {"label": "Tree planting goal", "count": 24, "inner": {"count": 16, "label": "Both goals"}}, {"label": "Neither goal", "count": 74}]}'></div>
 
 	<p>
-	    Larger municipalities were more likely to have either type of goal.
+	    Municipalities with greater populations were more likely to have either type of goal.
 	    Municipalities with greater existing canopy cover were also more likely
 	    to have a canopy cover goal. Each additional 10 percentage points of
-	    canopy cover was associated with about 74% higher odds of having one.
-	    Among municipalities with canopy or planting goals, 37.3% had also set
-	    goals for individual neighbourhoods based on their existing canopy cover.
+	    canopy cover was associated with about 74% higher odds of having a canopy cover goal.
 	</p>
 
 	<h3>How goals are set</h3>
@@ -124,12 +124,12 @@ scripts:
 	    considered. Public opinion was among the least commonly used factors.
 	</p>
 
-	<div class="census-chart" data-chart='{"n": 56, "decimals": 1, "note": "Municipalities with a canopy or planting goal that answered the question (n = 56). Municipalities could select more than one.", "series": [{"label": "Recommendations from consultants", "count": 34}, {"label": "Plantable space for new trees", "count": 23}, {"label": "Research or academic recommendations", "count": 22}, {"label": "Available budget to manage trees", "count": 17}, {"label": "Political leaders&rsquo; preferences", "count": 16}, {"label": "Potential maximum canopy", "count": 15}, {"label": "Equitable canopy distribution", "count": 15}, {"label": "Best educated guess", "count": 8}, {"label": "Public opinion", "count": 7}, {"label": "Natural ecosystem of the municipality", "count": 6}]}'></div>
+	<div class="census-chart" data-chart='{"n": 56, "decimals": 0, "series": [{"label": "Recommendations from consultants", "count": 34}, {"label": "Plantable space for new trees", "count": 23}, {"label": "Research or academic recommendations", "count": 22}, {"label": "Available budget to manage trees", "count": 17}, {"label": "Political leaders&rsquo; preferences", "count": 16}, {"label": "Potential maximum canopy", "count": 15}, {"label": "Equitable canopy distribution", "count": 15}, {"label": "Best educated guess", "count": 8}, {"label": "Public opinion", "count": 7}, {"label": "Natural ecosystem of the municipality", "count": 6}]}'></div>
 
 	<p>
 	    Most municipalities considered only one or two factors when setting their
-	    goals, although larger municipalities tended to consider more. About a
-	    quarter (26.8%) relied exclusively on recommendations from consultants
+	    goals, although municipalities with greater populations tended to consider more factors. About a
+	    quarter (27%) relied exclusively on recommendations from consultants
 	    or academic research, without considering local factors such as available
 	    planting space, municipal budgets, or public opinion.
 	</p>
@@ -140,7 +140,7 @@ scripts:
 	    Just over half of municipalities (51.9%) reported using their urban forest
 	    to help meet stormwater management, public health, or air quality goals.
 	    This was more common among municipalities with canopy cover or planting
-	    goals (70.7%) than among those without them (37.1%). Larger municipalities
+	    goals (70.7%) than among those without them (37.1%). More populous municipalities
 	    and those with greater canopy cover were also more likely to use their
 	    urban forest for these purposes.
 	</p>
@@ -154,10 +154,10 @@ scripts:
 	    developing one. Just over a quarter had neither.
 	</p>
 
-	<div class="census-chart" data-chart='{"n": 137, "decimals": 1, "sort": "none", "series": [{"label": "Existing strategy or master plan", "count": 60}, {"label": "Developing a strategy or master plan", "count": 40}, {"label": "No strategy or master plan", "count": 37}]}'></div>
+	<div class="census-chart" data-chart='{"n": 137, "decimals": 0, "sort": "none", "series": [{"label": "Existing strategy or master plan", "count": 60}, {"label": "Developing a strategy or master plan", "count": 40}, {"label": "No strategy or master plan", "count": 37}]}'></div>
 
 	<p>
-	    Larger municipalities were more likely to have a plan in place or under
+	    Municipalities with greater populations were more likely to have a plan in place or under
 	    development. Each doubling of municipal population was associated with
 	    about 73% higher odds of being at a more advanced stage of planning,
 	    from having no plan to developing one or having one in place.
