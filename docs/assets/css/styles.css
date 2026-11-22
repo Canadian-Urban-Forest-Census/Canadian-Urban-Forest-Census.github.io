@@ -1748,7 +1748,8 @@ body.home .hero-text h1 { font-size: 58px; }
 
 .cycle { margin: 28px 0 8px 0; }
 
-/* Urban Forest Planning: space between the cycle figure and Stage 1  */
+/* Urban Forest Planning: space between the cycle figure and Stage 1,
+   33% less than the default (figure margin + main padding + h2 margin) */
 .planning .cycle { margin-bottom: 5.5px; }
 .planning main { padding-top: 33.5px; }
 .planning main > h2:first-child { margin-top: 37.5px; }
@@ -1892,6 +1893,67 @@ main h2[id] { scroll-margin-top: 80px; }
 @media (max-width: 650px) {
 	.pc-line { gap: 10px; }
 	.pc-value { min-width: 54px; font-size: 18px; }
+}
+
+/* ---------- document grid (pictogram.js CensusDocGrid; Urban Forest Planning, Stage 3) ---------- */
+
+.census-docgrid { margin: 26px 0 8px 0; }
+
+.dg-body {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 28px;
+}
+
+.dg-grid { flex: 0 1 auto; min-width: 0; }
+
+.dg-svg { display: block; width: 100%; height: auto; }
+
+.dg-tree { fill: var(--white); }
+
+.dg-doc rect,
+.dg-legend li { transition: opacity 0.12s ease; }
+
+/* hovering a document or legend item fades the other categories */
+.dg-focus .dg-doc:not(.dg-on) rect { opacity: 0.35; }
+.dg-focus .dg-legend li:not(.dg-on) { opacity: 0.5; }
+
+.dg-legend {
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	margin: 0;
+	padding: 0;
+	flex: 0 0 auto;
+}
+
+.dg-legend li {
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 13px;
+	line-height: 18px;
+	color: var(--gray70);
+	cursor: default;
+}
+
+.dg-legend li:focus { outline: none; }
+.dg-legend li:focus-visible { outline: 2px solid var(--green-med); outline-offset: 3px; }
+
+.dg-legend strong { color: var(--gray80); font-weight: 600; }
+
+.dg-legend i { width: 12px; height: 12px; border-radius: 2px; flex: 0 0 auto; margin-top: 3px; }
+
+.census-docgrid .chart-note { text-align: center; }
+
+@media (max-width: 560px) {
+	.dg-body { flex-direction: column; gap: 16px; }
+	.dg-grid { width: 100%; }
+	.dg-svg { margin: 0 auto; }
+	.dg-legend { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 10px 20px; }
 }
 
 /* ---------- page parts (merged pages, e.g. Staffing and Contracting) ---------- */
