@@ -1819,6 +1819,67 @@ main h2[id] { scroll-margin-top: 80px; }
 	.cy-d { display: none; }
 }
 
+/* ---------- pictogram charts (pictogram.js; Urban Forest Planning, Stage 1) ---------- */
+
+.census-pictogram { margin: 26px 0 8px 0; }
+
+.pc-row {
+	margin: 0 0 16px 0;
+	outline-offset: 4px;
+}
+
+.pc-row:focus { outline: none; }
+.pc-row:focus-visible { outline: 2px solid var(--green-med); }
+
+.pc-label {
+	font-family: "Open Sans", sans-serif;
+	font-size: 13px;
+	line-height: 18px;
+	color: var(--gray80);
+	margin: 0 0 6px 0;
+}
+
+.pc-line {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+}
+
+.pc-svg {
+	display: block;
+	flex: 1 1 auto;
+	width: 100%;
+	max-width: 440px;
+	min-width: 0;
+	height: auto;
+}
+
+.pc-value {
+	flex: 0 0 auto;
+	min-width: 64px;
+	font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+	font-weight: 700;
+	font-size: 22px;
+	line-height: 1;
+	color: var(--gray90);
+	font-variant-numeric: tabular-nums;
+}
+
+.pc-empty { fill: #DFE6DE; }
+.pc-fill-canopy { fill: var(--green-dark); }
+.pc-fill-tree { fill: #2E8B57; }
+
+.pc-fallback {
+	font-family: "Open Sans", sans-serif;
+	font-size: 13px;
+	color: var(--gray80);
+}
+
+@media (max-width: 650px) {
+	.pc-line { gap: 10px; }
+	.pc-value { min-width: 54px; font-size: 18px; }
+}
+
 /* ---------- page parts (merged pages, e.g. Staffing and Contracting) ---------- */
 
 .page-toc {
