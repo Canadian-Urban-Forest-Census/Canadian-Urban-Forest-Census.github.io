@@ -15,7 +15,10 @@
      CensusPictogram.initAll(".census-pictogram");
 
    symbol: "canopy" (top-down crown) or "tree" (side view with trunk).
-   Colours are set in styles.css (.pc-empty, .pc-fill-canopy, .pc-fill-tree).
+   inner:  optional {"count": 16, "label": "Both goals"}: a subset drawn in
+           the darker colour from the left, like the dark bar segments.
+   Colours are set in styles.css (.pc-empty, .pc-fill, .pc-fill-inner,
+   .pc-trunk).
    The tooltip reuses the .cc-tip element and style from charts.js.
    ========================================================================== */
 
@@ -45,7 +48,7 @@
 		tree: {
 			x0: 3.5, x1: 32.5,
 			svg:
-				'<path d="M16 25 L20 25 L20.8 39.5 L15.2 39.5 Z"/>' +
+				'<path class="pc-trunk" d="M16 25 L20 25 L20.8 39.5 L15.2 39.5 Z"/>' +
 				'<circle cx="18" cy="13" r="10.5"/>' +
 				'<circle cx="11" cy="17.5" r="7.5"/>' +
 				'<circle cx="25" cy="17.5" r="7.5"/>' +
@@ -83,34 +86,35 @@
 		return d.innerHTML;
 	}
 
-	function symbolsSvg(shapeName, pct, id) {
+	// Clip a shape to the left share f (0-1) of its own width.
+	function clipped(shape, cls, f, clipId, defsOut) {
+		if (f <= 0) return "";
+		if (f >= 1) return '<g class="' + cls + '">' + shape.svg + '</g>';
+		var w = (shape.x1 - shape.x0) * f;
+		defsOut.push('<clipPath id="' + clipId + '"><rect x="' + shape.x0 + '" y="-1" width="' +
+			w.toFixed(2) + '" height="' + (HEIGHT + 2) + '"/></clipPath>');
+		return '<g class="' + cls + '" clip-path="url(#' + clipId + ')">' + shape.svg + '</g>';
+	}
+
+	function symbolsSvg(shapeName, pct, innerPct, id) {
 		var shape = SHAPES[shapeName] || SHAPES.tree;
-		var fillClass = shapeName === "canopy" ? "pc-fill-canopy" : "pc-fill-tree";
 		var units = pct / 10;
-		var defs = "";
+		var innerUnits = innerPct / 10;
+		var defs = [];
 		var body = "";
 
 		for (var i = 0; i < COUNT; i++) {
 			var f = Math.max(0, Math.min(1, units - i));
+			var fi = Math.max(0, Math.min(1, innerUnits - i));
 			var g = '<g transform="translate(' + (i * STEP) + ' 0)">';
-
-			if (f >= 1) {
-				g += '<g class="' + fillClass + '">' + shape.svg + '</g>';
-			} else {
-				g += '<g class="pc-empty">' + shape.svg + '</g>';
-				if (f > 0) {
-					var clipId = id + "-clip";
-					var w = (shape.x1 - shape.x0) * f;
-					defs += '<clipPath id="' + clipId + '"><rect x="' + shape.x0 + '" y="-1" width="' +
-						w.toFixed(2) + '" height="' + (HEIGHT + 2) + '"/></clipPath>';
-					g += '<g class="' + fillClass + '" clip-path="url(#' + clipId + ')">' + shape.svg + '</g>';
-				}
-			}
+			if (f < 1) g += '<g class="pc-empty">' + shape.svg + '</g>';
+			g += clipped(shape, "pc-on pc-fill", f, id + "-m" + i, defs);
+			g += clipped(shape, "pc-on pc-fill-inner", fi, id + "-i" + i, defs);
 			body += g + '</g>';
 		}
 
 		return '<svg class="pc-svg" viewBox="0 0 ' + WIDTH + ' ' + HEIGHT + '" aria-hidden="true" focusable="false">' +
-			(defs ? '<defs>' + defs + '</defs>' : '') + body + '</svg>';
+			(defs.length ? '<defs>' + defs.join("") + '</defs>' : '') + body + '</svg>';
 	}
 
 	function build(el) {
@@ -127,14 +131,17 @@
 		cfg.rows.forEach(function (r, ri) {
 			// Round to one decimal first so the fill matches the number shown.
 			var pct = Math.round((r.count / r.n) * 1000) / 10;
+			var innerPct = r.inner ? Math.round((r.inner.count / r.n) * 1000) / 10 : 0;
 			var id = "pc" + (++uid) + "-" + ri;
-			var aria = r.label + ": " + fmtPct(pct, decimals) + "% (" + r.count + " of " + r.n + " municipalities)";
+			var aria = r.label + ": " + fmtPct(pct, decimals) + "% (" + r.count + " of " + r.n + " municipalities" +
+				(r.inner ? "; " + (r.inner.label || "subset") + ": " + r.inner.count : "") + ")";
 
 			html += '<div class="pc-row" tabindex="0" role="img" aria-label="' + esc(aria) + '"' +
-				' data-count="' + r.count + '" data-n="' + r.n + '">' +
+				' data-count="' + r.count + '" data-n="' + r.n + '"' +
+				(r.inner ? ' data-inner="' + esc((r.inner.label || "") + ": " + r.inner.count) + '"' : '') + '>' +
 				'<p class="pc-label" aria-hidden="true">' + esc(r.label) + '</p>' +
 				'<div class="pc-line" aria-hidden="true">' +
-				symbolsSvg(r.symbol, pct, id) +
+				symbolsSvg(r.symbol, pct, innerPct, id) +
 				'<span class="pc-value">' + fmtPct(pct, decimals) + '%</span>' +
 				'</div></div>';
 		});
@@ -145,8 +152,9 @@
 
 		Array.prototype.forEach.call(el.querySelectorAll(".pc-row"), function (row) {
 			function text() {
+				var inner = row.getAttribute("data-inner");
 				return "<strong>" + row.getAttribute("data-count") + "</strong> of " +
-					row.getAttribute("data-n") + " municipalities";
+					row.getAttribute("data-n") + " municipalities" + (inner ? "<br>" + inner : "");
 			}
 			row.addEventListener("mousemove", function (e) {
 				tip.innerHTML = text();
