@@ -138,7 +138,7 @@
 
 			html += '<div class="pc-row" tabindex="0" role="img" aria-label="' + esc(aria) + '"' +
 				' data-count="' + r.count + '" data-n="' + r.n + '"' +
-				(r.inner ? ' data-inner="' + esc((r.inner.label || "") + ": " + r.inner.count) + '"' : '') + '>' +
+				(r.inner ? ' data-inner-label="' + esc(r.inner.label || "") + '" data-inner-count="' + r.inner.count + '"' : '') + '>' +
 				'<p class="pc-label" aria-hidden="true">' + esc(r.label) + '</p>' +
 				'<div class="pc-line" aria-hidden="true">' +
 				symbolsSvg(r.symbol, pct, innerPct, id) +
@@ -152,7 +152,9 @@
 
 		Array.prototype.forEach.call(el.querySelectorAll(".pc-row"), function (row) {
 			function text() {
-				var inner = row.getAttribute("data-inner");
+				var innerCount = row.getAttribute("data-inner-count");
+				var inner = innerCount === null ? "" :
+					row.getAttribute("data-inner-label") + ": <strong>" + innerCount + "</strong>";
 				return "<strong>" + row.getAttribute("data-count") + "</strong> of " +
 					row.getAttribute("data-n") + " municipalities" + (inner ? "<br>" + inner : "");
 			}
