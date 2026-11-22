@@ -948,6 +948,35 @@ footer a { color: var(--gray70); }
 	margin: 0 0 12px 0;
 }
 
+.pub-abstract {
+	margin: 0 0 12px 0;
+}
+
+.pub-abstract summary {
+	cursor: pointer;
+	font-family: "Open Sans", sans-serif;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--green-dark);
+	list-style: none;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	margin-bottom: 8px;
+}
+
+.pub-abstract summary::-webkit-details-marker { display: none; }
+
+.pub-abstract summary::before {
+	content: "\25B8";
+	display: inline-block;
+	transition: transform 0.15s ease;
+}
+
+.pub-abstract[open] summary::before { transform: rotate(90deg); }
+
+.pub-abstract summary:hover { text-decoration: underline; }
+
 .pub-links {
 	display: flex;
 	flex-wrap: wrap;
