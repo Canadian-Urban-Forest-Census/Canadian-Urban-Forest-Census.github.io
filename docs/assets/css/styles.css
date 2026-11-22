@@ -1819,6 +1819,51 @@ main h2[id] { scroll-margin-top: 80px; }
 	.cy-d { display: none; }
 }
 
+/* ---------- page parts (merged pages, e.g. Staffing and Contracting) ---------- */
+
+.page-toc {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin: 28px 0 0 0;
+	font-family: "Open Sans", sans-serif;
+	font-size: 13px;
+}
+
+.page-toc::before {
+	content: "On this page:";
+	color: var(--gray70);
+	align-self: center;
+}
+
+.page-toc a {
+	display: inline-block;
+	padding: 6px 12px;
+	border: 1px solid var(--gray);
+	border-radius: 2px;
+	color: var(--gray80);
+	text-decoration: none;
+}
+
+.page-toc a:hover {
+	border-color: var(--green-med);
+	color: var(--green-dark);
+}
+
+main h2.part-head {
+	font-family: "Open Sans", sans-serif;
+	font-size: 13px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--green-dark);
+	border-top: 3px solid var(--green-med);
+	padding-top: 12px;
+	margin: 72px 0 0 0;
+}
+
+main h2.part-head + h2 { margin-top: 16px; }
+
 /* ---------- simple estimate tables (staffing, economics) ---------- */
 
 .est-table {
