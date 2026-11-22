@@ -1821,7 +1821,11 @@ main h2[id] { scroll-margin-top: 80px; }
 
 /* ---------- pictogram charts (pictogram.js; Urban Forest Planning, Stage 1) ---------- */
 
-.census-pictogram { margin: 26px 0 8px 0; }
+/* centred block: 440px symbols + 14px gap + 64px value */
+.census-pictogram {
+	max-width: 518px;
+	margin: 26px auto 8px auto;
+}
 
 .pc-row {
 	margin: 0 0 16px 0;
@@ -1861,13 +1865,14 @@ main h2[id] { scroll-margin-top: 80px; }
 	font-weight: 700;
 	font-size: 22px;
 	line-height: 1;
-	color: var(--gray90);
+	color: var(--green-dark);   /* same as the "343" count on the Methods map */
 	font-variant-numeric: tabular-nums;
 }
 
 .pc-empty { fill: #DFE6DE; }
-.pc-fill-canopy { fill: var(--green-dark); }
-.pc-fill-tree { fill: #2E8B57; }
+.pc-fill { fill: var(--green-med); }          /* same green as the bar charts */
+.pc-fill-inner { fill: var(--green-dark); }   /* subset, like the dark bar segments */
+.pc-on .pc-trunk { fill: #7A5C45; }           /* trunk colour on filled trees */
 
 .pc-fallback {
 	font-family: "Open Sans", sans-serif;
