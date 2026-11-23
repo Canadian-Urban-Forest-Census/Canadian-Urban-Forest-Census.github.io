@@ -14,7 +14,8 @@
 
      CensusPictogram.initAll(".census-pictogram");
 
-   symbol: "canopy" (top-down crown) or "tree" (side view with trunk).
+   symbol: "canopy" (top-down crown), "tree" (side view with trunk) or
+           "reel" (DBH tape).
    inner:  optional {"count": 16, "label": "Both goals"}: a subset drawn in
            the darker colour from the left, like the dark bar segments.
    Colours are set in styles.css (.pc-empty, .pc-fill, .pc-fill-inner,
@@ -55,6 +56,22 @@
 				'<circle cx="13.5" cy="9" r="6.5"/>' +
 				'<circle cx="22.5" cy="9" r="6.5"/>' +
 				'<circle cx="18" cy="22" r="7"/>'
+		},
+		// DBH tape: orange case, white label ring, black winder; white tape with
+		// tick marks runs off the bottom to the left and ends in a black bar.
+		// Colours come from styles.css (.pc-reel-*), so filled and empty differ.
+		reel: {
+			x0: 2.0, x1: 35.0, vc: 17,
+			svg:
+				'<path class="pc-reel-edge" d="M24 26.6 L3.4 26.6" fill="none" stroke-width="4.2"/>' +
+				'<path d="M24 26.6 L3.4 26.6" fill="none" stroke="#ffffff" stroke-width="2.8"/>' +
+				'<path class="pc-reel-edge" d="M24 27.35 L3.4 27.35" fill="none" stroke-width="1.1" stroke-dasharray="0.45 1.85"/>' +
+				'<rect class="pc-reel-dark" x="2" y="24.1" width="2.2" height="5" rx="0.5"/>' +
+				'<circle class="pc-reel-case" cx="24" cy="17" r="11"/>' +
+				'<circle cx="24" cy="17" r="6.49" fill="none" stroke="#ffffff" stroke-width="1.43"/>' +
+				'<g transform="rotate(-20 24 17)">' +
+				'<rect class="pc-reel-dark" x="19.93" y="15.57" width="8.14" height="2.86" rx="0.88"/>' +
+				'<circle cx="26.42" cy="17" r="0.66" fill="#ffffff"/></g>'
 		}
 	};
 
@@ -136,7 +153,8 @@
 			var aria = r.label + ": " + fmtPct(pct, decimals) + "% (" + r.count + " of " + r.n + " municipalities" +
 				(r.inner ? "; " + (r.inner.label || "subset") + ": " + r.inner.count : "") + ")";
 
-			html += '<div class="pc-row" tabindex="0" role="img" aria-label="' + esc(aria) + '"' +
+			var shapeDef = SHAPES[r.symbol] || SHAPES.tree;
+			html += '<div class="pc-row' + (shapeDef.vc ? ' pc-row-' + r.symbol : '') + '" tabindex="0" role="img" aria-label="' + esc(aria) + '"' +
 				' data-count="' + r.count + '" data-n="' + r.n + '"' +
 				(r.inner ? ' data-inner-label="' + esc(r.inner.label || "") + '" data-inner-count="' + r.inner.count + '"' : '') + '>' +
 				'<p class="pc-label" aria-hidden="true">' + esc(r.label) + '</p>' +
