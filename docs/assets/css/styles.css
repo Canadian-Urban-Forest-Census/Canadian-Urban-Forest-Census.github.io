@@ -1882,6 +1882,7 @@ main h2[id] { scroll-margin-top: 80px; }
 .pc-empty { fill: #DFE6DE; }
 .pc-fill { fill: var(--green-med); }          /* same green as the bar charts */
 .pc-fill-inner { fill: var(--green-dark); }   /* subset, like the dark bar segments */
+.pc-fill-orange { fill: #c4562a; }           /* Stage 4 orange (goal targets) */
 .pc-on .pc-trunk { fill: #7A5C45; }           /* trunk colour on filled trees */
 
 /* DBH tape symbol: empty parts stay pale, filled ones take the tape colours */
