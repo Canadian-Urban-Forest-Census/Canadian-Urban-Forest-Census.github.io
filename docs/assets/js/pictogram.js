@@ -212,12 +212,18 @@
 	var COLS = 20;
 	var SCALE = 0.9;                 // 14 x 20 units -> about 13 x 18 px icons
 
-	// Small tree on the cover, drawn in white over the document colour.
-	var TREE =
-		'<circle cx="7" cy="7.4" r="3"/>' +
-		'<circle cx="4.9" cy="9.2" r="2.3"/>' +
-		'<circle cx="9.1" cy="9.2" r="2.3"/>' +
-		'<rect x="6.35" y="10.3" width="1.3" height="4.7" rx="0.3"/>';
+	// Document: page with a folded top-right corner (14 x 20 units).
+	var PAGE = '<path d="M1.6 0 H10 L14 4 V18.4 Q14 20 12.4 20 H1.6 Q0 20 0 18.4 V1.6 Q0 0 1.6 0 Z"/>';
+	var FOLD = '<path class="dg-fold" d="M10 0 V2.6 Q10 4 11.4 4 H14 Z"/>';
+
+	// Cover: small tree above two title lines, drawn in white.
+	var COVER =
+		'<circle cx="7" cy="6.6" r="2.6"/>' +
+		'<circle cx="5.1" cy="8.1" r="2"/>' +
+		'<circle cx="8.9" cy="8.1" r="2"/>' +
+		'<rect x="6.4" y="9" width="1.2" height="3" rx="0.3"/>' +
+		'<rect x="2.8" y="14" width="8.4" height="1.2" rx="0.6"/>' +
+		'<rect x="2.8" y="16.4" width="5.6" height="1.2" rx="0.6"/>';
 
 	var tip = null;
 	function ensureTip() {
@@ -253,8 +259,8 @@
 				var x = (i % cols) * STEP_X;
 				var y = Math.floor(i / cols) * STEP_Y;
 				body += '<g class="dg-doc" data-cat="' + ci + '" transform="translate(' + x + ' ' + y + ')">' +
-					'<rect width="' + DOC_W + '" height="' + DOC_H + '" rx="1.6" fill="' + c.color + '"/>' +
-					'<g class="dg-tree">' + TREE + '</g></g>';
+					'<g fill="' + c.color + '">' + PAGE + '</g>' + FOLD +
+					'<g class="dg-tree">' + COVER + '</g></g>';
 			}
 		});
 		return '<svg class="dg-svg" viewBox="0 0 ' + w + ' ' + h + '" style="max-width:' + (w * SCALE) + 'px"' +
