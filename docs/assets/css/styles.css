@@ -1911,12 +1911,13 @@ main h2[id] { scroll-margin-top: 80px; }
 .dg-svg { display: block; width: 100%; height: auto; }
 
 .dg-tree { fill: var(--white); }
+.dg-fold { fill: var(--white); fill-opacity: 0.45; }
 
-.dg-doc rect,
+.dg-doc,
 .dg-legend li { transition: opacity 0.12s ease; }
 
 /* hovering a document or legend item fades the other categories */
-.dg-focus .dg-doc:not(.dg-on) rect { opacity: 0.35; }
+.dg-focus .dg-doc:not(.dg-on) { opacity: 0.35; }
 .dg-focus .dg-legend li:not(.dg-on) { opacity: 0.5; }
 
 .dg-legend {
