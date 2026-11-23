@@ -48,6 +48,8 @@ window.CensusChart = (function () {
 		"Private-land provision": "#00A189",
 		"Public land":            "#0D534D",
 		"Private land":           "#00A189",
+		"Internal":               "#00A189",
+		"External":               "#2f6f9e",
 		"Other":                  "#9aa39a"
 	};
 
