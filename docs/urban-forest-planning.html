@@ -59,9 +59,8 @@ scripts:
 	<h2 id="have"><span class="stage-no">Stage 1</span>What do we have?</h2>
 
 	<p>
-	    Urban forest goals and strategies are best established based on the condition, extent
-		and distribution of the current tree population. While just over three-quarters of 
-		municipalities have a tree inventories, less than half of municipalities knew their tree
+	    Urban forest goals and strategies are best established based on the extent and distribution of 
+		the current tree population. Yet less than half of municipalities knew their tree
 	    canopy cover or the number of municipally owned trees, and even fewer knew
 	    the number of street trees in their municipality.
 	</p>
@@ -192,7 +191,7 @@ scripts:
 	    Indigenous communities was uncommon.
 	</p>
 
-	<div class="census-chart" data-chart='{"n": 99, "decimals": 0, "series": [{"label": "Municipal staff", "count": 92}, {"label": "Consultants", "count": 64}, {"label": "Local government (e.g., city council)", "count": 44}, {"label": "Volunteers", "count": 11}, {"label": "Non-profit or NGO organizations", "count": 8}, {"label": "Indigenous communities", "count": 5}, {"label": "Interns", "count": 3}, {"label": "Provincial government staff", "count": 2}]}'></div>
+	<div class="census-chart" data-chart='{"n": 99, "decimals": 0, "series": [{"label": "Municipal staff", "count": 92, "group": "Internal"}, {"label": "Consultants", "count": 64, "group": "External"}, {"label": "Local government (e.g., city council)", "count": 44, "group": "Internal"}, {"label": "Volunteers", "count": 11, "group": "External"}, {"label": "Non-profit or NGO organizations", "count": 8, "group": "External"}, {"label": "Indigenous communities", "count": 5, "group": "External"}, {"label": "Interns", "count": 3, "group": "Internal"}, {"label": "Provincial government staff", "count": 2, "group": "External"}]}'></div>
 
 	<p>
 	    Most plans involved two or three types of participants. The number of
@@ -220,12 +219,7 @@ scripts:
 		with the number of factors considered when setting the goals.
 	</p>
 
-	<div class="pull">
-		<p>
-        Only half of municipalities with canopy cover or planting
-        goals reported being on track to meet them.
-		</p>
-	</div>
+	<div class="census-docgrid" data-docgrid='{"icon": "target", "columns": 12, "decimals": 0, "categories": [{"label": "On track", "count": 28, "color": "#c4562a"}, {"label": "Not on track", "count": 29, "color": "#DFE6DE"}]}'></div>
 	
 	<p>
 	    Municipalities that considered consultant recommendations when setting
@@ -235,6 +229,8 @@ scripts:
 	    comparison, the difference fell just short of statistical significance and
 	    should be interpreted cautiously.
 	</p>
+
+	<div class="census-pictogram" data-pictogram='{"decimals": 0, "note": "Share of municipalities on track to meet their canopy or planting goals (54 municipalities). The difference was not statistically significant.", "rows": [{"label": "Considered consultant recommendations when setting goals", "pct": 39.4, "symbol": "target", "fill": "orange", "tip": "on track"}, {"label": "Did not consider consultant recommendations", "pct": 66.7, "symbol": "target", "fill": "orange", "tip": "on track"}]}'></div>
 
 	{% include share.html %}
 
