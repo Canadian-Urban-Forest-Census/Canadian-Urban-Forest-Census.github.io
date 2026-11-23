@@ -298,12 +298,6 @@ main h3 {
 
 main a { color: var(--green-dark); }
 
-.lede {
-	font-size: 21px;
-	line-height: 33px;
-	color: var(--gray80);
-}
-
 .pull {
 	margin: 36px 0;
 	padding: 4px 0 4px 20px;
@@ -725,7 +719,6 @@ footer a { color: var(--gray70); }
 	.page-head .standfirst { font-size: 18px; line-height: 28px; }
 	main { padding: 32px 20px 60px 20px; }
 	main p, main li { font-size: 17px; line-height: 27px; }
-	.lede { font-size: 19px; line-height: 30px; }
 	.pull p { font-size: 19px; line-height: 29px; }
 	.bar-row { grid-template-columns: 124px 1fr 48px; gap: 8px; }
 	.bar-label { font-size: 12px; line-height: 16px; }
