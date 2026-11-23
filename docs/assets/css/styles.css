@@ -709,6 +709,7 @@ footer {
 	font-size: 13px;
 	line-height: 21px;
 	color: var(--gray70);
+	text-align: center;
 }
 
 footer a { color: var(--gray70); }
