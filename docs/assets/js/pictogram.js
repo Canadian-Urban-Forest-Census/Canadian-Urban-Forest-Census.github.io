@@ -14,8 +14,13 @@
 
      CensusPictogram.initAll(".census-pictogram");
 
-   symbol: "canopy" (top-down crown), "tree" (side view with trunk) or
-           "reel" (DBH tape).
+   symbol: "canopy" (top-down crown), "tree" (side view with trunk),
+           "reel" (DBH tape) or "target" (goal).
+   fill:   optional colour name for the filled symbols, e.g. "orange"
+           (styled by .pc-fill-orange in styles.css).
+   pct:    optional; give the percentage directly (instead of count and n)
+           when only the percentage is published. "tip" is then the tooltip
+           text shown after the percentage.
    inner:  optional {"count": 16, "label": "Both goals"}: a subset drawn in
            the darker colour from the left, like the dark bar segments.
    Colours are set in styles.css (.pc-empty, .pc-fill, .pc-fill-inner,
@@ -56,6 +61,16 @@
 				'<circle cx="13.5" cy="9" r="6.5"/>' +
 				'<circle cx="22.5" cy="9" r="6.5"/>' +
 				'<circle cx="18" cy="22" r="7"/>'
+		},
+		// Goal target: concentric rings (white rings stay white when filled or empty).
+		target: {
+			x0: 3, x1: 33,
+			svg:
+				'<circle cx="18" cy="20" r="15"/>' +
+				'<circle cx="18" cy="20" r="11" fill="#ffffff"/>' +
+				'<circle cx="18" cy="20" r="7.6"/>' +
+				'<circle cx="18" cy="20" r="4.2" fill="#ffffff"/>' +
+				'<circle cx="18" cy="20" r="1.9"/>'
 		},
 		// DBH tape: orange case, white label ring, black winder; white tape with
 		// tick marks runs off the bottom to the left and ends in a black bar.
@@ -113,7 +128,7 @@
 		return '<g class="' + cls + '" clip-path="url(#' + clipId + ')">' + shape.svg + '</g>';
 	}
 
-	function symbolsSvg(shapeName, pct, innerPct, id) {
+	function symbolsSvg(shapeName, pct, innerPct, id, fillClass) {
 		var shape = SHAPES[shapeName] || SHAPES.tree;
 		var units = pct / 10;
 		var innerUnits = innerPct / 10;
@@ -125,7 +140,7 @@
 			var fi = Math.max(0, Math.min(1, innerUnits - i));
 			var g = '<g transform="translate(' + (i * STEP) + ' 0)">';
 			if (f < 1) g += '<g class="pc-empty">' + shape.svg + '</g>';
-			g += clipped(shape, "pc-on pc-fill", f, id + "-m" + i, defs);
+			g += clipped(shape, "pc-on " + (fillClass || "pc-fill"), f, id + "-m" + i, defs);
 			g += clipped(shape, "pc-on pc-fill-inner", fi, id + "-i" + i, defs);
 			body += g + '</g>';
 		}
@@ -147,19 +162,22 @@
 		var html = '<div class="pc-rows">';
 		cfg.rows.forEach(function (r, ri) {
 			// Round to one decimal first so the fill matches the number shown.
-			var pct = Math.round((r.count / r.n) * 1000) / 10;
+			// a row can give "pct" directly when only the percentage is published
+			var pct = r.pct !== undefined ? r.pct : Math.round((r.count / r.n) * 1000) / 10;
 			var innerPct = r.inner ? Math.round((r.inner.count / r.n) * 1000) / 10 : 0;
 			var id = "pc" + (++uid) + "-" + ri;
-			var aria = r.label + ": " + fmtPct(pct, decimals) + "% (" + r.count + " of " + r.n + " municipalities" +
-				(r.inner ? "; " + (r.inner.label || "subset") + ": " + r.inner.count : "") + ")";
+			var aria = r.label + ": " + fmtPct(pct, decimals) + "%" + (r.count === undefined ? "" :
+				" (" + r.count + " of " + r.n + " municipalities" +
+				(r.inner ? "; " + (r.inner.label || "subset") + ": " + r.inner.count : "") + ")");
 
 			var shapeDef = SHAPES[r.symbol] || SHAPES.tree;
 			html += '<div class="pc-row' + (shapeDef.vc ? ' pc-row-' + r.symbol : '') + '" tabindex="0" role="img" aria-label="' + esc(aria) + '"' +
-				' data-count="' + r.count + '" data-n="' + r.n + '"' +
+				' data-count="' + (r.count === undefined ? "" : r.count) + '" data-n="' + (r.n || "") + '"' +
+				' data-pct="' + fmtPct(pct, decimals) + '" data-tip="' + esc(r.tip || "") + '"' +
 				(r.inner ? ' data-inner-label="' + esc(r.inner.label || "") + '" data-inner-count="' + r.inner.count + '"' : '') + '>' +
 				'<p class="pc-label" aria-hidden="true">' + esc(r.label) + '</p>' +
 				'<div class="pc-line" aria-hidden="true">' +
-				symbolsSvg(r.symbol, pct, innerPct, id) +
+				symbolsSvg(r.symbol, pct, innerPct, id, r.fill ? "pc-fill-" + r.fill : null) +
 				'<span class="pc-value">' + fmtPct(pct, decimals) + '%</span>' +
 				'</div></div>';
 		});
@@ -173,6 +191,9 @@
 				var innerCount = row.getAttribute("data-inner-count");
 				var inner = innerCount === null ? "" :
 					row.getAttribute("data-inner-label") + ": <strong>" + innerCount + "</strong>";
+				if (!row.getAttribute("data-count")) {   // percentage-only row
+					return "<strong>" + row.getAttribute("data-pct") + "%</strong> " + row.getAttribute("data-tip");
+				}
 				return "<strong>" + row.getAttribute("data-count") + "</strong> of " +
 					row.getAttribute("data-n") + " municipalities" + (inner ? "<br>" + inner : "");
 			}
@@ -222,6 +243,11 @@
 
    Layout: 20 columns, legend to the right (stacks below on narrow screens).
    SCALE sets the display size: 1 SVG unit = SCALE pixels at most.
+
+   Optional settings:
+     "icon": "doc" (default, a plan document) or "target" (a goal target)
+     "columns": number of columns (default 20)
+     "scale": display size for the icons (default 0.9 for documents, 1.5 for targets)
    ========================================================================== */
 
 (function () {
@@ -229,6 +255,15 @@
 	var STEP_X = 18, STEP_Y = 24;    // icon spacing
 	var COLS = 20;
 	var SCALE = 0.9;                 // 14 x 20 units -> about 13 x 18 px icons
+
+	// Target (goal) icon, 16 x 16 units: rings in the category colour with white between.
+	function targetSvg(color) {
+		return '<circle cx="8" cy="8" r="8" fill="' + color + '"/>' +
+			'<circle cx="8" cy="8" r="5.9" fill="#ffffff"/>' +
+			'<circle cx="8" cy="8" r="4" fill="' + color + '"/>' +
+			'<circle cx="8" cy="8" r="2.2" fill="#ffffff"/>' +
+			'<circle cx="8" cy="8" r="1" fill="' + color + '"/>';
+	}
 
 	// Document: page with a folded top-right corner (14 x 20 units).
 	var PAGE = '<path d="M1.6 0 H10 L14 4 V18.4 Q14 20 12.4 20 H1.6 Q0 20 0 18.4 V1.6 Q0 0 1.6 0 Z"/>';
@@ -266,22 +301,26 @@
 		return d.innerHTML;
 	}
 
-	function gridSvg(cats, total, cols) {
+	function gridSvg(cats, total, cols, icon, scale) {
+		var isTarget = icon === "target";
+		var iw = isTarget ? 16 : DOC_W, ih = isTarget ? 16 : DOC_H;
+		var sx = isTarget ? 20 : STEP_X, sy = isTarget ? 20 : STEP_Y;
 		var rows = Math.ceil(total / cols);
-		var w = STEP_X * (cols - 1) + DOC_W;
-		var h = STEP_Y * (rows - 1) + DOC_H;
+		var w = sx * (cols - 1) + iw;
+		var h = sy * (rows - 1) + ih;
 		var body = "";
 		var i = 0;
 		cats.forEach(function (c, ci) {
 			for (var k = 0; k < c.count; k++, i++) {
-				var x = (i % cols) * STEP_X;
-				var y = Math.floor(i / cols) * STEP_Y;
+				var x = (i % cols) * sx;
+				var y = Math.floor(i / cols) * sy;
 				body += '<g class="dg-doc" data-cat="' + ci + '" transform="translate(' + x + ' ' + y + ')">' +
-					'<g fill="' + c.color + '">' + PAGE + '</g>' + FOLD +
-					'<g class="dg-tree">' + COVER + '</g></g>';
+					(isTarget ? targetSvg(c.color) :
+						'<g fill="' + c.color + '">' + PAGE + '</g>' + FOLD + '<g class="dg-tree">' + COVER + '</g>') +
+					'</g>';
 			}
 		});
-		return '<svg class="dg-svg" viewBox="0 0 ' + w + ' ' + h + '" style="max-width:' + (w * SCALE) + 'px"' +
+		return '<svg class="dg-svg" viewBox="0 0 ' + w + ' ' + h + '" style="max-width:' + (w * scale) + 'px"' +
 			' aria-hidden="true" focusable="false">' + body + '</svg>';
 	}
 
@@ -301,7 +340,8 @@
 		}).join("") + '</ul>';
 
 		function render() {
-			el.innerHTML = '<div class="dg-body"><div class="dg-grid">' + gridSvg(cats, total, COLS) + '</div>' + legend + '</div>' +
+			el.innerHTML = '<div class="dg-body"><div class="dg-grid">' + gridSvg(cats, total, cfg.columns || COLS, cfg.icon || "doc",
+				cfg.scale || (cfg.icon === "target" ? 1.5 : SCALE)) + '</div>' + legend + '</div>' +
 				(cfg.note ? '<p class="chart-note">' + cfg.note + '</p>' : '');
 			wire();
 		}
